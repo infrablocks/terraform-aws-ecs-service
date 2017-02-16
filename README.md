@@ -1,4 +1,4 @@
-Terraform AWS ECS Cluster
+Terraform AWS ECS Service
 =========================
 
 Describe it here.
