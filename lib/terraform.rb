@@ -25,6 +25,10 @@ module Terraform
       Commands::Apply.new.execute(opts)
     end
 
+    def get(opts)
+      Commands::Get.new.execute(opts)
+    end
+
     def destroy(opts)
       Commands::Destroy.new.execute(opts)
     end
@@ -65,6 +69,28 @@ module Terraform
           vars.each do |key, value|
             sub = sub.with_option('-var', "'#{key}=#{value}'")
           end
+          sub = sub.with_option('-state', state) if state
+          sub
+        end
+            .with_argument(directory)
+            .build
+            .execute
+      end
+    end
+
+    class Get
+      attr_reader :binary
+
+      def initialize(binary = DEFAULT_BINARY)
+        @binary = binary
+      end
+
+      def execute(opts)
+        directory = opts[:directory]
+        state = opts[:state]
+
+        Lino::CommandLineBuilder.for_command(binary)
+            .with_subcommand('get') do |sub|
           sub = sub.with_option('-state', state) if state
           sub
         end
