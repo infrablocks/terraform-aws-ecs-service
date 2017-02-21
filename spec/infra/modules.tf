@@ -1,3 +1,4 @@
+
 module "base_network" {
   source = "git@github.com:tobyclemson/terraform-aws-base-networking.git//src"
 
@@ -36,3 +37,13 @@ module "ecs_cluster" {
   cluster_maximum_size = "${var.cluster_maximum_size}"
   cluster_desired_capacity = "${var.cluster_desired_capacity}"
 }
+
+module "ecs_service" {
+  source = "../../src"
+
+  component = "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
+
+  vpc_id = "${module.base_network.vpc_id}"
+}
+
