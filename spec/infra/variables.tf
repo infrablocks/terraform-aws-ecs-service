@@ -21,3 +21,11 @@ variable "cluster_node_instance_type" {}
 variable "cluster_minimum_size" {}
 variable "cluster_maximum_size" {}
 variable "cluster_desired_capacity" {}
+
+variable "service_name" {}
+variable "service_image" {}
+variable "service_command" {
+  type = "list"
+}
+variable "service_port" {}
+variable "service_task_definition" {}

@@ -45,5 +45,15 @@ module "ecs_service" {
   deployment_identifier = "${var.deployment_identifier}"
 
   vpc_id = "${module.base_network.vpc_id}"
+
+  region = "${var.region}"
+
+  service_name = "${var.service_name}"
+  service_task_definition = "${var.service_task_definition}"
+  service_image = "${var.service_image}"
+  service_command = "${var.service_command}"
+  service_port = "${var.service_port}"
+
+  ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
 }
 

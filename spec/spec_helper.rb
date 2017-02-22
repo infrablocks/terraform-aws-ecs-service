@@ -41,6 +41,12 @@ RSpec.configure do |config|
   config.add_setting :cluster_maximum_size, default: 3
   config.add_setting :cluster_desired_capacity, default: 2
 
+  config.add_setting :service_name, default: "test-service"
+  config.add_setting :service_task_definition, default: ""
+  config.add_setting :service_image, default: "nginx"
+  config.add_setting :service_command, default: '["ls", "-la"]'
+  config.add_setting :service_port, default: "3000"
+
   config.before(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('spec/infra')
@@ -75,6 +81,13 @@ RSpec.configure do |config|
         cluster_minimum_size: variables.cluster_minimum_size,
         cluster_maximum_size: variables.cluster_maximum_size,
         cluster_desired_capacity: variables.cluster_desired_capacity,
+
+        service_name: variables.service_name,
+        service_task_definition: variables.service_task_definition,
+        service_image: variables.service_image,
+        service_command: variables.service_command,
+        service_port: variables.service_port
+
     })
   end
 
@@ -113,6 +126,12 @@ RSpec.configure do |config|
           cluster_minimum_size: variables.cluster_minimum_size,
           cluster_maximum_size: variables.cluster_maximum_size,
           cluster_desired_capacity: variables.cluster_desired_capacity,
+
+          service_name: variables.service_name,
+          service_task_definition: variables.service_task_definition,
+          service_image: variables.service_image,
+          service_command: variables.service_command,
+          service_port: variables.service_port
       })
 
       puts

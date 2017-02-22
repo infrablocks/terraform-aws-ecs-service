@@ -6,6 +6,7 @@ describe 'ECS Service' do
   let(:deployment_identifier) { RSpec.configuration.deployment_identifier }
   let(:vpc_id) { Terraform.output(name: 'vpc_id') }
   let(:private_network_cidr) { RSpec.configuration.private_network_cidr }
+  let(:service_name) { RSpec.configuration.service_name }
 
 
   context 'security group' do
@@ -37,5 +38,14 @@ describe 'ECS Service' do
       expect(egress_rule.ip_protocol).to(eq('tcp'))
       expect(egress_rule.ip_ranges.map(&:cidr_ip)).to(eq([private_network_cidr]))
     end
+  end
+
+  context 'task definition' do
+
+    subject { ecs_task_definition("#{service_name}-#{component}-#{deployment_identifier}") }
+
+    it { should exist }
+    its(:family) {should eq("#{service_name}-#{component}-#{deployment_identifier}")}
+
   end
 end
