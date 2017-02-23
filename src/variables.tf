@@ -40,3 +40,6 @@ variable "private_subnet_ids" {}
 
 variable "ecs_cluster_id" {}
 
+variable "ecs_cluster_service_role_arn" {}
+
+

@@ -12,6 +12,7 @@ describe 'ECS Service' do
   let(:vpc_id) { Terraform.output(name: 'vpc_id') }
   let(:cluster_id) { Terraform.output(name: 'cluster_id') }
   let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
+  let(:service_role_arn) { Terraform.output(name: 'service_role_arn') }
 
   context 'service' do
     subject {
@@ -30,6 +31,16 @@ describe 'ECS Service' do
 
     it "has the correct desired count" do
       expect(subject.desired_count).to(eq(3))
+    end
+
+    it 'has the correct load balancer' do
+      expect(subject.load_balancers.first.load_balancer_name).to(eq("elb-#{service_name}-#{component}-#{deployment_identifier}"))
+      expect(subject.load_balancers.first.container_name).to(eq(service_name))
+      expect(subject.load_balancers.first.container_port).to(eq(service_port))
+    end
+
+    it 'has the correct role' do
+      expect(subject.role_arn).to(eq(service_role_arn))
     end
   end
 

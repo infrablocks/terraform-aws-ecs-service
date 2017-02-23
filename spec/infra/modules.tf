@@ -59,7 +59,10 @@ module "ecs_service" {
 
   private_subnet_ids = "${module.base_network.private_subnet_ids}"
 
+  ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
+
   service_certificate_body = "${var.service_certificate_body}"
   service_certificate_private_key = "${var.service_certificate_private_key}"
+
 }
 

@@ -45,7 +45,7 @@ RSpec.configure do |config|
   config.add_setting :service_task_definition, default: ""
   config.add_setting :service_image, default: "nginx"
   config.add_setting :service_command, default: '["ls", "-la"]'
-  config.add_setting :service_port, default: "3000"
+  config.add_setting :service_port, default: 3000
 
   config.add_setting :service_certificate_body, default: 'config/secrets/certificates/cert.pem'
   config.add_setting :service_certificate_private_key, default: 'config/secrets/certificates/ssl.key'
