@@ -76,5 +76,15 @@ def terraform_vars_for(opts)
       cluster_minimum_size: 1,
       cluster_maximum_size: 3,
       cluster_desired_capacity: 2,
+
+      service_name: "service-1",
+      service_task_definition: "",
+      service_image: "nginx",
+      service_command: '["ls", "-la"]',
+      service_port: "3000",
+
+
+      service_certificate_body: 'config/secrets/certificates/cert.pem',
+      service_certificate_private_key: 'config/secrets/certificates/ssl.key'
   }
 end
