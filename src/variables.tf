@@ -42,4 +42,8 @@ variable "ecs_cluster_id" {}
 
 variable "ecs_cluster_service_role_arn" {}
 
+variable "public_zone_id" {}
+variable "domain_name" {}
+variable "private_zone_id" {}
+
 

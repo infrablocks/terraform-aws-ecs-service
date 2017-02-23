@@ -64,5 +64,8 @@ module "ecs_service" {
   service_certificate_body = "${var.service_certificate_body}"
   service_certificate_private_key = "${var.service_certificate_private_key}"
 
+  domain_name = "${var.domain_name}"
+  public_zone_id = "${var.public_zone_id}"
+  private_zone_id = "${var.private_zone_id}"
 }
 
