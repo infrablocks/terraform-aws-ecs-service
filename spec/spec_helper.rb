@@ -9,7 +9,7 @@ require_relative '../lib/public_ip'
 
 RSpec.configure do |config|
   deployment_identifier = ENV['DEPLOYMENT_IDENTIFIER']
-  
+
   config.example_status_persistence_file_path = '.rspec_status'
   config.expect_with :rspec do |c|
     c.syntax = :expect
@@ -60,41 +60,42 @@ RSpec.configure do |config|
 
     Terraform.clean
     Terraform.get(directory: configuration_directory)
-    Terraform.apply(directory: configuration_directory, vars: {
-        vpc_cidr: variables.vpc_cidr,
-        region: variables.region,
-        availability_zones: variables.availability_zones,
-        private_network_cidr: variables.private_network_cidr,
+    Terraform.apply(
+        directory: configuration_directory,
+        vars: {
+            vpc_cidr: variables.vpc_cidr,
+            region: variables.region,
+            availability_zones: variables.availability_zones,
+            private_network_cidr: variables.private_network_cidr,
 
-        component: variables.component,
-        deployment_identifier: variables.deployment_identifier,
+            component: variables.component,
+            deployment_identifier: variables.deployment_identifier,
 
-        bastion_ami: variables.bastion_ami,
-        bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
-        bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
+            bastion_ami: variables.bastion_ami,
+            bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
+            bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
-        domain_name: variables.domain_name,
-        public_zone_id: variables.public_zone_id,
-        private_zone_id: variables.private_zone_id,
+            domain_name: variables.domain_name,
+            public_zone_id: variables.public_zone_id,
+            private_zone_id: variables.private_zone_id,
 
-        cluster_name: variables.cluster_name,
-        cluster_node_ssh_public_key_path: variables.cluster_node_ssh_public_key_path,
-        cluster_node_instance_type: variables.cluster_node_instance_type,
+            cluster_name: variables.cluster_name,
+            cluster_node_ssh_public_key_path: variables.cluster_node_ssh_public_key_path,
+            cluster_node_instance_type: variables.cluster_node_instance_type,
 
-        cluster_minimum_size: variables.cluster_minimum_size,
-        cluster_maximum_size: variables.cluster_maximum_size,
-        cluster_desired_capacity: variables.cluster_desired_capacity,
+            cluster_minimum_size: variables.cluster_minimum_size,
+            cluster_maximum_size: variables.cluster_maximum_size,
+            cluster_desired_capacity: variables.cluster_desired_capacity,
 
-        service_name: variables.service_name,
-        service_task_definition: variables.service_task_definition,
-        service_image: variables.service_image,
-        service_command: variables.service_command,
-        service_port: variables.service_port,
+            service_name: variables.service_name,
+            service_task_definition: variables.service_task_definition,
+            service_image: variables.service_image,
+            service_command: variables.service_command,
+            service_port: variables.service_port,
 
-        service_certificate_body: variables.service_certificate_body,
-        service_certificate_private_key: variables.service_certificate_private_key
-
-    })
+            service_certificate_body: variables.service_certificate_body,
+            service_certificate_private_key: variables.service_certificate_private_key
+        })
   end
 
   config.after(:suite) do
@@ -108,40 +109,43 @@ RSpec.configure do |config|
 
       Terraform.clean
       Terraform.get(directory: configuration_directory)
-      Terraform.destroy(directory: configuration_directory, vars: {
-          vpc_cidr: variables.vpc_cidr,
-          region: variables.region,
-          availability_zones: variables.availability_zones,
-          private_network_cidr: variables.private_network_cidr,
+      Terraform.destroy(
+          directory: configuration_directory,
+          force: true,
+          vars: {
+              vpc_cidr: variables.vpc_cidr,
+              region: variables.region,
+              availability_zones: variables.availability_zones,
+              private_network_cidr: variables.private_network_cidr,
 
-          component: variables.component,
-          deployment_identifier: variables.deployment_identifier,
+              component: variables.component,
+              deployment_identifier: variables.deployment_identifier,
 
-          bastion_ami: variables.bastion_ami,
-          bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
-          bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
+              bastion_ami: variables.bastion_ami,
+              bastion_ssh_public_key_path: variables.bastion_ssh_public_key_path,
+              bastion_ssh_allow_cidrs: variables.bastion_ssh_allow_cidrs,
 
-          domain_name: variables.domain_name,
-          public_zone_id: variables.public_zone_id,
-          private_zone_id: variables.private_zone_id,
+              domain_name: variables.domain_name,
+              public_zone_id: variables.public_zone_id,
+              private_zone_id: variables.private_zone_id,
 
-          cluster_name: variables.cluster_name,
-          cluster_node_ssh_public_key_path: variables.cluster_node_ssh_public_key_path,
-          cluster_node_instance_type: variables.cluster_node_instance_type,
+              cluster_name: variables.cluster_name,
+              cluster_node_ssh_public_key_path: variables.cluster_node_ssh_public_key_path,
+              cluster_node_instance_type: variables.cluster_node_instance_type,
 
-          cluster_minimum_size: variables.cluster_minimum_size,
-          cluster_maximum_size: variables.cluster_maximum_size,
-          cluster_desired_capacity: variables.cluster_desired_capacity,
+              cluster_minimum_size: variables.cluster_minimum_size,
+              cluster_maximum_size: variables.cluster_maximum_size,
+              cluster_desired_capacity: variables.cluster_desired_capacity,
 
-          service_name: variables.service_name,
-          service_task_definition: variables.service_task_definition,
-          service_image: variables.service_image,
-          service_command: variables.service_command,
-          service_port: variables.service_port,
+              service_name: variables.service_name,
+              service_task_definition: variables.service_task_definition,
+              service_image: variables.service_image,
+              service_command: variables.service_command,
+              service_port: variables.service_port,
 
-          service_certificate_body: variables.service_certificate_body,
-          service_certificate_private_key: variables.service_certificate_private_key
-      })
+              service_certificate_body: variables.service_certificate_body,
+              service_certificate_private_key: variables.service_certificate_private_key
+          })
 
       puts
     end

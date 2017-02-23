@@ -45,6 +45,7 @@ namespace :destroy do
     Terraform.get(directory: configuration_directory)
     Terraform.destroy(
         directory: configuration_directory,
+        force: true,
         vars: terraform_vars_for(
             deployment_identifier: deployment_identifier))
   end
