@@ -100,3 +100,10 @@ eval "$(direnv hook $SHELL)"
 
 direnv allow <repository-directory>
 ```
+
+To generate certificates:
+```
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+# to decrpyt the key
+openssl rsa -in key.pem -out ssl.key
+```
