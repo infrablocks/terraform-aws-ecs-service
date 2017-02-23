@@ -32,3 +32,8 @@ variable "service_port" {
 variable "region" {}
 
 variable "ecs_cluster_log_group" {}
+
+variable "service_certificate_body" {}
+variable "service_certificate_private_key" {}
+
+variable "private_subnet_ids" {}

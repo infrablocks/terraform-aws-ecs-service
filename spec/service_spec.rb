@@ -8,6 +8,13 @@ describe 'ECS Service' do
   let(:private_network_cidr) { RSpec.configuration.private_network_cidr }
   let(:service_name) { RSpec.configuration.service_name }
 
+  context 'elb' do
+    subject {
+      elb("elb-#{service_name}-#{component}-#{deployment_identifier}")
+    }
+
+    it { should exist }
+  end
 
   context 'security group' do
 

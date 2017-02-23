@@ -29,3 +29,6 @@ variable "service_command" {
 }
 variable "service_port" {}
 variable "service_task_definition" {}
+
+variable "service_certificate_body" {}
+variable "service_certificate_private_key" {}

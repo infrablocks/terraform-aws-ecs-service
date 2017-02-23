@@ -41,11 +41,14 @@ RSpec.configure do |config|
   config.add_setting :cluster_maximum_size, default: 3
   config.add_setting :cluster_desired_capacity, default: 2
 
-  config.add_setting :service_name, default: "test-service"
+  config.add_setting :service_name, default: "service-1"
   config.add_setting :service_task_definition, default: ""
   config.add_setting :service_image, default: "nginx"
   config.add_setting :service_command, default: '["ls", "-la"]'
   config.add_setting :service_port, default: "3000"
+
+  config.add_setting :service_certificate_body, default: 'config/secrets/certificates/cert.pem'
+  config.add_setting :service_certificate_private_key, default: 'config/secrets/certificates/ssl.key'
 
   config.before(:suite) do
     variables = RSpec.configuration
@@ -86,7 +89,10 @@ RSpec.configure do |config|
         service_task_definition: variables.service_task_definition,
         service_image: variables.service_image,
         service_command: variables.service_command,
-        service_port: variables.service_port
+        service_port: variables.service_port,
+
+        service_certificate_body: variables.service_certificate_body,
+        service_certificate_private_key: variables.service_certificate_private_key
 
     })
   end
@@ -131,7 +137,10 @@ RSpec.configure do |config|
           service_task_definition: variables.service_task_definition,
           service_image: variables.service_image,
           service_command: variables.service_command,
-          service_port: variables.service_port
+          service_port: variables.service_port,
+
+          service_certificate_body: variables.service_certificate_body,
+          service_certificate_private_key: variables.service_certificate_private_key
       })
 
       puts

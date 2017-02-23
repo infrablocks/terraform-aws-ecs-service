@@ -55,5 +55,10 @@ module "ecs_service" {
   service_port = "${var.service_port}"
 
   ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
+
+  private_subnet_ids = "${module.base_network.private_subnet_ids}"
+
+  service_certificate_body = "${var.service_certificate_body}"
+  service_certificate_private_key = "${var.service_certificate_private_key}"
 }
 
