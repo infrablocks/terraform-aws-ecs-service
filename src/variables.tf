@@ -37,3 +37,6 @@ variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}
 
 variable "private_subnet_ids" {}
+
+variable "ecs_cluster_id" {}
+

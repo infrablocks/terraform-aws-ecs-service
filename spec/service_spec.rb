@@ -1,13 +1,37 @@
 require 'spec_helper'
 
 describe 'ECS Service' do
+  include_context :terraform
 
   let(:component) { RSpec.configuration.component }
   let(:deployment_identifier) { RSpec.configuration.deployment_identifier }
-  let(:vpc_id) { Terraform.output(name: 'vpc_id') }
   let(:private_network_cidr) { RSpec.configuration.private_network_cidr }
   let(:service_name) { RSpec.configuration.service_name }
   let(:service_port) { RSpec.configuration.service_port }
+
+  let(:vpc_id) { Terraform.output(name: 'vpc_id') }
+  let(:cluster_id) { Terraform.output(name: 'cluster_id') }
+  let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
+
+  context 'service' do
+    subject {
+      ecs_client.describe_services(
+          cluster: cluster_id,
+          services: [service_name]).services.first
+    }
+
+    it 'exists' do
+      expect(subject).not_to(be_nil)
+    end
+
+    it "is associated with the correct task definition" do
+      expect(subject.task_definition).to(eq(task_definition_arn))
+    end
+
+    it "has the correct desired count" do
+      expect(subject.desired_count).to(eq(3))
+    end
+  end
 
   context 'elb' do
     subject {
