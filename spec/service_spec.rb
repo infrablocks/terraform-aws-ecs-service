@@ -7,6 +7,7 @@ describe 'ECS Service' do
   let(:vpc_id) { Terraform.output(name: 'vpc_id') }
   let(:private_network_cidr) { RSpec.configuration.private_network_cidr }
   let(:service_name) { RSpec.configuration.service_name }
+  let(:service_port) { RSpec.configuration.service_port }
 
   context 'elb' do
     subject {
@@ -14,6 +15,12 @@ describe 'ECS Service' do
     }
 
     it { should exist }
+
+    its(:health_check_target) { should eq("HTTP:#{service_port}/health")}
+    its(:health_check_interval) { should eq(30)}
+    its(:health_check_timeout) { should eq(3)}
+    its(:health_check_unhealthy_threshold) { should eq(2)}
+    its(:health_check_healthy_threshold) { should eq(2)}
   end
 
   context 'security group' do
