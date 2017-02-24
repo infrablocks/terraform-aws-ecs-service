@@ -31,19 +31,26 @@ variable "service_port" {
 
 variable "region" {}
 
-variable "ecs_cluster_log_group" {}
-
 variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}
 
+variable "public_subnet_ids" {}
 variable "private_subnet_ids" {}
 
 variable "ecs_cluster_id" {}
-
 variable "ecs_cluster_service_role_arn" {}
+variable "ecs_cluster_log_group" {}
 
-variable "public_zone_id" {}
 variable "domain_name" {}
+variable "public_zone_id" {}
 variable "private_zone_id" {}
 
-
+variable "elb_health_check_target" {
+  default = "HTTP:80/health"
+}
+variable "elb_internal" {
+  default = true
+}
+variable "elb_https_allow_cidrs" {
+  default = ""
+}

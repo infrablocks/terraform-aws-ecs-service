@@ -32,3 +32,7 @@ variable "service_task_definition" {}
 
 variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}
+
+variable "elb_internal" {}
+variable "elb_health_check_target" {}
+variable "elb_https_allow_cidrs" {}

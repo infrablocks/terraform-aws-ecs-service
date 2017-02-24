@@ -57,6 +57,7 @@ module "ecs_service" {
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
   ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
 
+  public_subnet_ids = "${module.base_network.public_subnet_ids}"
   private_subnet_ids = "${module.base_network.private_subnet_ids}"
 
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
@@ -67,5 +68,9 @@ module "ecs_service" {
   domain_name = "${var.domain_name}"
   public_zone_id = "${var.public_zone_id}"
   private_zone_id = "${var.private_zone_id}"
+
+  elb_internal = "${var.elb_internal}"
+  elb_health_check_target = "${var.elb_health_check_target}"
+  elb_https_allow_cidrs = "${var.elb_https_allow_cidrs}"
 }
 

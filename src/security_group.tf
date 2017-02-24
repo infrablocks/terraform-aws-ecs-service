@@ -8,7 +8,7 @@ resource "aws_security_group" "service_elb" {
     to_port = 443
     protocol = "tcp"
     cidr_blocks = [
-      "${split(",", coalesce(var.allowed_cidrs, var.private_network_cidr))}"
+      "${split(",", coalesce(var.elb_https_allow_cidrs, var.private_network_cidr))}"
     ]
   }
 

@@ -82,10 +82,13 @@ def terraform_vars_for(opts)
       service_task_definition: "",
       service_image: "nginx",
       service_command: '["ls", "-la"]',
-      service_port: "3000",
-
+      service_port: "80",
 
       service_certificate_body: 'config/secrets/certificates/cert.pem',
-      service_certificate_private_key: 'config/secrets/certificates/ssl.key'
+      service_certificate_private_key: 'config/secrets/certificates/ssl.key',
+
+      elb_internal: false,
+      elb_health_check_target: 'HTTP:80/',
+      elb_https_allow_cidrs: PublicIP.as_cidr
   }
 end

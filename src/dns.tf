@@ -1,5 +1,5 @@
 resource "aws_route53_record" "service_public" {
-    zone_id = "${var.public_zone_id}"
+  zone_id = "${var.public_zone_id}"
   name = "${var.component}-${var.deployment_identifier}.${var.domain_name}"
   type = "A"
 

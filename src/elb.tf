@@ -6,9 +6,9 @@ resource "aws_iam_server_certificate" "service" {
 
 resource "aws_elb" "service" {
   name = "elb-${var.service_name}-${var.component}-${var.deployment_identifier}"
-  subnets = ["${split(",", var.private_subnet_ids)}"]
+  subnets = ["${split(",", var.elb_internal == "true" ? var.private_subnet_ids : var.public_subnet_ids)}"]
 
-  internal = true
+  internal = "${var.elb_internal}"
 
   security_groups = [
     "${aws_security_group.service_elb.id}"
@@ -26,7 +26,7 @@ resource "aws_elb" "service" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 3
-    target = "HTTP:${var.service_port}/health"
+    target = "${var.elb_health_check_target}"
     interval = 30
   }
 

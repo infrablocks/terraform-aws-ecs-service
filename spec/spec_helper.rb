@@ -45,11 +45,15 @@ RSpec.configure do |config|
   config.add_setting :service_name, default: "service-1"
   config.add_setting :service_task_definition, default: ""
   config.add_setting :service_image, default: "nginx"
-  config.add_setting :service_command, default: '["ls", "-la"]'
-  config.add_setting :service_port, default: 3000
+  config.add_setting :service_command, default: '["nginx", "-g", "daemon off;"]'
+  config.add_setting :service_port, default: 80
 
   config.add_setting :service_certificate_body, default: 'config/secrets/certificates/cert.pem'
   config.add_setting :service_certificate_private_key, default: 'config/secrets/certificates/ssl.key'
+
+  config.add_setting :elb_internal, default: false
+  config.add_setting :elb_health_check_target, default: "HTTP:#{RSpec.configuration.service_port}/"
+  config.add_setting :elb_https_allow_cidrs, default: PublicIP.as_cidr
 
   config.before(:suite) do
     variables = RSpec.configuration
@@ -95,7 +99,11 @@ RSpec.configure do |config|
             service_port: variables.service_port,
 
             service_certificate_body: variables.service_certificate_body,
-            service_certificate_private_key: variables.service_certificate_private_key
+            service_certificate_private_key: variables.service_certificate_private_key,
+
+            elb_internal: variables.elb_internal,
+            elb_health_check_target: variables.elb_health_check_target,
+            elb_https_allow_cidrs: variables.elb_https_allow_cidrs
         })
   end
 
@@ -145,7 +153,11 @@ RSpec.configure do |config|
               service_port: variables.service_port,
 
               service_certificate_body: variables.service_certificate_body,
-              service_certificate_private_key: variables.service_certificate_private_key
+              service_certificate_private_key: variables.service_certificate_private_key,
+
+              elb_internal: variables.elb_internal,
+              elb_health_check_target: variables.elb_health_check_target,
+              elb_https_allow_cidrs: variables.elb_https_allow_cidrs
           })
 
       puts
