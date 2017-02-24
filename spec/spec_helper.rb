@@ -1,6 +1,7 @@
 require 'bundler/setup'
 
 require 'awspec'
+require 'securerandom'
 
 require 'support/shared_contexts/terraform'
 
