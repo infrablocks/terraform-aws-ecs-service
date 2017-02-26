@@ -31,8 +31,7 @@ variable "service_port" {
 
 variable "region" {}
 
-variable "service_certificate_body" {}
-variable "service_certificate_private_key" {}
+variable "service_certificate_arn" {}
 
 variable "public_subnet_ids" {}
 variable "private_subnet_ids" {}

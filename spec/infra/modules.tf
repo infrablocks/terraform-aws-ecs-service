@@ -58,8 +58,7 @@ module "ecs_service" {
   ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
 
-  service_certificate_body = "${var.service_certificate_body}"
-  service_certificate_private_key = "${var.service_certificate_private_key}"
+  service_certificate_arn = "${aws_iam_server_certificate.service.arn}"
 
   domain_name = "${var.domain_name}"
   public_zone_id = "${var.public_zone_id}"
