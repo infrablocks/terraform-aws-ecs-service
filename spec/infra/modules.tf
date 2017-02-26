@@ -1,4 +1,3 @@
-
 module "base_network" {
   source = "git@github.com:tobyclemson/terraform-aws-base-networking.git//src"
 
@@ -44,9 +43,10 @@ module "ecs_service" {
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
 
-  vpc_id = "${module.base_network.vpc_id}"
-
   region = "${var.region}"
+  vpc_id = "${module.base_network.vpc_id}"
+  public_subnet_ids = "${module.base_network.public_subnet_ids}"
+  private_subnet_ids = "${module.base_network.private_subnet_ids}"
 
   service_name = "${var.service_name}"
   service_task_definition = "${var.service_task_definition}"
@@ -56,10 +56,6 @@ module "ecs_service" {
 
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
   ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
-
-  public_subnet_ids = "${module.base_network.public_subnet_ids}"
-  private_subnet_ids = "${module.base_network.private_subnet_ids}"
-
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
 
   service_certificate_body = "${var.service_certificate_body}"
