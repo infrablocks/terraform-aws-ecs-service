@@ -53,6 +53,7 @@ module "ecs_service" {
   service_image = "${var.service_image}"
   service_command = "${var.service_command}"
   service_port = "${var.service_port}"
+  service_desired_count = "${var.service_desired_count}"
 
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
   ecs_cluster_log_group = "${module.ecs_cluster.log_group}"

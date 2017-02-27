@@ -47,6 +47,7 @@ RSpec.configure do |config|
   config.add_setting :service_image, default: "nginx"
   config.add_setting :service_command, default: '["nginx", "-g", "daemon off;"]'
   config.add_setting :service_port, default: 80
+  config.add_setting :service_desired_count, default: 2
 
   config.add_setting :service_certificate_body, default: 'config/secrets/certificates/cert.pem'
   config.add_setting :service_certificate_private_key, default: 'config/secrets/certificates/ssl.key'
@@ -97,6 +98,7 @@ RSpec.configure do |config|
             service_image: variables.service_image,
             service_command: variables.service_command,
             service_port: variables.service_port,
+            service_desired_count: variables.service_desired_count,
 
             service_certificate_body: variables.service_certificate_body,
             service_certificate_private_key: variables.service_certificate_private_key,
@@ -151,6 +153,7 @@ RSpec.configure do |config|
               service_image: variables.service_image,
               service_command: variables.service_command,
               service_port: variables.service_port,
+              service_desired_count: variables.service_desired_count,
 
               service_certificate_body: variables.service_certificate_body,
               service_certificate_private_key: variables.service_certificate_private_key,

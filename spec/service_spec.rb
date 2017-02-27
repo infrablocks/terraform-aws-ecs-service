@@ -9,6 +9,8 @@ describe 'ECS Service' do
   let(:service_name) { RSpec.configuration.service_name }
   let(:service_port) { RSpec.configuration.service_port }
 
+  let(:service_desired_count) { RSpec.configuration.service_desired_count }
+
   let(:cluster_id) { Terraform.output(name: 'cluster_id') }
   let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
   let(:service_role_arn) { Terraform.output(name: 'service_role_arn') }
@@ -29,7 +31,7 @@ describe 'ECS Service' do
     end
 
     it "has the correct desired count" do
-      expect(subject.desired_count).to(eq(3))
+      expect(subject.desired_count).to(eq(service_desired_count))
     end
 
     it 'has the correct load balancer' do
@@ -41,6 +43,7 @@ describe 'ECS Service' do
     it 'has the correct role' do
       expect(subject.role_arn).to(eq(service_role_arn))
     end
+
   end
 
   context 'task definition' do

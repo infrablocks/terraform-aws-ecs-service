@@ -28,6 +28,9 @@ variable "service_command" {
 variable "service_port" {
   default = ""
 }
+variable "service_desired_count" {
+  default = 3
+}
 
 variable "region" {}
 

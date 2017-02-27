@@ -83,6 +83,7 @@ def terraform_vars_for(opts)
       service_image: "nginx",
       service_command: '["ls", "-la"]',
       service_port: "80",
+      service_desired_count: 2,
 
       service_certificate_body: 'config/secrets/certificates/cert.pem',
       service_certificate_private_key: 'config/secrets/certificates/ssl.key',

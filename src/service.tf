@@ -2,7 +2,7 @@ resource "aws_ecs_service" "service" {
   name = "${var.service_name}"
   cluster = "${var.ecs_cluster_id}"
   task_definition = "${aws_ecs_task_definition.service.arn}"
-  desired_count = 3
+  desired_count = "${var.service_desired_count}"
   iam_role = "${var.ecs_cluster_service_role_arn}"
 
   load_balancer {
