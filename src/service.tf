@@ -6,7 +6,7 @@ resource "aws_ecs_service" "service" {
   iam_role = "${var.ecs_cluster_service_role_arn}"
 
   load_balancer {
-    elb_name = "${aws_elb.service.name}"
+    elb_name = "${var.service_elb_name}"
     container_name = "${var.service_name}"
     container_port = "${var.service_port}"
   }

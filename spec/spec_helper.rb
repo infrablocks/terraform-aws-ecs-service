@@ -23,7 +23,7 @@ RSpec.configure do |config|
 
   config.add_setting :component, default: 'test'
   config.add_setting :deployment_identifier,
-                     default: deployment_identifier || SecureRandom.hex[0, 8]
+      default: deployment_identifier || SecureRandom.hex[0, 8]
 
   config.add_setting :bastion_ami, default: 'ami-bb373ddf'
   config.add_setting :bastion_ssh_public_key_path, default: 'config/secrets/keys/bastion/ssh.public'
