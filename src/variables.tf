@@ -26,6 +26,12 @@ variable "service_port" {
 variable "service_desired_count" {
   default = 3
 }
+variable "service_deployment_maximum_percent" {
+  default = 200
+}
+variable "service_deployment_minimum_healthy_percent" {
+  default = 50
+}
 variable "service_elb_name" {}
 
 variable "ecs_cluster_id" {}

@@ -78,7 +78,11 @@ module "ecs_service" {
   service_image = "${var.service_image}"
   service_command = "${var.service_command}"
   service_port = "${var.service_port}"
+
   service_desired_count = "${var.service_desired_count}"
+  service_deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
+  service_deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
+
   service_elb_name = "${module.ecs_load_balancer.service_elb_name}"
 
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"

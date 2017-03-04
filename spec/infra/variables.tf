@@ -30,6 +30,8 @@ variable "service_command" {
 variable "service_port" {}
 variable "service_task_definition" {}
 variable "service_desired_count" {}
+variable "service_deployment_maximum_percent" {}
+variable "service_deployment_minimum_healthy_percent" {}
 
 variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}

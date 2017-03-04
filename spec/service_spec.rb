@@ -11,6 +11,9 @@ describe 'ECS Service' do
 
   let(:service_desired_count) { RSpec.configuration.service_desired_count }
 
+  let(:service_deployment_maximum_percent) { RSpec.configuration.service_deployment_maximum_percent }
+  let(:service_deployment_minimum_healthy_percent) { RSpec.configuration.service_deployment_minimum_healthy_percent }
+
   let(:cluster_id) { Terraform.output(name: 'cluster_id') }
   let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
   let(:service_role_arn) { Terraform.output(name: 'service_role_arn') }
@@ -44,6 +47,15 @@ describe 'ECS Service' do
       expect(subject.role_arn).to(eq(service_role_arn))
     end
 
+    it 'defines the deployment maximum percent' do
+      expect(subject.deployment_configuration.maximum_percent)
+          .to(eq(service_deployment_maximum_percent))
+    end
+
+    it 'defines the deployment minimum healthy percent' do
+      expect(subject.deployment_configuration.minimum_healthy_percent)
+          .to(eq(service_deployment_minimum_healthy_percent))
+    end
   end
 
   context 'task definition' do
