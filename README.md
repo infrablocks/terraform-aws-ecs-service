@@ -14,6 +14,8 @@ The ECS service consists of:
 * An ECS service to maintain a number of instances of the task
 * Log collection via the provided CloudWatch log group
 
+![Diagram of infrastructure managed by this module](/docs/architecture.png?raw=true)
+
 Usage
 -----
 
