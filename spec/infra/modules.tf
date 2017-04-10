@@ -70,8 +70,6 @@ module "ecs_service" {
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
-  public_subnet_ids = "${module.base_network.public_subnet_ids}"
-  private_subnet_ids = "${module.base_network.private_subnet_ids}"
 
   service_name = "${var.service_name}"
   service_task_definition = "${var.service_task_definition}"
