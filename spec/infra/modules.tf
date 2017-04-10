@@ -84,7 +84,6 @@ module "ecs_service" {
   service_elb_name = "${module.ecs_load_balancer.service_elb_name}"
 
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
-  ecs_cluster_log_group = "${module.ecs_cluster.log_group}"
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
 }
 

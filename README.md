@@ -45,7 +45,6 @@ module "ecs_cluster" {
   
   ecs_cluster_id = "arn:aws:ecs:eu-west-2:151388205202:cluster/web-app"
   ecs_cluster_service_role_arn = "arn:aws:iam::151388205202:role/cluster-service-role-web-app"
-  ecs_cluster_log_group = "/web-app"
 }
 ```
 
@@ -82,7 +81,6 @@ mechanism you like, the following modules may be of use:
 | service_elb_name                           | The name of the ELB to configure to point at the service instances  | -                  | yes      |
 | ecs_cluster_id                             | The ID of the ECS cluster in which to deploy the service            | -                  | yes      |
 | ecs_cluster_service_role_arn               | The ARN of the IAM role to provide to ECS to manage the service     | -                  | yes      |
-| ecs_cluster_log_group                      | The log group to use to collect service logs                        | -                  | yes      |
 
 ### Outputs
 

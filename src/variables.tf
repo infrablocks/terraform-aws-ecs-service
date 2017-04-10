@@ -30,4 +30,3 @@ variable "service_elb_name" {}
 
 variable "ecs_cluster_id" {}
 variable "ecs_cluster_service_role_arn" {}
-variable "ecs_cluster_log_group" {}

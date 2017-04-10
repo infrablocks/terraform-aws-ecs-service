@@ -7,7 +7,7 @@ data "template_file" "service" {
     command = "${jsonencode(var.service_command)}"
     port = "${var.service_port}"
     region = "${var.region}"
-    log_group = "${var.ecs_cluster_log_group}"
+    log_group = "${aws_cloudwatch_log_group.service.name}"
   }
 }
 
