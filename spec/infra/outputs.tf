@@ -49,7 +49,3 @@ output "service_role_id" {
 output "task_definition_arn" {
   value = "${module.ecs_service.task_definition_arn}"
 }
-
-output "log_group" {
-  value = "${module.ecs_cluster.log_group}"
-}
