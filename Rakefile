@@ -78,9 +78,11 @@ def terraform_vars_for(opts)
       cluster_maximum_size: 3,
       cluster_desired_capacity: 2,
 
-      service_name: "service-1",
-      service_task_definition: "",
+      service_task_container_definitions: "",
+      service_task_network_mode: "",
+
       service_image: "nginx",
+      service_name: "service-1",
       service_command: '["ls", "-la"]',
       service_port: "80",
       service_desired_count: 2,

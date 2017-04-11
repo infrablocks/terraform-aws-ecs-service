@@ -14,6 +14,8 @@ describe 'ECS Service' do
   let(:service_deployment_maximum_percent) { RSpec.configuration.service_deployment_maximum_percent }
   let(:service_deployment_minimum_healthy_percent) { RSpec.configuration.service_deployment_minimum_healthy_percent }
 
+  let(:service_task_network_mode) { RSpec.configuration.service_task_network_mode }
+
   let(:cluster_id) { Terraform.output(name: 'cluster_id') }
   let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
   let(:service_role_arn) { Terraform.output(name: 'service_role_arn') }
@@ -63,5 +65,9 @@ describe 'ECS Service' do
 
     it { should exist }
     its(:family) { should eq("#{service_name}-#{component}-#{deployment_identifier}") }
+
+    it "uses a the supplied network mode" do
+      expect(subject.network_mode).to(eq(service_task_network_mode))
+    end
   end
 end

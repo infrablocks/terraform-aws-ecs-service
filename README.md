@@ -82,6 +82,8 @@ mechanism you like, the following modules may be of use:
 | ecs_cluster_id                             | The ID of the ECS cluster in which to deploy the service            | -                  | yes      |
 | ecs_cluster_service_role_arn               | The ARN of the IAM role to provide to ECS to manage the service     | -                  | yes      |
 
+TODO: Add `service_task_container_definitions` and `service_task_network_mode` above.
+
 ### Outputs
 
 | Name                      | Description                                                          |

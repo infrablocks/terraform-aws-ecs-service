@@ -4,9 +4,13 @@ variable "vpc_id" {}
 variable "component" {}
 variable "deployment_identifier" {}
 
-variable "service_task_definition" {
+variable "service_task_container_definitions" {
   default = ""
 }
+variable "service_task_network_mode" {
+  default = "bridge"
+}
+
 variable "service_name" {}
 variable "service_image" {
   default = ""

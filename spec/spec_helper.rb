@@ -42,8 +42,10 @@ RSpec.configure do |config|
   config.add_setting :cluster_maximum_size, default: 3
   config.add_setting :cluster_desired_capacity, default: 2
 
+  config.add_setting :service_task_container_definitions, default: ""
+  config.add_setting :service_task_network_mode, default: "host"
+
   config.add_setting :service_name, default: "service-1"
-  config.add_setting :service_task_definition, default: ""
   config.add_setting :service_image, default: "nginx"
   config.add_setting :service_command, default: '["nginx", "-g", "daemon off;"]'
   config.add_setting :service_port, default: 80
@@ -95,8 +97,10 @@ RSpec.configure do |config|
             cluster_maximum_size: variables.cluster_maximum_size,
             cluster_desired_capacity: variables.cluster_desired_capacity,
 
+            service_task_container_definitions: variables.service_task_container_definitions,
+            service_task_network_mode: variables.service_task_network_mode,
+
             service_name: variables.service_name,
-            service_task_definition: variables.service_task_definition,
             service_image: variables.service_image,
             service_command: variables.service_command,
             service_port: variables.service_port,
@@ -152,8 +156,10 @@ RSpec.configure do |config|
               cluster_maximum_size: variables.cluster_maximum_size,
               cluster_desired_capacity: variables.cluster_desired_capacity,
 
+              service_task_container_definitions: variables.service_task_container_definitions,
+              service_task_network_mode: variables.service_task_network_mode,
+
               service_name: variables.service_name,
-              service_task_definition: variables.service_task_definition,
               service_image: variables.service_image,
               service_command: variables.service_command,
               service_port: variables.service_port,

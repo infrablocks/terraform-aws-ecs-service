@@ -71,8 +71,10 @@ module "ecs_service" {
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
 
+  service_task_container_definitions = "${var.service_task_container_definitions}"
+  service_task_network_mode = "${var.service_task_network_mode}"
+
   service_name = "${var.service_name}"
-  service_task_definition = "${var.service_task_definition}"
   service_image = "${var.service_image}"
   service_command = "${var.service_command}"
   service_port = "${var.service_port}"
