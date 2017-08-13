@@ -41,3 +41,5 @@ variable "service_certificate_private_key" {}
 variable "elb_internal" {}
 variable "elb_health_check_target" {}
 variable "elb_https_allow_cidrs" {}
+
+variable "infrastructure_events_bucket" {}

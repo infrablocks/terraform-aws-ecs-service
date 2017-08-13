@@ -60,6 +60,8 @@ RSpec.configure do |config|
   config.add_setting :elb_health_check_target, default: "HTTP:#{RSpec.configuration.service_port}/"
   config.add_setting :elb_https_allow_cidrs, default: PublicIP.as_cidr
 
+  config.add_setting :infrastructure_events_bucket, default: 'tobyclemson-open-source'
+
   config.before(:suite) do
     variables = RSpec.configuration
     configuration_directory = Paths.from_project_root_directory('spec/infra')
@@ -113,7 +115,9 @@ RSpec.configure do |config|
 
             elb_internal: variables.elb_internal,
             elb_health_check_target: variables.elb_health_check_target,
-            elb_https_allow_cidrs: variables.elb_https_allow_cidrs
+            elb_https_allow_cidrs: variables.elb_https_allow_cidrs,
+
+            infrastructure_events_bucket: variables.infrastructure_events_bucket,
         })
   end
 
@@ -172,7 +176,9 @@ RSpec.configure do |config|
 
               elb_internal: variables.elb_internal,
               elb_health_check_target: variables.elb_health_check_target,
-              elb_https_allow_cidrs: variables.elb_https_allow_cidrs
+              elb_https_allow_cidrs: variables.elb_https_allow_cidrs,
+
+              infrastructure_events_bucket: variables.infrastructure_events_bucket,
           })
 
       puts
