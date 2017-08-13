@@ -1,6 +1,8 @@
 Terraform AWS ECS Service
 =========================
 
+[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-ecs-service.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-ecs-service)
+
 A Terraform module for deploying an ECS service in AWS.
 
 The ECS service requires:
