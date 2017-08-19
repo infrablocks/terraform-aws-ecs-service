@@ -1,5 +1,5 @@
 module "base_network" {
-  source = "git@github.com:tobyclemson/terraform-aws-base-networking.git//src"
+  source = "git@github.com:infrablocks/terraform-aws-base-networking.git//src"
 
   vpc_cidr = "${var.vpc_cidr}"
   region = "${var.region}"
@@ -20,7 +20,7 @@ module "base_network" {
 }
 
 module "ecs_cluster" {
-  source = "git@github.com:tobyclemson/terraform-aws-ecs-cluster.git//src"
+  source = "git@github.com:infrablocks/terraform-aws-ecs-cluster.git//src"
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
@@ -40,7 +40,7 @@ module "ecs_cluster" {
 }
 
 module "ecs_load_balancer" {
-  source = "git@github.com:tobyclemson/terraform-aws-ecs-load-balancer.git//src"
+  source = "git@github.com:infrablocks/terraform-aws-ecs-load-balancer.git//src"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
@@ -65,7 +65,7 @@ module "ecs_load_balancer" {
 }
 
 module "ecs_service" {
-  source = "../../src"
+  source = "../../../src"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"

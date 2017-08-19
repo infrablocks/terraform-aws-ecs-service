@@ -3,22 +3,22 @@ require 'spec_helper'
 describe 'ECS Service' do
   include_context :terraform
 
-  let(:component) { RSpec.configuration.component }
-  let(:deployment_identifier) { RSpec.configuration.deployment_identifier }
+  let(:component) { vars.component }
+  let(:deployment_identifier) { vars.deployment_identifier }
 
-  let(:service_name) { RSpec.configuration.service_name }
-  let(:service_port) { RSpec.configuration.service_port }
+  let(:service_name) { vars.service_name }
+  let(:service_port) { vars.service_port }
 
-  let(:service_desired_count) { RSpec.configuration.service_desired_count }
+  let(:service_desired_count) { vars.service_desired_count }
 
-  let(:service_deployment_maximum_percent) { RSpec.configuration.service_deployment_maximum_percent }
-  let(:service_deployment_minimum_healthy_percent) { RSpec.configuration.service_deployment_minimum_healthy_percent }
+  let(:service_deployment_maximum_percent) { vars.service_deployment_maximum_percent }
+  let(:service_deployment_minimum_healthy_percent) { vars.service_deployment_minimum_healthy_percent }
 
-  let(:service_task_network_mode) { RSpec.configuration.service_task_network_mode }
+  let(:service_task_network_mode) { vars.service_task_network_mode }
 
-  let(:cluster_id) { Terraform.output(name: 'cluster_id') }
-  let(:task_definition_arn) { Terraform.output(name: 'task_definition_arn') }
-  let(:service_role_arn) { Terraform.output(name: 'service_role_arn') }
+  let(:cluster_id) { output_with_name('cluster_id') }
+  let(:task_definition_arn) { output_with_name('task_definition_arn') }
+  let(:service_role_arn) { output_with_name('service_role_arn') }
 
   context 'service' do
     subject {
