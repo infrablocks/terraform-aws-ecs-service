@@ -12,6 +12,7 @@
 vendor/
 build/
 dist/
+.rakeTasks
 
 # OS
 .DS_Store
