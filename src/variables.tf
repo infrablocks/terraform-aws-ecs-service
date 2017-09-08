@@ -31,6 +31,9 @@ variable "service_deployment_minimum_healthy_percent" {
   default = 50
 }
 variable "service_elb_name" {}
+variable "service_role" {
+  default = ""
+}
 
 variable "ecs_cluster_id" {}
 variable "ecs_cluster_service_role_arn" {}

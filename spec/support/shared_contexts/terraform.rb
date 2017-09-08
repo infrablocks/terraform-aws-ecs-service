@@ -13,4 +13,9 @@ shared_context :terraform do
   def output_with_name(name)
     TerraformModule.output_with_name(name)
   end
+
+  def reprovision(override_vars)
+    TerraformModule.provision(
+        TerraformModule.configuration.vars.to_h.merge(override_vars))
+  end
 end

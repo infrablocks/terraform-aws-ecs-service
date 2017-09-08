@@ -34,6 +34,7 @@ service_port: 80
 service_desired_count: 2
 service_deployment_maximum_percent: 150
 service_deployment_minimum_healthy_percent: 25
+service_role: ''
 
 service_certificate_body: '<%= @project_directory %>/config/secrets/certificates/cert.pem'
 service_certificate_private_key: '<%= @project_directory %>/config/secrets/certificates/ssl.key'

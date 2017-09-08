@@ -16,5 +16,7 @@ resource "aws_ecs_task_definition" "service" {
   container_definitions = "${data.template_file.service.rendered}"
 
   network_mode = "${var.service_task_network_mode}"
+
+  task_role_arn = "${var.service_role}"
 }
 

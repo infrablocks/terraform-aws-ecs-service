@@ -31,11 +31,11 @@ describe 'ECS Service' do
       expect(subject).not_to(be_nil)
     end
 
-    it "is associated with the correct task definition" do
+    it 'is associated with the correct task definition' do
       expect(subject.task_definition).to(eq(task_definition_arn))
     end
 
-    it "has the correct desired count" do
+    it 'has the correct desired count' do
       expect(subject.desired_count).to(eq(service_desired_count))
     end
 
@@ -68,6 +68,22 @@ describe 'ECS Service' do
 
     it "uses a the supplied network mode" do
       expect(subject.network_mode).to(eq(service_task_network_mode))
+    end
+
+    context 'when no service role is specified' do
+      before(:all) do
+        reprovision(service_role: '')
+      end
+
+      its(:task_role_arn) { should be_nil }
+    end
+
+    context 'when a service role is specified' do
+      before(:all) do
+        reprovision(service_role: output_with_name('task_role_arn'))
+      end
+
+      its(:task_role_arn) { should eq(output_with_name('task_role_arn')) }
     end
   end
 end

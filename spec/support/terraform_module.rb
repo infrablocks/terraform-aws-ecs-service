@@ -12,7 +12,7 @@ module TerraformModule
       RubyTerraform.output(name: name, state: configuration.state_file)
     end
 
-    def provision
+    def provision(vars)
       puts
       puts "Provisioning with deployment identifier: #{configuration.vars.deployment_identifier}"
       puts
@@ -26,13 +26,13 @@ module TerraformModule
         RubyTerraform.apply(
             state: configuration.state_file,
             configuration_directory: configuration.configuration_directory,
-            vars: configuration.vars.to_h)
+            vars: vars.to_h)
       end
 
       puts
     end
 
-    def destroy
+    def destroy(vars)
       unless ENV['DEPLOYMENT_IDENTIFIER']
         puts
         puts "Destroying with deployment identifier: #{configuration.vars.deployment_identifier}"
@@ -48,7 +48,7 @@ module TerraformModule
               configuration_directory: configuration.configuration_directory,
               state: configuration.state_file,
               force: true,
-              vars: configuration.vars.to_h)
+              vars: vars.to_h)
         end
 
         puts
