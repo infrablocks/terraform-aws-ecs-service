@@ -47,8 +47,7 @@ module "ecs_load_balancer" {
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
-  public_subnet_ids = "${module.base_network.public_subnet_ids}"
-  private_subnet_ids = "${module.base_network.private_subnet_ids}"
+  subnet_ids = "${split(",", module.base_network.public_subnet_ids)}"
 
   service_name = "${var.service_name}"
   service_port = "${var.service_port}"
@@ -59,9 +58,12 @@ module "ecs_load_balancer" {
   public_zone_id = "${var.public_zone_id}"
   private_zone_id = "${var.private_zone_id}"
 
-  elb_internal = "${var.elb_internal}"
-  elb_health_check_target = "${var.elb_health_check_target}"
-  elb_https_allow_cidrs = "${var.elb_https_allow_cidrs}"
+  allow_cidrs = "${split(",", var.elb_https_allow_cidrs)}"
+
+  health_check_target = "${var.elb_health_check_target}"
+
+  expose_to_public_internet = "yes"
+  include_public_dns_record = "yes"
 }
 
 module "ecs_service" {
@@ -85,8 +87,9 @@ module "ecs_service" {
   service_deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
   service_deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
 
-  service_elb_name = "${module.ecs_load_balancer.service_elb_name}"
+  service_elb_name = "${module.ecs_load_balancer.name}"
   service_role = "${var.service_role}"
+  service_volumes  ="${var.service_volumes}"
 
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"

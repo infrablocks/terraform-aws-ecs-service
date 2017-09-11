@@ -39,6 +39,10 @@ service_role: ''
 service_certificate_body: '<%= @project_directory %>/config/secrets/certificates/cert.pem'
 service_certificate_private_key: '<%= @project_directory %>/config/secrets/certificates/ssl.key'
 
+service_volume_1_name: "temporary"
+service_volume_1_host_path: "/some/path"
+service_volumes: '[{ name = "temporary" host_path = "/some/path" }]'
+
 elb_internal: false
 elb_health_check_target: "HTTP:80/"
 elb_https_allow_cidrs: '<%= @public_ip %>/32'

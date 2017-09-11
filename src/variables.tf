@@ -34,6 +34,10 @@ variable "service_elb_name" {}
 variable "service_role" {
   default = ""
 }
+variable "service_volumes" {
+  type = "list"
+  default = []
+}
 
 variable "ecs_cluster_id" {}
 variable "ecs_cluster_service_role_arn" {}

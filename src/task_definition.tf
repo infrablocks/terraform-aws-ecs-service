@@ -18,5 +18,7 @@ resource "aws_ecs_task_definition" "service" {
   network_mode = "${var.service_task_network_mode}"
 
   task_role_arn = "${var.service_role}"
+
+  volume = "${var.service_volumes}"
 }
 

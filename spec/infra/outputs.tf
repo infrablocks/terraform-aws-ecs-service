@@ -14,6 +14,10 @@ output "private_subnet_ids" {
   value = "${module.base_network.private_subnet_ids}"
 }
 
+output "load_balancer_name" {
+  value = "${module.ecs_load_balancer.name}"
+}
+
 output "cluster_id" {
   value = "${module.ecs_cluster.cluster_id}"
 }

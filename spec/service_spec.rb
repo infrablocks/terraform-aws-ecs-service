@@ -40,7 +40,7 @@ describe 'ECS Service' do
     end
 
     it 'has the correct load balancer' do
-      expect(subject.load_balancers.first.load_balancer_name).to(eq("elb-#{service_name}-#{component}-#{deployment_identifier}"))
+      expect(subject.load_balancers.first.load_balancer_name).to(eq(output_with_name("load_balancer_name")))
       expect(subject.load_balancers.first.container_name).to(eq(service_name))
       expect(subject.load_balancers.first.container_port).to(eq(service_port))
     end
@@ -66,8 +66,16 @@ describe 'ECS Service' do
     it { should exist }
     its(:family) { should eq("#{service_name}-#{component}-#{deployment_identifier}") }
 
-    it "uses a the supplied network mode" do
+    it 'uses the supplied network mode' do
       expect(subject.network_mode).to(eq(service_task_network_mode))
+    end
+
+    it 'includes the specified service volumes' do
+      expect(subject.volumes.size).to(eq(1))
+
+      volume = subject.volumes[0]
+      expect(volume.name).to(eq(vars.service_volume_1_name))
+      expect(volume.host.source_path).to(eq(vars.service_volume_1_host_path))
     end
 
     context 'when no service role is specified' do

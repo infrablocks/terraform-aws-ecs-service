@@ -39,6 +39,9 @@ variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}
 
 variable "service_role" {}
+variable "service_volumes" {
+  type = "list"
+}
 
 variable "elb_internal" {}
 variable "elb_health_check_target" {}
