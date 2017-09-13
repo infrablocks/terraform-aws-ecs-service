@@ -36,6 +36,8 @@ service_deployment_maximum_percent: 150
 service_deployment_minimum_healthy_percent: 25
 service_role: ''
 
+attach_to_load_balancer: 'yes'
+
 service_certificate_body: '<%= @project_directory %>/config/secrets/certificates/cert.pem'
 service_certificate_private_key: '<%= @project_directory %>/config/secrets/certificates/ssl.key'
 

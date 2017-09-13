@@ -43,6 +43,8 @@ variable "service_volumes" {
   type = "list"
 }
 
+variable "attach_to_load_balancer" {}
+
 variable "elb_internal" {}
 variable "elb_health_check_target" {}
 variable "elb_https_allow_cidrs" {}

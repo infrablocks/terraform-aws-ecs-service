@@ -60,6 +60,25 @@ describe 'ECS Service' do
     end
   end
 
+  context 'load balancer configuration' do
+    context 'when a load balancer name is not configured and service_has_elb is set to no' do
+      before(:all) do
+        reprovision(attach_to_load_balancer: 'no')
+      end
+
+      subject {
+        ecs_client.describe_services(
+            cluster: cluster_id,
+            services: [service_name]).services.first
+      }
+
+      it 'has a service with no load balancer configured' do
+        expect(subject.load_balancers).to(be_empty)
+      end
+
+    end
+  end
+
   context 'task definition' do
     subject { ecs_task_definition("#{service_name}-#{component}-#{deployment_identifier}") }
 

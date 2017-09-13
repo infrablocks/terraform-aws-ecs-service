@@ -91,6 +91,8 @@ module "ecs_service" {
   service_role = "${var.service_role}"
   service_volumes  ="${var.service_volumes}"
 
+  attach_to_load_balancer = "${var.attach_to_load_balancer}"
+
   ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
   ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
 }

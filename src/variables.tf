@@ -30,7 +30,12 @@ variable "service_deployment_maximum_percent" {
 variable "service_deployment_minimum_healthy_percent" {
   default = 50
 }
-variable "service_elb_name" {}
+variable "attach_to_load_balancer" {
+  default = "yes"
+}
+variable "service_elb_name" {
+  default = ""
+}
 variable "service_role" {
   default = ""
 }
