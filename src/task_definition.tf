@@ -12,7 +12,7 @@ data "template_file" "service" {
 }
 
 resource "aws_ecs_task_definition" "service" {
-  family = "${var.service_name}-${var.component}-${var.deployment_identifier}"
+  family = "${var.component}-${var.service_name}-${var.deployment_identifier}"
   container_definitions = "${data.template_file.service.rendered}"
 
   network_mode = "${var.service_task_network_mode}"

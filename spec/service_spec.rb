@@ -80,10 +80,10 @@ describe 'ECS Service' do
   end
 
   context 'task definition' do
-    subject { ecs_task_definition("#{service_name}-#{component}-#{deployment_identifier}") }
+    subject { ecs_task_definition("#{component}-#{service_name}-#{deployment_identifier}") }
 
     it { should exist }
-    its(:family) { should eq("#{service_name}-#{component}-#{deployment_identifier}") }
+    its(:family) { should eq("#{component}-#{service_name}-#{deployment_identifier}") }
 
     it 'uses the supplied network mode' do
       expect(subject.network_mode).to(eq(service_task_network_mode))
