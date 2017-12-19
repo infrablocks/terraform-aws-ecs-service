@@ -1,5 +1,5 @@
 module "base_network" {
-  source = "git@github.com:infrablocks/terraform-aws-base-networking.git//src"
+  source = "github.com/infrablocks/terraform-aws-base-networking.git?ref=0.1.16//src"
 
   vpc_cidr = "${var.vpc_cidr}"
   region = "${var.region}"

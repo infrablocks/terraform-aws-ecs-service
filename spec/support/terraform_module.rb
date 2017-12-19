@@ -17,15 +17,17 @@ module TerraformModule
       puts "Provisioning with deployment identifier: #{configuration.vars.deployment_identifier}"
       puts
 
-      RubyTerraform.clean(
-          directory: configuration.configuration_directory)
-      RubyTerraform.init(
-          source: configuration.source_directory,
-          path: configuration.configuration_directory)
+      FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
+      FileUtils.mkdir_p(File.dirname(configuration.configuration_directory))
+      FileUtils.cp_r(
+          configuration.source_directory,
+          configuration.configuration_directory)
+
       Dir.chdir(configuration.configuration_directory) do
+        RubyTerraform.init
         RubyTerraform.apply(
             state: configuration.state_file,
-            configuration_directory: configuration.configuration_directory,
+            directory: '.',
             vars: vars.to_h)
       end
 
@@ -38,17 +40,19 @@ module TerraformModule
         puts "Destroying with deployment identifier: #{configuration.vars.deployment_identifier}"
         puts
 
-        RubyTerraform.clean(
-            directory: configuration.configuration_directory)
-        RubyTerraform.init(
-            source: configuration.source_directory,
-            path: configuration.configuration_directory)
+        FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
+        FileUtils.mkdir_p(File.dirname(configuration.configuration_directory))
+        FileUtils.cp_r(
+            configuration.source_directory,
+            configuration.configuration_directory)
+
         Dir.chdir(configuration.configuration_directory) do
+          RubyTerraform.init
           RubyTerraform.destroy(
-              configuration_directory: configuration.configuration_directory,
               state: configuration.state_file,
-              force: true,
-              vars: vars.to_h)
+              directory: '.',
+              vars: vars.to_h,
+              force: true)
         end
 
         puts

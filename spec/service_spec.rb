@@ -63,7 +63,9 @@ describe 'ECS Service' do
   context 'load balancer configuration' do
     context 'when a load balancer name is not configured and service_has_elb is set to no' do
       before(:all) do
-        reprovision(attach_to_load_balancer: 'no')
+        reprovision(
+            service_name: 'service-without-lb',
+            attach_to_load_balancer: 'no')
       end
 
       subject {
