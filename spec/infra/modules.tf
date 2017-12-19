@@ -8,19 +8,13 @@ module "base_network" {
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
 
-  bastion_ami = "${var.bastion_ami}"
-  bastion_ssh_public_key_path = "${var.bastion_ssh_public_key_path}"
-  bastion_ssh_allow_cidrs = "${var.bastion_ssh_allow_cidrs}"
-
-  domain_name = "${var.domain_name}"
-  public_zone_id = "${var.public_zone_id}"
   private_zone_id = "${var.private_zone_id}"
 
   infrastructure_events_bucket = "${var.infrastructure_events_bucket}"
 }
 
 module "ecs_cluster" {
-  source = "git@github.com:infrablocks/terraform-aws-ecs-cluster.git//src"
+  source = "github.com/infrablocks/terraform-aws-ecs-cluster.git?ref=0.2.1//src"
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
@@ -40,7 +34,7 @@ module "ecs_cluster" {
 }
 
 module "ecs_load_balancer" {
-  source = "git@github.com:infrablocks/terraform-aws-ecs-load-balancer.git//src"
+  source = "github.com/infrablocks/terraform-aws-ecs-load-balancer.git?ref=0.1.9//src"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
