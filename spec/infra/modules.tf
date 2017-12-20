@@ -43,7 +43,7 @@ module "ecs_load_balancer" {
   vpc_id = "${module.base_network.vpc_id}"
   subnet_ids = "${split(",", module.base_network.public_subnet_ids)}"
 
-  service_name = "${var.service_name}"
+  service_name = "service"
   service_port = "${var.service_port}"
 
   service_certificate_arn = "${aws_iam_server_certificate.service.arn}"

@@ -3,22 +3,22 @@ require 'spec_helper'
 describe 'ECS Service' do
   include_context :terraform
 
-  let(:component) { vars.component }
-  let(:deployment_identifier) { vars.deployment_identifier }
+  let(:component) {vars.component}
+  let(:deployment_identifier) {vars.deployment_identifier}
 
-  let(:service_name) { vars.service_name }
-  let(:service_port) { vars.service_port }
+  let(:service_name) {vars.service_name}
+  let(:service_port) {vars.service_port}
 
-  let(:service_desired_count) { vars.service_desired_count }
+  let(:service_desired_count) {vars.service_desired_count}
 
-  let(:service_deployment_maximum_percent) { vars.service_deployment_maximum_percent }
-  let(:service_deployment_minimum_healthy_percent) { vars.service_deployment_minimum_healthy_percent }
+  let(:service_deployment_maximum_percent) {vars.service_deployment_maximum_percent}
+  let(:service_deployment_minimum_healthy_percent) {vars.service_deployment_minimum_healthy_percent}
 
-  let(:service_task_network_mode) { vars.service_task_network_mode }
+  let(:service_task_network_mode) {vars.service_task_network_mode}
 
-  let(:cluster_id) { output_with_name('cluster_id') }
-  let(:task_definition_arn) { output_with_name('task_definition_arn') }
-  let(:service_role_arn) { output_with_name('service_role_arn') }
+  let(:cluster_id) {output_with_name('cluster_id')}
+  let(:task_definition_arn) {output_with_name('task_definition_arn')}
+  let(:service_role_arn) {output_with_name('service_role_arn')}
 
   context 'service' do
     subject {
@@ -39,16 +39,6 @@ describe 'ECS Service' do
       expect(subject.desired_count).to(eq(service_desired_count))
     end
 
-    it 'has the correct load balancer' do
-      expect(subject.load_balancers.first.load_balancer_name).to(eq(output_with_name("load_balancer_name")))
-      expect(subject.load_balancers.first.container_name).to(eq(service_name))
-      expect(subject.load_balancers.first.container_port).to(eq(service_port))
-    end
-
-    it 'has the correct role' do
-      expect(subject.role_arn).to(eq(service_role_arn))
-    end
-
     it 'defines the deployment maximum percent' do
       expect(subject.deployment_configuration.maximum_percent)
           .to(eq(service_deployment_maximum_percent))
@@ -58,34 +48,65 @@ describe 'ECS Service' do
       expect(subject.deployment_configuration.minimum_healthy_percent)
           .to(eq(service_deployment_minimum_healthy_percent))
     end
-  end
 
-  context 'load balancer configuration' do
-    context 'when a load balancer name is not configured and service_has_elb is set to no' do
-      before(:all) do
-        reprovision(
-            service_name: 'service-without-lb',
-            attach_to_load_balancer: 'no')
+    context 'load balancer configuration' do
+      context 'when asked not to attach to a load balancer' do
+        let(:service_name) {'service-without-lb'}
+
+        before(:all) do
+          reprovision(
+              service_name: 'service-without-lb',
+              attach_to_load_balancer: 'no')
+        end
+
+        subject {
+          ecs_client.describe_services(
+              cluster: cluster_id,
+              services: [service_name]).services.first
+        }
+
+        it 'has a service with no load balancer configured' do
+          expect(subject.load_balancers).to(be_empty)
+        end
       end
 
-      subject {
-        ecs_client.describe_services(
-            cluster: cluster_id,
-            services: [service_name]).services.first
-      }
+      context 'when asked to attach to a load balancer' do
+        let(:service_name) {'service-with-lb'}
 
-      it 'has a service with no load balancer configured' do
-        expect(subject.load_balancers).to(be_empty)
+        before(:all) do
+          reprovision(
+              service_name: 'service-with-lb',
+              attach_to_load_balancer: 'yes')
+        end
+
+        subject {
+          ecs_client.describe_services(
+              cluster: cluster_id,
+              services: [service_name]).services.first
+        }
+
+        it 'has the correct load balancer' do
+          expect(subject.load_balancers.first.load_balancer_name).to(eq(output_with_name("load_balancer_name")))
+          expect(subject.load_balancers.first.container_name).to(eq(service_name))
+          expect(subject.load_balancers.first.container_port).to(eq(service_port))
+        end
+
+        it 'has the correct role' do
+          expect(subject.role_arn).to(eq(service_role_arn))
+        end
       end
-
     end
   end
 
   context 'task definition' do
-    subject { ecs_task_definition("#{component}-#{service_name}-#{deployment_identifier}") }
+    before(:all) do
+      reprovision()
+    end
 
-    it { should exist }
-    its(:family) { should eq("#{component}-#{service_name}-#{deployment_identifier}") }
+    subject {ecs_task_definition("#{component}-#{service_name}-#{deployment_identifier}")}
+
+    it {should exist}
+    its(:family) {should eq("#{component}-#{service_name}-#{deployment_identifier}")}
 
     it 'uses the supplied network mode' do
       expect(subject.network_mode).to(eq(service_task_network_mode))
@@ -104,7 +125,7 @@ describe 'ECS Service' do
         reprovision(service_role: '')
       end
 
-      its(:task_role_arn) { should be_nil }
+      its(:task_role_arn) {should be_nil}
     end
 
     context 'when a service role is specified' do
@@ -112,7 +133,7 @@ describe 'ECS Service' do
         reprovision(service_role: output_with_name('task_role_arn'))
       end
 
-      its(:task_role_arn) { should eq(output_with_name('task_role_arn')) }
+      its(:task_role_arn) {should eq(output_with_name('task_role_arn'))}
     end
   end
 end
