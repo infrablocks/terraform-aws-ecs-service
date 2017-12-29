@@ -8,13 +8,21 @@ module TerraformModule
       @configuration ||= Configuration.new
     end
 
-    def output_with_name(name)
-      RubyTerraform.output(name: name, state: configuration.state_file)
+    def output_for(role, name)
+      RubyTerraform.output(
+          name: name,
+          state: configuration.for(role).state_file)
     end
 
-    def provision(vars)
+    def provision_for(role, vars = nil)
+      provision(OpenStruct.new(
+          configuration.for(role)
+              .to_h.merge(vars: vars || configuration.for(role).vars)))
+    end
+
+    def provision(configuration)
       puts
-      puts "Provisioning with deployment identifier: #{configuration.vars.deployment_identifier}"
+      puts "Provisioning with deployment identifier: #{configuration.deployment_identifier}"
       puts
 
       FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
@@ -28,16 +36,23 @@ module TerraformModule
         RubyTerraform.apply(
             state: configuration.state_file,
             directory: '.',
-            vars: vars.to_h)
+            vars: configuration.vars.to_h,
+            auto_approve: true)
       end
 
       puts
     end
 
-    def destroy(vars)
+    def destroy_for(role, vars = nil)
+      destroy(OpenStruct.new(
+          configuration.for(role)
+              .to_h.merge(vars: vars || configuration.for(role).vars)))
+    end
+
+    def destroy(configuration)
       unless ENV['DEPLOYMENT_IDENTIFIER']
         puts
-        puts "Destroying with deployment identifier: #{configuration.vars.deployment_identifier}"
+        puts "Destroying with deployment identifier: #{configuration.deployment_identifier}"
         puts
 
         FileUtils.rm_rf(File.dirname(configuration.configuration_directory))
@@ -51,7 +66,7 @@ module TerraformModule
           RubyTerraform.destroy(
               state: configuration.state_file,
               directory: '.',
-              vars: vars.to_h,
+              vars: configuration.vars.to_h,
               force: true)
         end
 

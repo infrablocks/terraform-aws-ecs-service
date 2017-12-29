@@ -16,9 +16,9 @@ describe 'ECS Service' do
 
   let(:service_task_network_mode) {vars.service_task_network_mode}
 
-  let(:cluster_id) {output_with_name('cluster_id')}
-  let(:task_definition_arn) {output_with_name('task_definition_arn')}
-  let(:service_role_arn) {output_with_name('service_role_arn')}
+  let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
+  let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
+  let(:service_role_arn) {output_for(:prerequisites, 'service_role_arn')}
 
   context 'service' do
     subject {
@@ -86,9 +86,12 @@ describe 'ECS Service' do
         }
 
         it 'has the correct load balancer' do
-          expect(subject.load_balancers.first.load_balancer_name).to(eq(output_with_name("load_balancer_name")))
-          expect(subject.load_balancers.first.container_name).to(eq(service_name))
-          expect(subject.load_balancers.first.container_port).to(eq(service_port))
+          expect(subject.load_balancers.first.load_balancer_name)
+              .to(eq(output_for(:prerequisites, 'load_balancer_name')))
+          expect(subject.load_balancers.first.container_name)
+              .to(eq(service_name))
+          expect(subject.load_balancers.first.container_port)
+              .to(eq(service_port))
         end
 
         it 'has the correct role' do
@@ -100,7 +103,7 @@ describe 'ECS Service' do
 
   context 'task definition' do
     before(:all) do
-      reprovision()
+      reprovision
     end
 
     subject {ecs_task_definition("#{component}-#{service_name}-#{deployment_identifier}")}
@@ -130,10 +133,10 @@ describe 'ECS Service' do
 
     context 'when a service role is specified' do
       before(:all) do
-        reprovision(service_role: output_with_name('task_role_arn'))
+        reprovision(service_role: output_for(:prerequisites, 'task_role_arn'))
       end
 
-      its(:task_role_arn) {should eq(output_with_name('task_role_arn'))}
+      its(:task_role_arn) {should eq(output_for(:prerequisites, 'task_role_arn'))}
     end
   end
 end

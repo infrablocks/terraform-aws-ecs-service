@@ -1,8 +1,9 @@
 module "base_network" {
-  source = "github.com/infrablocks/terraform-aws-base-networking.git?ref=0.1.16//src"
+  source  = "infrablocks/base-networking/aws"
+  version = "0.1.24"
 
-  vpc_cidr = "${var.vpc_cidr}"
   region = "${var.region}"
+  vpc_cidr = "${var.vpc_cidr}"
   availability_zones = "${var.availability_zones}"
 
   component = "${var.component}"
@@ -14,7 +15,8 @@ module "base_network" {
 }
 
 module "ecs_cluster" {
-  source = "github.com/infrablocks/terraform-aws-ecs-cluster.git?ref=0.2.1//src"
+  source  = "infrablocks/ecs-cluster/aws"
+  version = "0.2.3"
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
@@ -34,7 +36,8 @@ module "ecs_cluster" {
 }
 
 module "ecs_load_balancer" {
-  source = "github.com/infrablocks/terraform-aws-ecs-load-balancer.git?ref=0.1.9//src"
+  source  = "infrablocks/ecs-load-balancer/aws"
+  version = "0.1.11"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
@@ -60,34 +63,47 @@ module "ecs_load_balancer" {
   include_public_dns_record = "yes"
 }
 
-module "ecs_service" {
-  source = "../../../src"
-
-  component = "${var.component}"
-  deployment_identifier = "${var.deployment_identifier}"
-
-  region = "${var.region}"
-  vpc_id = "${module.base_network.vpc_id}"
-
-  service_task_container_definitions = "${var.service_task_container_definitions}"
-  service_task_network_mode = "${var.service_task_network_mode}"
-
-  service_name = "${var.service_name}"
-  service_image = "${var.service_image}"
-  service_command = "${var.service_command}"
-  service_port = "${var.service_port}"
-
-  service_desired_count = "${var.service_desired_count}"
-  service_deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
-  service_deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
-
-  service_elb_name = "${module.ecs_load_balancer.name}"
-  service_role = "${var.service_role}"
-  service_volumes  ="${var.service_volumes}"
-
-  attach_to_load_balancer = "${var.attach_to_load_balancer}"
-
-  ecs_cluster_id = "${module.ecs_cluster.cluster_id}"
-  ecs_cluster_service_role_arn = "${module.ecs_cluster.service_role_arn}"
+resource "aws_iam_server_certificate" "service" {
+  name = "wildcard-certificate-${var.component}-${var.deployment_identifier}"
+  private_key = "${file(var.service_certificate_private_key)}"
+  certificate_body = "${file(var.service_certificate_body)}"
 }
 
+data "aws_iam_policy_document" "task_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      identifiers = ["ecs-tasks.amazonaws.com"]
+      type = "Service"
+    }
+
+    effect = "Allow"
+  }
+}
+
+resource "aws_iam_role" "task_role" {
+  name = "test_role"
+
+  assume_role_policy = "${data.aws_iam_policy_document.task_assume_role.json}"
+}
+
+data "aws_iam_policy_document" "task_role" {
+  statement {
+    sid = "1"
+
+    actions = [
+      "s3:ListAllMyBuckets",
+      "s3:GetBucketLocation",
+    ]
+
+    resources = [
+      "arn:aws:s3:::*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "task_role" {
+  role = "${aws_iam_role.task_role.id}"
+  policy = "${data.aws_iam_policy_document.task_role.json}"
+}

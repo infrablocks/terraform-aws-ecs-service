@@ -16,7 +16,7 @@ The ECS service consists of:
 * An ECS service to maintain a number of instances of the task
 * Log collection via the provided CloudWatch log group
 
-![Diagram of infrastructure managed by this module](/docs/architecture.png?raw=true)
+![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-ecs-service/master/docs/architecture.png)
 
 Usage
 -----
@@ -26,7 +26,8 @@ configuration:
 
 ```hcl-terraform
 module "ecs_cluster" {
-  source = "git@github.com:tobyclemson/terraform-aws-ecs-service.git//src"
+  source = "infrablocks/ecs-service/aws"
+  version = "0.1.10"
   
   region = "eu-west-2"
   vpc_id = "vpc-fb7dc365"
@@ -85,6 +86,7 @@ mechanism you like, the following modules may be of use:
 | ecs_cluster_service_role_arn               | The ARN of the IAM role to provide to ECS to manage the service     | -                  | yes      |
 
 TODO: Add `service_task_container_definitions` and `service_task_network_mode` above.
+
 
 ### Outputs
 
@@ -155,17 +157,30 @@ execute:
 ./go
 ```
 
-To provision the module test contents:
+To provision the module prerequisites:
 
 ```bash
-./go provision:aws[<deployment_identifier>]
+./go deployment:prerequisites:provision[<deployment_identifier>]
 ```
 
-To destroy the module test contents:
+To provision the module contents:
 
 ```bash
-./go destroy:aws[<deployment_identifier>]
+./go deployment:harness:provision[<deployment_identifier>]
 ```
+
+To destroy the module contents:
+
+```bash
+./go deployment:harness:destroy[<deployment_identifier>]
+```
+
+To destroy the module prerequisites:
+
+```bash
+./go deployment:prerequisites:destroy[<deployment_identifier>]
+```
+
 
 ### Common Tasks
 
@@ -189,12 +204,15 @@ openssl rsa -in key.pem -out ssl.key
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/tobyclemson/terraform-aws-ecs-cluster. 
-This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
+Bug reports and pull requests are welcome on GitHub at 
+https://github.com/tobyclemson/terraform-aws-ecs-service. 
+This project is intended to be a safe, welcoming space for collaboration, and 
+contributors are expected to adhere to 
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 License
 -------
 
-The library is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The library is available as open source under the terms of the 
+[MIT License](http://opensource.org/licenses/MIT).
