@@ -90,7 +90,7 @@ mechanism you like, the following modules may be of use:
 | service_task_network_mode                  | The network mode used for the containers in the task                         | bridge                    | yes                               |
 | service_desired_count                      | The desired number of tasks in the service                                   | 3                         | yes                               |
 | service_deployment_maximum_percent         | The maximum percentage of the desired count that can be running              | 200                       | yes                               |
-| service_deployment_minimum_healthy_percent | The minimum healthy percentage of the desired count to keep running          | 50                        | yes                                |
+| service_deployment_minimum_healthy_percent | The minimum healthy percentage of the desired count to keep running          | 50                        | yes                               |
 | attach_to_load_balancer                    | Whether or not this service should attach to a load balancer ("yes" or "no") | "yes"                     | yes                               |
 | service_elb_name                           | The name of the ELB to configure to point at the service containers          | -                         | if attach_to_load_balancer is yes |
 | service_role                               | The ARN of the service task role to use                                      | No task role              | yes                               |
