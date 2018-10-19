@@ -15,7 +15,8 @@ openssl aes-256-cbc \
     -in ./.circleci/gpg.private.enc -k "${ENCRYPTION_PASSPHRASE}" | gpg --import -
 set -e
 
-git crypt unlock
 git status
+
+git crypt unlock
 
 ./go release:tag
