@@ -16,6 +16,8 @@ describe 'ECS Service' do
 
   let(:service_task_network_mode) {vars.service_task_network_mode}
 
+  let(:scheduling_strategy) {vars.scheduling_strategy}
+
   let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
   let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
   let(:service_role_arn) {output_for(:prerequisites, 'service_role_arn')}
@@ -47,6 +49,11 @@ describe 'ECS Service' do
     it 'defines the deployment minimum healthy percent' do
       expect(subject.deployment_configuration.minimum_healthy_percent)
           .to(eq(service_deployment_minimum_healthy_percent))
+    end
+
+    it 'defines the deployment minimum healthy percent' do
+      expect(subject.scheduling_strategy)
+          .to(eq(scheduling_strategy))
     end
 
     context 'load balancer configuration' do

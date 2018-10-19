@@ -9,6 +9,8 @@ resource "aws_ecs_service" "service_with_lb" {
   deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
   deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
 
+  scheduling_strategy = "${var.scheduling_strategy}"
+
   load_balancer {
     elb_name = "${var.service_elb_name}"
     container_name = "${var.service_name}"
@@ -25,4 +27,6 @@ resource "aws_ecs_service" "service_without_lb" {
 
   deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
   deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
+
+  scheduling_strategy = "${var.scheduling_strategy}"
 }

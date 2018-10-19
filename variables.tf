@@ -67,6 +67,11 @@ variable "service_volumes" {
   default = []
 }
 
+variable "scheduling_strategy" {
+  description = "The scheduling strategy to use for this service (\"REPLICA\" or \"DAEMON\")."
+  default = "REPLICA"
+}
+
 variable "ecs_cluster_id" {
   description = "The ID of the ECS cluster in which to deploy the service."
 }

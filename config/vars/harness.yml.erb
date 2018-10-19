@@ -41,6 +41,8 @@ service_volume_1_name: "temporary"
 service_volume_1_host_path: "/some/path"
 service_volumes: '[{ name = "temporary" host_path = "/some/path" }]'
 
+scheduling_strategy: "REPLICA"
+
 elb_internal: false
 elb_health_check_target: "HTTP:80/"
 elb_https_allow_cidrs: '<%= @public_ip %>/32'
