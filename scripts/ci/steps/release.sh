@@ -16,5 +16,6 @@ openssl aes-256-cbc \
 set -e
 
 git crypt unlock
+git status
 
 ./go release:tag
