@@ -35,6 +35,7 @@ variable "service_command" {
 }
 variable "service_port" {
   description = "The port the containers will be listening on."
+  default = ""
 }
 
 variable "service_desired_count" {
