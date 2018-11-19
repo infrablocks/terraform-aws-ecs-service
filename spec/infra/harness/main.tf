@@ -33,6 +33,8 @@ module "ecs_service" {
 
   scheduling_strategy = "${var.scheduling_strategy}"
 
+  placement_constraints = "${var.placement_constraints}"
+
   attach_to_load_balancer = "${var.attach_to_load_balancer}"
 
   ecs_cluster_id = "${data.terraform_remote_state.prerequisites.cluster_id}"

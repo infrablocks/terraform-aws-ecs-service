@@ -73,6 +73,12 @@ variable "scheduling_strategy" {
   default = "REPLICA"
 }
 
+variable "placement_constraints" {
+  description = "A list of placement constraints for the service."
+  type = "list"
+  default = []
+}
+
 variable "ecs_cluster_id" {
   description = "The ID of the ECS cluster in which to deploy the service."
 }

@@ -18,6 +18,9 @@ describe 'ECS Service' do
 
   let(:scheduling_strategy) {vars.scheduling_strategy}
 
+  let(:placement_constraint_type) {vars.placement_constraint_type}
+  let(:placement_constraint_expression) {vars.placement_constraint_expression}
+
   let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
   let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
   let(:service_role_arn) {output_for(:prerequisites, 'service_role_arn')}
@@ -54,6 +57,14 @@ describe 'ECS Service' do
     it 'defines the deployment minimum healthy percent' do
       expect(subject.scheduling_strategy)
           .to(eq(scheduling_strategy))
+    end
+
+    it 'uses the supplied placement constraint' do
+      expect(subject.placement_constraints.length).to(eq(1))
+      expect(subject.placement_constraints.first.type)
+          .to(eq(placement_constraint_type))
+      expect(subject.placement_constraints.first.expression)
+          .to(eq(placement_constraint_expression))
     end
 
     context 'load balancer configuration' do

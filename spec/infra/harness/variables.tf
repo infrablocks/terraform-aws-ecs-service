@@ -23,4 +23,8 @@ variable "service_volumes" {
 
 variable "scheduling_strategy" {}
 
+variable "placement_constraints" {
+  type = "list"
+}
+
 variable "attach_to_load_balancer" {}
