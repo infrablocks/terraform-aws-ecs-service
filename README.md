@@ -197,11 +197,15 @@ To destroy the module prerequisites:
 
 ### Common Tasks
 
+#### Generating an SSH key pair
+
 To generate an SSH key pair:
 
 ```
 ssh-keygen -t rsa -b 4096 -C integration-test@example.com -N '' -f config/secrets/keys/bastion/ssh
 ```
+
+#### Generating a self-signed certificate
 
 To generate a self signed certificate:
 ```
@@ -212,6 +216,29 @@ To decrypt the resulting key:
 
 ```
 openssl rsa -in key.pem -out ssl.key
+```
+
+#### Managing CircleCI keys
+
+To encrypt a GPG key for use by CircleCI:
+
+```bash
+openssl aes-256-cbc \
+  -e \
+  -md sha1 \
+  -in ./config/secrets/ci/gpg.private \
+  -out ./.circleci/gpg.private.enc \
+  -k "<passphrase>"
+```
+
+To check decryption is working correctly:
+
+```bash
+openssl aes-256-cbc \
+  -d \
+  -md sha1 \
+  -in ./.circleci/gpg.private.enc \
+  -k "<passphrase>"
 ```
 
 Contributing
