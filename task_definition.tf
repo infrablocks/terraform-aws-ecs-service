@@ -1,7 +1,7 @@
 data "template_file" "service" {
   template = "${coalesce(var.service_task_container_definitions, file("${path.module}/container-definitions/service.json.tpl"))}"
 
-  vars {
+  vars = {
     name = "${var.service_name}"
     image = "${var.service_image}"
     command = "${jsonencode(var.service_command)}"
