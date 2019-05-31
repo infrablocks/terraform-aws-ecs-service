@@ -21,4 +21,3 @@ resource "aws_ecs_task_definition" "service" {
 
   volume = "${var.service_volumes}"
 }
-

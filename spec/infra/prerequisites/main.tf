@@ -16,12 +16,12 @@ module "base_network" {
 
 module "ecs_cluster" {
   source  = "infrablocks/ecs-cluster/aws"
-  version = "0.2.3"
+  version = "0.5.0"
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
-  private_subnet_ids = "${module.base_network.private_subnet_ids}"
-  private_network_cidr = "${var.private_network_cidr}"
+  subnet_ids = "${module.base_network.private_subnet_ids}"
+  allowed_cidrs = ["${var.private_network_cidr}"]
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
@@ -37,7 +37,7 @@ module "ecs_cluster" {
 
 module "ecs_load_balancer" {
   source  = "infrablocks/ecs-load-balancer/aws"
-  version = "0.1.11"
+  version = "0.4.0"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
@@ -61,6 +61,8 @@ module "ecs_load_balancer" {
 
   expose_to_public_internet = "yes"
   include_public_dns_record = "yes"
+  store_access_logs = "no"
+  access_logs_bucket = "not_used"
 }
 
 resource "aws_iam_server_certificate" "service" {
