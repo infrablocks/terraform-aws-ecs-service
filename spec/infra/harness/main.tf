@@ -13,7 +13,7 @@ module "ecs_service" {
   deployment_identifier = "${var.deployment_identifier}"
 
   region = "${var.region}"
-  vpc_id = "${data.terraform_remote_state.prerequisites.vpc_id}"
+  vpc_id = "${data.terraform_remote_state.prerequisites.outputs.vpc_id}"
 
   service_task_container_definitions = "${var.service_task_container_definitions}"
   service_task_network_mode = "${var.service_task_network_mode}"
@@ -27,7 +27,7 @@ module "ecs_service" {
   service_deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
   service_deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
 
-  service_elb_name = "${data.terraform_remote_state.prerequisites.load_balancer_name}"
+  service_elb_name = "${data.terraform_remote_state.prerequisites.outputs.load_balancer_name}"
   service_role = "${var.service_role}"
   service_volumes  ="${var.service_volumes}"
 
@@ -37,6 +37,6 @@ module "ecs_service" {
 
   attach_to_load_balancer = "${var.attach_to_load_balancer}"
 
-  ecs_cluster_id = "${data.terraform_remote_state.prerequisites.cluster_id}"
-  ecs_cluster_service_role_arn = "${data.terraform_remote_state.prerequisites.service_role_arn}"
+  ecs_cluster_id = "${data.terraform_remote_state.prerequisites.outputs.cluster_id}"
+  ecs_cluster_service_role_arn = "${data.terraform_remote_state.prerequisites.outputs.service_role_arn}"
 }

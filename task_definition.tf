@@ -19,5 +19,11 @@ resource "aws_ecs_task_definition" "service" {
 
   task_role_arn = "${var.service_role}"
 
-  volume = "${var.service_volumes}"
+  dynamic "volume" {
+    for_each = var.service_volumes
+    content {
+      name = volume.value.name
+      host_path = volume.value.host_path
+    }
+  }
 }

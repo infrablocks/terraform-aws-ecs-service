@@ -11,7 +11,13 @@ resource "aws_ecs_service" "service_with_lb" {
 
   scheduling_strategy = "${var.scheduling_strategy}"
 
-  placement_constraints = "${var.placement_constraints}"
+  dynamic "placement_constraints" {
+    for_each = var.placement_constraints
+    content {
+      type = placement_constraints.value.type
+      expression = placement_constraints.value.expression
+    }
+  }
 
   load_balancer {
     elb_name = "${var.service_elb_name}"
@@ -32,5 +38,11 @@ resource "aws_ecs_service" "service_without_lb" {
 
   scheduling_strategy = "${var.scheduling_strategy}"
 
-  placement_constraints = "${var.placement_constraints}"
+  dynamic "placement_constraints" {
+    for_each = var.placement_constraints
+    content {
+      type = placement_constraints.value.type
+      expression = placement_constraints.value.expression
+    }
+  }
 }

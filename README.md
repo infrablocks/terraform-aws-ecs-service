@@ -18,6 +18,12 @@ The ECS service consists of:
 
 ![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-ecs-service/master/docs/architecture.png)
 
+### Terraform versions
+
+Terraform 0.12. Pin module version to `~> 1.0`. Submit pull-requests to `master` branch.
+
+Terraform 0.11. Pin module version to `~> 0.5.0`. Submit pull-requests to `terraform011` branch.
+
 Usage
 -----
 

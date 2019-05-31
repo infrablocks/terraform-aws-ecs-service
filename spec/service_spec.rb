@@ -18,8 +18,8 @@ describe 'ECS Service' do
 
   let(:scheduling_strategy) {vars.scheduling_strategy}
 
-  let(:placement_constraint_type) {vars.placement_constraint_type}
-  let(:placement_constraint_expression) {vars.placement_constraint_expression}
+  let(:placement_constraint_type) {spec_vars.placement_constraint_type}
+  let(:placement_constraint_expression) {spec_vars.placement_constraint_expression}
 
   let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
   let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
@@ -137,8 +137,8 @@ describe 'ECS Service' do
       expect(subject.volumes.size).to(eq(1))
 
       volume = subject.volumes[0]
-      expect(volume.name).to(eq(vars.service_volume_1_name))
-      expect(volume.host.source_path).to(eq(vars.service_volume_1_host_path))
+      expect(volume.name).to(eq(spec_vars.service_volume_1_name))
+      expect(volume.host.source_path).to(eq(spec_vars.service_volume_1_host_path))
     end
 
     context 'when no service role is specified' do

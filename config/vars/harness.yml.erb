@@ -18,12 +18,8 @@ service_role: ''
 
 attach_to_load_balancer: 'no'
 
-service_volume_1_name: "temporary"
-service_volume_1_host_path: "/some/path"
 service_volumes: '[{ name = "temporary", host_path = "/some/path" }]'
 
 scheduling_strategy: "REPLICA"
 
-placement_constraint_type: "memberOf"
-placement_constraint_expression: "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]"
 placement_constraints: '[{type = "memberOf", expression="attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]" }]'
