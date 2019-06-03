@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "task_assume_role" {
 }
 
 resource "aws_iam_role" "task_role" {
-  name = "test_role"
+  name = "task-role-${var.deployment_identifier}"
 
   assume_role_policy = "${data.aws_iam_policy_document.task_assume_role.json}"
 }
@@ -105,7 +105,7 @@ data "aws_iam_policy_document" "task_role" {
   }
 }
 
-resource "aws_iam_role_policy" "task_role" {
+resource "aws_iam_role_policy" "task_role_policy" {
   role = "${aws_iam_role.task_role.id}"
   policy = "${data.aws_iam_policy_document.task_role.json}"
 }
