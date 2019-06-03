@@ -23,6 +23,7 @@ variable "service_port" {}
 variable "service_certificate_body" {}
 variable "service_certificate_private_key" {}
 
+variable "alb_health_check_path" {}
 variable "elb_health_check_target" {}
 variable "elb_https_allow_cidrs" {}
 

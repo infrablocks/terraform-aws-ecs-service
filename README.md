@@ -82,28 +82,29 @@ mechanism you like, the following modules may be of use:
 
 ### Inputs
 
-| Name                                       | Description                                                                  | Default                   | Required                          |
-|--------------------------------------------|------------------------------------------------------------------------------|:-------------------------:|:---------------------------------:|
-| region                                     | The region into which to deploy the service                                  | -                         | yes                               |
-| vpc_id                                     | The ID of the VPC into which to deploy the service                           | -                         | yes                               |
-| component                                  | The component this service will contain                                      | -                         | yes                               |
-| deployment_identifier                      | An identifier for this instantiation                                         | -                         | yes                               |
-| service_task_container_definitions         | A template for the container definitions in the task                         | see container-definitions | no                                |
-| service_name                               | The name of the service being created                                        | -                         | yes                               |
-| service_image                              | The docker image (including version) to deploy                               | -                         | no                                |
-| service_command                            | The command to run to start the container                                    | []                        | no                                |
-| service_port                               | The port the containers will be listening on                                 | -                         | yes                               |
-| service_task_network_mode                  | The network mode used for the containers in the task                         | bridge                    | yes                               |
-| service_desired_count                      | The desired number of tasks in the service                                   | 3                         | yes                               |
-| service_deployment_maximum_percent         | The maximum percentage of the desired count that can be running              | 200                       | yes                               |
-| service_deployment_minimum_healthy_percent | The minimum healthy percentage of the desired count to keep running          | 50                        | yes                               |
-| scheduling_strategy                        | The scheduling strategy to use for the service ("REPLICA" or "DAEMON")       | "REPLICA"                 | yes                               |
-| attach_to_load_balancer                    | Whether or not this service should attach to a load balancer ("yes" or "no") | "yes"                     | yes                               |
-| service_elb_name                           | The name of the ELB to configure to point at the service containers          | -                         | if attach_to_load_balancer is yes |
-| service_role                               | The ARN of the service task role to use                                      | No task role              | yes                               |
-| service_volumes                            | A list of volumes to make available to the containers in the service         | []                        | yes                               |    
-| ecs_cluster_id                             | The ID of the ECS cluster in which to deploy the service                     | -                         | yes                               |
-| ecs_cluster_service_role_arn               | The ARN of the IAM role to provide to ECS to manage the service              | -                         | yes                               |
+| Name                                       | Description                                                                  | Default                   | Required                                                                |
+|--------------------------------------------|------------------------------------------------------------------------------|:-------------------------:|:-----------------------------------------------------------------------:|
+| region                                     | The region into which to deploy the service                                  | -                         | yes                                                                     |
+| vpc_id                                     | The ID of the VPC into which to deploy the service                           | -                         | yes                                                                     |
+| component                                  | The component this service will contain                                      | -                         | yes                                                                     |
+| deployment_identifier                      | An identifier for this instantiation                                         | -                         | yes                                                                     |
+| service_task_container_definitions         | A template for the container definitions in the task                         | see container-definitions | no                                                                      |
+| service_name                               | The name of the service being created                                        | -                         | yes                                                                     |
+| service_image                              | The docker image (including version) to deploy                               | -                         | no                                                                      |
+| service_command                            | The command to run to start the container                                    | []                        | no                                                                      |
+| service_port                               | The port the containers will be listening on                                 | -                         | yes                                                                     |
+| service_task_network_mode                  | The network mode used for the containers in the task                         | bridge                    | yes                                                                     |
+| service_desired_count                      | The desired number of tasks in the service                                   | 3                         | yes                                                                     |
+| service_deployment_maximum_percent         | The maximum percentage of the desired count that can be running              | 200                       | yes                                                                     |
+| service_deployment_minimum_healthy_percent | The minimum healthy percentage of the desired count to keep running          | 50                        | yes                                                                     |
+| scheduling_strategy                        | The scheduling strategy to use for the service ("REPLICA" or "DAEMON")       | "REPLICA"                 | yes                                                                     |
+| attach_to_load_balancer                    | Whether or not this service should attach to a load balancer ("yes" or "no") | "yes"                     | yes                                                                     |
+| service_elb_name                           | The name of the ELB to configure to point at the service containers          | -                         | if attach_to_load_balancer is yes and target_group_arn is not specified |
+| target_group_arn                           | The ARN of the ALB's target group to point at the service containers         | -                         | if attach_to_load_balancer is yes and service_elb_name is not specified |
+| service_role                               | The ARN of the service task role to use                                      | No task role              | yes                                                                     |
+| service_volumes                            | A list of volumes to make available to the containers in the service         | []                        | yes                                                                     |
+| ecs_cluster_id                             | The ID of the ECS cluster in which to deploy the service                     | -                         | yes                                                                     |
+| ecs_cluster_service_role_arn               | The ARN of the IAM role to provide to ECS to manage the service              | -                         | yes                                                                     |
 
 
 ### Outputs

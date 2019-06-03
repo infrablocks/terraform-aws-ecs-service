@@ -18,6 +18,10 @@ output "load_balancer_name" {
   value = "${module.ecs_load_balancer.name}"
 }
 
+output "target_group_arn" {
+  value = "${aws_lb_target_group.target_group.arn}"
+}
+
 output "cluster_id" {
   value = "${module.ecs_cluster.cluster_id}"
 }
