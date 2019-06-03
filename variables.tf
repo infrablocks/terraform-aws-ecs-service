@@ -58,6 +58,10 @@ variable "service_elb_name" {
   description = "The name of the ELB to configure to point at the service containers."
   default = ""
 }
+variable "target_group_arn" {
+  description = "The arn of the target group to point at the service containers."
+  default = ""
+}
 variable "service_role" {
   description = "The ARN of the service task role to use."
   default = ""

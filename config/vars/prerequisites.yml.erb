@@ -24,6 +24,7 @@ service_port: 80
 service_certificate_body: '<%= @project_directory %>/config/secrets/certificates/cert.pem'
 service_certificate_private_key: '<%= @project_directory %>/config/secrets/certificates/ssl.key'
 
+alb_health_check_path: "/"
 elb_health_check_target: "HTTP:80/"
 elb_https_allow_cidrs: '<%= @public_ip %>/32'
 

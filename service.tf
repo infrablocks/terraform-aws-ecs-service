@@ -15,6 +15,7 @@ resource "aws_ecs_service" "service_with_lb" {
 
   load_balancer {
     elb_name = "${var.service_elb_name}"
+    target_group_arn = "${var.target_group_arn}"
     container_name = "${var.service_name}"
     container_port = "${var.service_port}"
   }

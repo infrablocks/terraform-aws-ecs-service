@@ -24,6 +24,8 @@ describe 'ECS Service' do
   let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
   let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
   let(:service_role_arn) {output_for(:prerequisites, 'service_role_arn')}
+  let(:load_balancer_name) {output_for(:prerequisites, 'load_balancer_name')}
+  let(:target_group_arn) {output_for(:prerequisites, 'target_group_arn')}
 
   context 'service' do
     subject {
@@ -88,13 +90,14 @@ describe 'ECS Service' do
         end
       end
 
-      context 'when asked to attach to a load balancer' do
-        let(:service_name) {'service-with-lb'}
+      context 'when asked to attach to a classic load balancer' do
+        let(:service_name) {'service-with-elb'}
 
         before(:all) do
           reprovision(
-              service_name: 'service-with-lb',
-              attach_to_load_balancer: 'yes')
+              service_name: 'service-with-elb',
+              attach_to_load_balancer: 'yes',
+              service_elb_name: output_for(:prerequisites, 'load_balancer_name'))
         end
 
         subject {
@@ -106,6 +109,40 @@ describe 'ECS Service' do
         it 'has the correct load balancer' do
           expect(subject.load_balancers.first.load_balancer_name)
               .to(eq(output_for(:prerequisites, 'load_balancer_name')))
+          expect(subject.load_balancers.first.target_group_arn)
+              .to(be_nil)
+          expect(subject.load_balancers.first.container_name)
+              .to(eq(service_name))
+          expect(subject.load_balancers.first.container_port)
+              .to(eq(service_port))
+        end
+
+        it 'has the correct role' do
+          expect(subject.role_arn).to(eq(service_role_arn))
+        end
+      end
+
+      context 'when asked to attach to an application load balancer' do
+        let(:service_name) {'service-with-alb'}
+
+        before(:all) do
+          reprovision(
+              service_name: 'service-with-alb',
+              attach_to_load_balancer: 'yes',
+              target_group_arn: output_for(:prerequisites, 'target_group_arn'))
+        end
+
+        subject {
+          ecs_client.describe_services(
+              cluster: cluster_id,
+              services: [service_name]).services.first
+        }
+
+        it 'has the correct load balancer' do
+          expect(subject.load_balancers.first.load_balancer_name)
+              .to(be_nil)
+          expect(subject.load_balancers.first.target_group_arn)
+              .to(eq(output_for(:prerequisites, 'target_group_arn')))
           expect(subject.load_balancers.first.container_name)
               .to(eq(service_name))
           expect(subject.load_balancers.first.container_port)

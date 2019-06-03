@@ -28,3 +28,5 @@ variable "placement_constraints" {
 }
 
 variable "attach_to_load_balancer" {}
+variable "service_elb_name" {}
+variable "target_group_arn" {}

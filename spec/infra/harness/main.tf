@@ -27,7 +27,6 @@ module "ecs_service" {
   service_deployment_maximum_percent = "${var.service_deployment_maximum_percent}"
   service_deployment_minimum_healthy_percent = "${var.service_deployment_minimum_healthy_percent}"
 
-  service_elb_name = "${data.terraform_remote_state.prerequisites.load_balancer_name}"
   service_role = "${var.service_role}"
   service_volumes  ="${var.service_volumes}"
 
@@ -36,6 +35,8 @@ module "ecs_service" {
   placement_constraints = "${var.placement_constraints}"
 
   attach_to_load_balancer = "${var.attach_to_load_balancer}"
+  service_elb_name = "${var.service_elb_name}"
+  target_group_arn = "${var.target_group_arn}"
 
   ecs_cluster_id = "${data.terraform_remote_state.prerequisites.cluster_id}"
   ecs_cluster_service_role_arn = "${data.terraform_remote_state.prerequisites.service_role_arn}"
