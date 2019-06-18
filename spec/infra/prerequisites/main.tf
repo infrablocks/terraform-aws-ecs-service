@@ -16,7 +16,7 @@ module "base_network" {
 
 module "ecs_cluster" {
   source  = "infrablocks/ecs-cluster/aws"
-  version = "1.0.0"
+  version = "1.1.0"
 
   region = "${var.region}"
   vpc_id = "${module.base_network.vpc_id}"
