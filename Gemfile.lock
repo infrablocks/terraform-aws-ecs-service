@@ -967,7 +967,7 @@ GEM
       sexp_processor (~> 4.6)
     ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.3)
+    rubyzip (2.0.0)
     semantic (1.6.1)
     sexp_processor (4.13.0)
     shikashi (0.6.0)
