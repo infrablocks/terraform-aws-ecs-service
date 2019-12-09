@@ -18,12 +18,6 @@ The ECS service consists of:
 
 ![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-ecs-service/master/docs/architecture.png)
 
-### Terraform versions
-
-Terraform 0.12. Pin module version to `~> 1.0`. Submit pull-requests to `master` branch.
-
-Terraform 0.11. Pin module version to `~> 0.5.0`. Submit pull-requests to `terraform011` branch.
-
 Usage
 -----
 
@@ -31,11 +25,10 @@ To use the module, include something like the following in your terraform
 configuration:
 
 ```hcl-terraform
-module "ecs_cluster" {
+module "ecs_service" {
   source = "infrablocks/ecs-service/aws"
-  version = "0.1.10"
+  version = "2.0.0"
   
-  region = "eu-west-2"
   vpc_id = "vpc-fb7dc365"
   
   component = "important-component"
