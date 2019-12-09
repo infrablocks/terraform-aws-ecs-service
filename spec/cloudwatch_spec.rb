@@ -8,8 +8,14 @@ describe 'CloudWatch' do
   let(:service_name) { vars.service_name }
 
   let(:log_group) {
-    cloudwatch_logs_client.describe_log_groups(
-        {log_group_name_prefix: "/#{component}/#{deployment_identifier}/ecs-service/#{service_name}"}).log_groups.first }
+    log_group_name_prefix =
+        "/#{component}/#{deployment_identifier}/ecs-service/#{service_name}"
+    cloudwatch_logs_client
+        .describe_log_groups(
+            {log_group_name_prefix: log_group_name_prefix})
+        .log_groups
+        .first
+  }
 
   context 'logging' do
     it 'creates log group' do
@@ -19,7 +25,9 @@ describe 'CloudWatch' do
 
   context 'outputs' do
     it 'outputs the log group name' do
-      expect("/#{component}/#{deployment_identifier}/ecs-service/#{service_name}").to(eq(log_group.log_group_name))
+      expect(
+          "/#{component}/#{deployment_identifier}/ecs-service/#{service_name}")
+          .to(eq(log_group.log_group_name))
     end
   end
 end

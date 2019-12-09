@@ -6,7 +6,7 @@ variable "deployment_identifier" {}
 variable "service_name" {}
 variable "service_image" {}
 variable "service_command" {
-  type = "list"
+  type = list(string)
 }
 variable "service_task_container_definitions" {}
 variable "service_task_network_mode" {}
@@ -18,13 +18,13 @@ variable "service_deployment_minimum_healthy_percent" {}
 
 variable "service_role" {}
 variable "service_volumes" {
-  type = "list"
+  type = list(map(string))
 }
 
 variable "scheduling_strategy" {}
 
 variable "placement_constraints" {
-  type = "list"
+  type = list(map(string))
 }
 
 variable "attach_to_load_balancer" {}

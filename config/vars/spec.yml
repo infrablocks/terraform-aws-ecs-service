@@ -1,5 +1,0 @@
-service_volume_1_name: "temporary"
-service_volume_1_host_path: "/some/path"
-
-placement_constraint_type: "memberOf"
-placement_constraint_expression: "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]"

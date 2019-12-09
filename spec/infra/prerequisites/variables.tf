@@ -1,6 +1,8 @@
 variable "region" {}
 variable "vpc_cidr" {}
-variable "availability_zones" {}
+variable "availability_zones" {
+  type = list(string)
+}
 variable "private_network_cidr" {}
 
 variable "component" {}
@@ -25,6 +27,6 @@ variable "service_certificate_private_key" {}
 
 variable "alb_health_check_path" {}
 variable "elb_health_check_target" {}
-variable "elb_https_allow_cidrs" {}
-
-variable "infrastructure_events_bucket" {}
+variable "elb_https_allow_cidrs" {
+  type = list(string)
+}

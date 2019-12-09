@@ -11,15 +11,23 @@ describe 'ECS Service' do
 
   let(:service_desired_count) {vars.service_desired_count}
 
-  let(:service_deployment_maximum_percent) {vars.service_deployment_maximum_percent}
-  let(:service_deployment_minimum_healthy_percent) {vars.service_deployment_minimum_healthy_percent}
+  let(:service_deployment_maximum_percent) {
+    vars.service_deployment_maximum_percent
+  }
+  let(:service_deployment_minimum_healthy_percent) {
+    vars.service_deployment_minimum_healthy_percent
+  }
 
   let(:service_task_network_mode) {vars.service_task_network_mode}
 
   let(:scheduling_strategy) {vars.scheduling_strategy}
 
-  let(:placement_constraint_type) {spec_vars.placement_constraint_type}
-  let(:placement_constraint_expression) {spec_vars.placement_constraint_expression}
+  let(:placement_constraint_type) {
+    configuration.for(:harness).placement_constraint_type
+  }
+  let(:placement_constraint_expression) {
+    configuration.for(:harness).placement_constraint_expression
+  }
 
   let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
   let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
@@ -97,7 +105,8 @@ describe 'ECS Service' do
           reprovision(
               service_name: 'service-with-elb',
               attach_to_load_balancer: 'yes',
-              service_elb_name: output_for(:prerequisites, 'load_balancer_name'))
+              service_elb_name:
+                  output_for(:prerequisites, 'load_balancer_name'))
         end
 
         subject {
@@ -161,10 +170,15 @@ describe 'ECS Service' do
       reprovision
     end
 
-    subject {ecs_task_definition("#{component}-#{service_name}-#{deployment_identifier}")}
+    subject {
+      ecs_task_definition(
+          "#{component}-#{service_name}-#{deployment_identifier}")
+    }
 
     it {should exist}
-    its(:family) {should eq("#{component}-#{service_name}-#{deployment_identifier}")}
+    its(:family) {
+      should eq("#{component}-#{service_name}-#{deployment_identifier}")
+    }
 
     it 'uses the supplied network mode' do
       expect(subject.network_mode).to(eq(service_task_network_mode))
@@ -174,13 +188,15 @@ describe 'ECS Service' do
       expect(subject.volumes.size).to(eq(1))
 
       volume = subject.volumes[0]
-      expect(volume.name).to(eq(spec_vars.service_volume_1_name))
-      expect(volume.host.source_path).to(eq(spec_vars.service_volume_1_host_path))
+      expect(volume.name)
+          .to(eq(configuration.for(:harness).service_volume_1_name))
+      expect(volume.host.source_path)
+          .to(eq(configuration.for(:harness).service_volume_1_host_path))
     end
 
     context 'when no service role is specified' do
       before(:all) do
-        reprovision(service_role: '')
+        reprovision(service_role: '""')
       end
 
       its(:task_role_arn) {should be_nil}
@@ -191,7 +207,9 @@ describe 'ECS Service' do
         reprovision(service_role: output_for(:prerequisites, 'task_role_arn'))
       end
 
-      its(:task_role_arn) {should eq(output_for(:prerequisites, 'task_role_arn'))}
+      its(:task_role_arn) {
+        should eq(output_for(:prerequisites, 'task_role_arn'))
+      }
     end
   end
 end

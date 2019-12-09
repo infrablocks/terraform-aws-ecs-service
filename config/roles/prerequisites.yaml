@@ -1,0 +1,33 @@
+---
+source_directory: "spec/infra/prerequisites"
+state_file: "%{hiera('project_directory')}/state/prerequisites.tfstate"
+vars:
+  region: "%{hiera('region')}"
+
+  vpc_cidr: "%{hiera('vpc_cidr')}"
+  availability_zones: "%{hiera('availability_zones')}"
+  private_network_cidr: "%{hiera('private_network_cidr')}"
+
+  component: "%{hiera('component')}"
+  deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  domain_name: "%{hiera('domain_name')}"
+  public_zone_id: "%{hiera('public_zone_id')}"
+  private_zone_id: "%{hiera('private_zone_id')}"
+
+  cluster_name: "%{hiera('cluster_name')}"
+  cluster_instance_ssh_public_key_path: "%{hiera('cluster_instance_ssh_public_key_path')}"
+  cluster_instance_type: "%{hiera('cluster_instance_type')}"
+
+  cluster_minimum_size: "%{hiera('cluster_minimum_size')}"
+  cluster_maximum_size: "%{hiera('cluster_maximum_size')}"
+  cluster_desired_capacity: "%{hiera('cluster_desired_capacity')}"
+
+  service_port: "%{hiera('service_port')}"
+
+  service_certificate_body: "%{hiera('service_certificate_body')}"
+  service_certificate_private_key: "%{hiera('service_certificate_private_key')}"
+
+  alb_health_check_path: "%{hiera('alb_health_check_path')}"
+  elb_health_check_target: "%{hiera('elb_health_check_target')}"
+  elb_https_allow_cidrs: "%{hiera('elb_https_allow_cidrs')}"
