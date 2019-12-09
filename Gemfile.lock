@@ -907,7 +907,7 @@ GEM
       term-ansicolor
       thor
     colored2 (3.1.2)
-    concurrent-ruby (1.1.3)
+    concurrent-ruby (1.1.5)
     confidante (0.12.0.pre.1)
       activesupport (>= 5.2)
       hiera (~> 3.3, >= 3.3.1)
@@ -929,7 +929,7 @@ GEM
     lino (1.1.0)
       hamster (~> 3.0)
       open4 (~> 1.3)
-    minitar (0.8)
+    minitar (0.9)
     minitest (5.13.0)
     open4 (1.3.4)
     partialruby (0.3.0)
@@ -967,7 +967,7 @@ GEM
       sexp_processor (~> 4.6)
     ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.3)
+    rubyzip (2.0.0)
     semantic (1.6.1)
     sexp_processor (4.13.0)
     shikashi (0.6.0)
