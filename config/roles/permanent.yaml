@@ -1,0 +1,10 @@
+---
+source_directory: "spec/infra/permanent"
+state_file: "%{hiera('project_directory')}/state/permanent.tfstate"
+vars:
+  region: "%{hiera('region')}"
+
+  component: "%{hiera('component')}"
+
+  service_certificate_body: "%{hiera('service_certificate_body')}"
+  service_certificate_private_key: "%{hiera('service_certificate_private_key')}"

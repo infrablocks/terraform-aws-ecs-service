@@ -25,6 +25,7 @@ RSpec.configure do |config|
   config.include_context :terraform
 
   config.before(:suite) do
+    TerraformModule.provision_for(:permanent)
     TerraformModule.provision_for(:prerequisites)
     TerraformModule.provision_for(:harness)
   end

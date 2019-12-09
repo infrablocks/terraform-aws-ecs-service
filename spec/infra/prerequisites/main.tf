@@ -1,3 +1,11 @@
+data "terraform_remote_state" "permanent" {
+  backend = "local"
+
+  config = {
+    path = "${path.module}/../../../../state/permanent.tfstate"
+  }
+}
+
 module "base_network" {
   source  = "infrablocks/base-networking/aws"
   version = "2.0.0"
@@ -47,7 +55,7 @@ module "ecs_load_balancer" {
   service_name = "service"
   service_port = var.service_port
 
-  service_certificate_arn = aws_iam_server_certificate.service.arn
+  service_certificate_arn = data.terraform_remote_state.permanent.outputs.certificate_arn
 
   domain_name = var.domain_name
   public_zone_id = var.public_zone_id
@@ -61,12 +69,6 @@ module "ecs_load_balancer" {
   include_public_dns_record = "yes"
   store_access_logs = "no"
   access_logs_bucket = "not_used"
-}
-
-resource "aws_iam_server_certificate" "service" {
-  name = "wildcard-certificate-${var.component}-${var.deployment_identifier}"
-  private_key = file(var.service_certificate_private_key)
-  certificate_body = file(var.service_certificate_body)
 }
 
 data "aws_iam_policy_document" "task_assume_role" {
