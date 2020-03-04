@@ -84,7 +84,7 @@ variable "target_container_name" {
 }
 variable "target_port" {
   description = "The port to which the load balancer should route traffic. Defaults to the service_port."
-  type = number
+  type = string
   default = ""
 }
 variable "service_role" {
