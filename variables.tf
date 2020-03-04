@@ -77,6 +77,16 @@ variable "target_group_arn" {
   type = string
   default = ""
 }
+variable "target_container_name" {
+  description = "The name of the container to which the load balancer should route traffic. Defaults to the service_name."
+  type = string
+  default = ""
+}
+variable "target_port" {
+  description = "The port to which the load balancer should route traffic. Defaults to the service_port."
+  type = number
+  default = ""
+}
 variable "service_role" {
   description = "The ARN of the service task role to use."
   type = string
