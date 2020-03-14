@@ -196,7 +196,7 @@ describe 'ECS Service' do
 
     context 'when no service role is specified' do
       before(:all) do
-        reprovision(service_role: ' ')
+        reprovision(service_role: '')
       end
 
       its(:task_role_arn) { should be_nil }
