@@ -3,24 +3,24 @@ require 'spec_helper'
 describe 'ECS Service' do
   include_context :terraform
 
-  let(:component) {vars.component}
-  let(:deployment_identifier) {vars.deployment_identifier}
+  let(:component) { vars.component }
+  let(:deployment_identifier) { vars.deployment_identifier }
 
-  let(:service_name) {vars.service_name}
-  let(:service_port) {vars.service_port}
+  let(:service_name) { vars.service_name }
+  let(:service_port) { vars.service_port.to_i  }
 
-  let(:service_desired_count) {vars.service_desired_count}
+  let(:service_desired_count) { vars.service_desired_count.to_i }
 
   let(:service_deployment_maximum_percent) {
-    vars.service_deployment_maximum_percent
+    vars.service_deployment_maximum_percent.to_i
   }
   let(:service_deployment_minimum_healthy_percent) {
-    vars.service_deployment_minimum_healthy_percent
+    vars.service_deployment_minimum_healthy_percent.to_i
   }
 
-  let(:service_task_network_mode) {vars.service_task_network_mode}
+  let(:service_task_network_mode) { vars.service_task_network_mode }
 
-  let(:scheduling_strategy) {vars.scheduling_strategy}
+  let(:scheduling_strategy) { vars.scheduling_strategy }
 
   let(:placement_constraint_type) {
     configuration.for(:harness).placement_constraint_type
@@ -29,11 +29,11 @@ describe 'ECS Service' do
     configuration.for(:harness).placement_constraint_expression
   }
 
-  let(:cluster_id) {output_for(:prerequisites, 'cluster_id')}
-  let(:task_definition_arn) {output_for(:harness, 'task_definition_arn')}
-  let(:service_role_arn) {output_for(:prerequisites, 'service_role_arn')}
-  let(:load_balancer_name) {output_for(:prerequisites, 'load_balancer_name')}
-  let(:target_group_arn) {output_for(:prerequisites, 'target_group_arn')}
+  let(:cluster_id) { output_for(:prerequisites, 'cluster_id') }
+  let(:task_definition_arn) { output_for(:harness, 'task_definition_arn') }
+  let(:service_role_arn) { output_for(:prerequisites, 'service_role_arn') }
+  let(:load_balancer_name) { output_for(:prerequisites, 'load_balancer_name') }
+  let(:target_group_arn) { output_for(:prerequisites, 'target_group_arn') }
 
   context 'service' do
     subject {
@@ -79,7 +79,7 @@ describe 'ECS Service' do
 
     context 'load balancer configuration' do
       context 'when asked not to attach to a load balancer' do
-        let(:service_name) {'service-without-lb'}
+        let(:service_name) { 'service-without-lb' }
 
         before(:all) do
           reprovision(
@@ -99,7 +99,7 @@ describe 'ECS Service' do
       end
 
       context 'when asked to attach to a classic load balancer' do
-        let(:service_name) {'service-with-elb'}
+        let(:service_name) { 'service-with-elb' }
 
         before(:all) do
           reprovision(
@@ -132,7 +132,7 @@ describe 'ECS Service' do
       end
 
       context 'when asked to attach to an application load balancer' do
-        let(:service_name) {'service-with-alb'}
+        let(:service_name) { 'service-with-alb' }
 
         before(:all) do
           reprovision(
@@ -175,7 +175,7 @@ describe 'ECS Service' do
           "#{component}-#{service_name}-#{deployment_identifier}")
     }
 
-    it {should exist}
+    it { should exist }
     its(:family) {
       should eq("#{component}-#{service_name}-#{deployment_identifier}")
     }
@@ -196,10 +196,10 @@ describe 'ECS Service' do
 
     context 'when no service role is specified' do
       before(:all) do
-        reprovision(service_role: '""')
+        reprovision(service_role: ' ')
       end
 
-      its(:task_role_arn) {should be_nil}
+      its(:task_role_arn) { should be_nil }
     end
 
     context 'when a service role is specified' do
