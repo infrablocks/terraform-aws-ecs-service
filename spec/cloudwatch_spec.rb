@@ -43,9 +43,5 @@ describe 'CloudWatch' do
     it 'does not create the log group' do
       expect(log_group).to be_nil
     end
-
-    it 'has an empty output' do
-      expect(output_for(:harness, 'log_group')).to(eq(''))
-    end
   end
 end
