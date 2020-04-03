@@ -17,17 +17,35 @@ describe 'CloudWatch' do
         .first
   }
 
-  context 'logging' do
+  context 'when told to create the log group' do
+    before(:all) do
+      reprovision(
+          include_log_group: 'yes')
+    end
+
     it 'creates log group' do
       expect(log_group).to_not be_nil
     end
-  end
 
-  context 'outputs' do
     it 'outputs the log group name' do
       expect(
           "/#{component}/#{deployment_identifier}/ecs-service/#{service_name}")
           .to(eq(log_group.log_group_name))
+    end
+  end
+
+  context 'when told not to create the log group' do
+    before(:all) do
+      reprovision(
+          include_log_group: 'no')
+    end
+
+    it 'does not create the log group' do
+      expect(log_group).to be_nil
+    end
+
+    it 'has an empty output' do
+      expect(output_for(:harness, 'log_group')).to(eq(''))
     end
   end
 end

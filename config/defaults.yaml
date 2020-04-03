@@ -30,6 +30,8 @@ attach_to_load_balancer: 'no'
 service_elb_name: ''
 target_group_arn: ''
 
+include_log_group: 'yes'
+
 service_volumes:
   - name: "temporary"
     host_path: "/some/path"

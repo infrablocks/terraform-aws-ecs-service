@@ -30,6 +30,8 @@ vars:
   service_elb_name: "%{hiera('service_elb_name')}"
   target_group_arn: "%{hiera('target_group_arn')}"
 
+  include_log_group: "%{hiera('include_log_group')}"
+
   service_volumes: "%{hiera('service_volumes')}"
 
   scheduling_strategy: "%{hiera('scheduling_strategy')}"

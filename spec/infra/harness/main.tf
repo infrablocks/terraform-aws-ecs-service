@@ -38,6 +38,8 @@ module "ecs_service" {
   service_elb_name = var.service_elb_name
   target_group_arn = var.target_group_arn
 
+  include_log_group = var.include_log_group
+
   ecs_cluster_id = data.terraform_remote_state.prerequisites.outputs.cluster_id
   ecs_cluster_service_role_arn = data.terraform_remote_state.prerequisites.outputs.service_role_arn
 }
