@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "service" {
     for_each = var.service_volumes
     content {
       name = volume.value.name
-      host_path = volume.value.host_path
+      host_path = lookup(volume.value, "host_path", null)
     }
   }
 }
