@@ -19,6 +19,7 @@ describe 'ECS Service' do
   }
 
   let(:service_task_network_mode) { vars.service_task_network_mode }
+  let(:service_task_pid_mode) { vars.service_task_pid_mode }
 
   let(:scheduling_strategy) { vars.scheduling_strategy }
 
@@ -182,6 +183,10 @@ describe 'ECS Service' do
 
     it 'uses the supplied network mode' do
       expect(subject.network_mode).to(eq(service_task_network_mode))
+    end
+
+    it 'uses the supplied pid mode' do
+      expect(subject.pid_mode).to(eq(service_task_pid_mode))
     end
 
     it 'includes the specified service volumes' do

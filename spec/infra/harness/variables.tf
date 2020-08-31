@@ -10,6 +10,7 @@ variable "service_command" {
 }
 variable "service_task_container_definitions" {}
 variable "service_task_network_mode" {}
+variable "service_task_pid_mode" {}
 
 variable "service_port" {}
 variable "service_desired_count" {}

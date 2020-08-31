@@ -16,6 +16,7 @@ vars:
 
   service_task_container_definitions: "%{hiera('service_task_container_definitions')}"
   service_task_network_mode: "%{hiera('service_task_network_mode')}"
+  service_task_pid_mode: "%{hiera('service_task_pid_mode')}"
 
   service_name: "%{hiera('service_name')}"
   service_image: "%{hiera('service_image')}"

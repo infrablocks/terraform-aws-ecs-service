@@ -17,6 +17,7 @@ module "ecs_service" {
 
   service_task_container_definitions = var.service_task_container_definitions
   service_task_network_mode = var.service_task_network_mode
+  service_task_pid_mode = var.service_task_pid_mode
 
   service_name = var.service_name
   service_image = var.service_image

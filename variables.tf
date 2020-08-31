@@ -26,6 +26,11 @@ variable "service_task_network_mode" {
   default = "bridge"
   type = string
 }
+variable "service_task_pid_mode" {
+  description = "The process namespace used for the containers in the task."
+  default = ""
+  type = string
+}
 
 variable "service_name" {
   description = "The name of the service being created."
