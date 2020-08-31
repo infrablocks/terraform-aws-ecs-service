@@ -28,7 +28,7 @@ variable "service_task_network_mode" {
 }
 variable "service_task_pid_mode" {
   description = "The process namespace used for the containers in the task."
-  default = ""
+  default = null
   type = string
 }
 
