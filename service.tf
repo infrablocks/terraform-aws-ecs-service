@@ -10,6 +10,8 @@ resource "aws_ecs_service" "service" {
 
   scheduling_strategy = var.scheduling_strategy
 
+  force_new_deployment = var.force_new_deployment == "yes"
+
   dynamic "placement_constraints" {
     for_each = var.placement_constraints
     content {

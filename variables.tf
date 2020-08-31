@@ -120,7 +120,13 @@ variable "ecs_cluster_service_role_arn" {
 }
 
 variable "include_log_group" {
-  description = "Whether or not to create a log group for the service (\"yes\" or \"no\"). Defaults to \"yes\""
+  description = "Whether or not to create a log group for the service (\"yes\" or \"no\"). Defaults to \"yes\"."
   type = string
   default = "yes"
+}
+
+variable "force_new_deployment" {
+  description = "Whether or not to force a new deployment of the service (\"yes\" or \"no\"). Defaults to \"no\"."
+  type = string
+  default = "no"
 }
