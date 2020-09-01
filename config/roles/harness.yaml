@@ -31,6 +31,9 @@ vars:
   service_elb_name: "%{hiera('service_elb_name')}"
   target_group_arn: "%{hiera('target_group_arn')}"
 
+  register_in_service_discovery: "%{hiera('register_in_service_discovery')}"
+  service_discovery_namespace_id: "%{hiera('service_discovery_namespace_id')}"
+
   include_log_group: "%{hiera('include_log_group')}"
 
   service_volumes: "%{hiera('service_volumes')}"

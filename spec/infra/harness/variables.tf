@@ -32,4 +32,7 @@ variable "attach_to_load_balancer" {}
 variable "service_elb_name" {}
 variable "target_group_arn" {}
 
+variable "register_in_service_discovery" {}
+variable "service_discovery_namespace_id" {}
+
 variable "include_log_group" {}

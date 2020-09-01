@@ -6,6 +6,11 @@ variable "vpc_id" {
   description = "The ID of the VPC into which to deploy the service."
   type = string
 }
+variable "subnet_ids" {
+  description = "The IDs of the subnets in which to create ENIs when the service task network mode is \"awsvpc\"."
+  type = list(string)
+  default = []
+}
 
 variable "component" {
   description = "The component this service will contain."
@@ -67,6 +72,7 @@ variable "service_deployment_minimum_healthy_percent" {
   type = number
   default = 50
 }
+
 variable "attach_to_load_balancer" {
   description = "Whether or not this service should attach to a load balancer (\"yes\" or \"no\")."
   type = string
@@ -92,6 +98,18 @@ variable "target_port" {
   type = string
   default = ""
 }
+
+variable "register_in_service_discovery" {
+  description = "Whether or not this service should be registered in service discovery (\"yes\" or \"no\")."
+  type = string
+  default = "no"
+}
+variable "service_discovery_namespace_id" {
+  description = "The ID of the service discovery namespace into which to register the service."
+  type = string
+  default = ""
+}
+
 variable "service_role" {
   description = "The ARN of the service task role to use."
   type = string

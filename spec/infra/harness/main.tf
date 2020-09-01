@@ -14,6 +14,7 @@ module "ecs_service" {
 
   region = var.region
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
+  subnet_ids = data.terraform_remote_state.prerequisites.outputs.private_subnet_ids
 
   service_task_container_definitions = var.service_task_container_definitions
   service_task_network_mode = var.service_task_network_mode
@@ -38,6 +39,9 @@ module "ecs_service" {
   attach_to_load_balancer = var.attach_to_load_balancer
   service_elb_name = var.service_elb_name
   target_group_arn = var.target_group_arn
+
+  register_in_service_discovery = var.register_in_service_discovery
+  service_discovery_namespace_id = var.service_discovery_namespace_id
 
   include_log_group = var.include_log_group
 

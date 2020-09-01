@@ -5,5 +5,5 @@ output "task_definition_arn" {
 
 output "log_group" {
   description = "The name of the log group capturing all task output."
-  value = local.log_group_name
+  value = var.include_log_group == "yes" ? aws_cloudwatch_log_group.service[0].name : ""
 }

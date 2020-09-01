@@ -31,6 +31,9 @@ attach_to_load_balancer: 'no'
 service_elb_name: ''
 target_group_arn: ''
 
+register_in_service_discovery: 'no'
+service_discovery_namespace_id: ''
+
 include_log_group: 'yes'
 
 service_volumes:

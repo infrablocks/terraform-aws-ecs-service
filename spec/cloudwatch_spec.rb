@@ -37,7 +37,9 @@ describe 'CloudWatch' do
   context 'when told not to create the log group' do
     before(:all) do
       reprovision(
-          include_log_group: 'no')
+          include_log_group: 'no',
+          service_task_container_definitions:
+              File.read('spec/fixtures/no_logs_service.json.tpl'))
     end
 
     it 'does not create the log group' do

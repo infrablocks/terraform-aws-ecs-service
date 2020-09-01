@@ -9,7 +9,3 @@ resource "aws_cloudwatch_log_group" "service" {
     Service = var.service_name
   }
 }
-
-locals {
-  log_group_name = element(concat(aws_cloudwatch_log_group.service.*.name, list("")), 0)
-}

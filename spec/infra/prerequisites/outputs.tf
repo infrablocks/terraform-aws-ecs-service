@@ -57,3 +57,15 @@ output "service_role_id" {
 output "task_role_arn" {
   value = aws_iam_role.task_role.arn
 }
+
+output "service_discovery_namespace_id" {
+  value = aws_service_discovery_private_dns_namespace.component.id
+}
+
+output "service_discovery_namespace_arn" {
+  value = aws_service_discovery_private_dns_namespace.component.arn
+}
+
+output "service_discovery_namespace_hosted_zone_id" {
+  value = aws_service_discovery_private_dns_namespace.component.hosted_zone
+}

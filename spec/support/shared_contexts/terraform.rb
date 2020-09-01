@@ -8,6 +8,7 @@ shared_context :terraform do
   include Awspec::Helper::Finder
 
   let(:cloudwatch_logs_client) { Aws::CloudWatchLogs::Client.new }
+  let(:service_discovery_client) { Aws::ServiceDiscovery::Client.new }
 
   let(:vars) {
     OpenStruct.new(
