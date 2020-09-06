@@ -18,7 +18,7 @@ resource "aws_ecs_service" "service" {
   cluster = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.service.arn
   desired_count = var.service_desired_count
-  iam_role = var.attach_to_load_balancer == "yes" ? var.ecs_cluster_service_role_arn : null
+  iam_role = (var.attach_to_load_balancer == "yes" && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
 
   deployment_maximum_percent = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
