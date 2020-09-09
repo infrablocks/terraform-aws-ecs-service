@@ -34,6 +34,10 @@ vars:
   register_in_service_discovery: "%{hiera('register_in_service_discovery')}"
   service_discovery_namespace_id: "%{hiera('service_discovery_namespace_id')}"
 
+  associate_default_security_group: "%{hiera('associate_default_security_group')}"
+  default_security_group_ingress_cidrs: "%{hiera('default_security_group_ingress_cidrs')}"
+  default_security_group_egress_cidrs: "%{hiera('default_security_group_egress_cidrs')}"
+
   include_log_group: "%{hiera('include_log_group')}"
 
   service_volumes: "%{hiera('service_volumes')}"

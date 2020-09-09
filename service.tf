@@ -1,18 +1,3 @@
-resource "aws_service_discovery_service" "service" {
-  count = var.register_in_service_discovery == "yes" ? 1 : 0
-
-  name = var.service_name
-
-  dns_config {
-    namespace_id = var.service_discovery_namespace_id
-
-    dns_records {
-      ttl  = 10
-      type = "A"
-    }
-  }
-}
-
 resource "aws_ecs_service" "service" {
   name = var.service_name
   cluster = var.ecs_cluster_id
@@ -32,6 +17,7 @@ resource "aws_ecs_service" "service" {
 
     content {
       subnets = network_configuration.value
+      security_groups = [aws_security_group.task.0.id]
     }
   }
 
@@ -53,10 +39,10 @@ resource "aws_ecs_service" "service" {
   }
 
   dynamic "load_balancer" {
-    for_each = var.attach_to_load_balancer == "yes" ? [var.service_elb_name] : []
+    for_each = var.attach_to_load_balancer == "yes" ? [coalesce(var.target_group_arn, var.service_elb_name)] : []
 
     content {
-      elb_name = load_balancer.value
+      elb_name = var.service_elb_name
       target_group_arn = var.target_group_arn
       container_name = coalesce(var.target_container_name, var.service_name)
       container_port = coalesce(var.target_port, var.service_port)

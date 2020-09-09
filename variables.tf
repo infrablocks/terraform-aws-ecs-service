@@ -110,6 +110,32 @@ variable "service_discovery_namespace_id" {
   default = ""
 }
 
+variable "associate_default_security_group" {
+  description = "Whether or not to create and associate a default security group for the tasks created by this service (\"yes\" or \"no\"). Defaults to \"yes\". Only applicable when service_task_network_mode is \"awsvpc\"."
+  type = string
+  default = "yes"
+}
+variable "include_default_ingress_rule" {
+  description = "Whether or not to include the default ingress rule in the default security group for the tasks created by this service (\"yes\" or \"no\"). Defaults to \"yes\". Only applicable when service_task_network_mode is \"awsvpc\"."
+  type = string
+  default = "yes"
+}
+variable "include_default_egress_rule" {
+  description = "Whether or not to include the default egress rule in the default security group for the tasks created by this service (\"yes\" or \"no\"). Defaults to \"yes\". Only applicable when service_task_network_mode is \"awsvpc\"."
+  type = string
+  default = "yes"
+}
+variable "default_security_group_ingress_cidrs" {
+  description = "The CIDRs allowed access to containers when using the default security group."
+  type = list(string)
+  default = ["10.0.0.0/8"]
+}
+variable "default_security_group_egress_cidrs" {
+  description = "The CIDRs accessible from containers when using the default security group."
+  type = list(string)
+  default = ["0.0.0.0/0"]
+}
+
 variable "service_role" {
   description = "The ARN of the service task role to use."
   type = string

@@ -78,6 +78,74 @@ describe 'ECS Service' do
           .to(eq(placement_constraint_expression))
     end
 
+    context 'network configuration (for awsvpc network mode)' do
+      context 'when using default security group' do
+        let(:service_name) { 'service-with-awsvpc' }
+
+        before(:all) do
+          reprovision(
+              service_name: 'service-with-awsvpc',
+              service_task_network_mode: 'awsvpc',
+              associate_default_security_group: "yes",
+              default_security_group_ingress_cidrs: ["10.0.0.0/16"],
+              default_security_group_egress_cidrs: ["10.0.0.0/16"])
+        end
+
+        let(:service) {
+          ecs_client.describe_services(
+              cluster: cluster_id,
+              services: [service_name]).services.first
+        }
+        let(:security_groups) {
+          service
+              .network_configuration
+              .awsvpc_configuration
+              .security_groups
+              .map { |sg| security_group(sg) }
+        }
+
+        it('associates a security group allowing inbound TCP and UDP ' +
+            'for all ports for the supplied ingress CIDRs') do
+          expect(security_groups.length).to(eq(1))
+
+          security_group = security_groups.first
+
+          require 'pp'
+
+          pp security_group
+
+          expect(security_group.inbound_rule_count).to(eq(1))
+
+          ingress_rule = security_group.ip_permissions.first
+
+          pp ingress_rule
+
+          expect(ingress_rule.from_port).to(be_nil)
+          expect(ingress_rule.to_port).to(be_nil)
+          expect(ingress_rule.ip_protocol).to(eq('-1'))
+          expect(ingress_rule.ip_ranges.map(&:cidr_ip))
+              .to(eq(["10.0.0.0/16"]))
+        end
+
+        it('associates a security group allowing outbound TCP and UDP ' +
+            'for all ports for the supplied egress CIDRs') do
+          expect(security_groups.length).to(eq(1))
+
+          security_group = security_groups.first
+
+          expect(security_group.outbound_rule_count).to(eq(1))
+
+          egress_rule = security_group.ip_permissions_egress.first
+
+          expect(egress_rule.from_port).to(be_nil)
+          expect(egress_rule.to_port).to(be_nil)
+          expect(egress_rule.ip_protocol).to(eq('-1'))
+          expect(egress_rule.ip_ranges.map(&:cidr_ip))
+              .to(eq(["10.0.0.0/16"]))
+        end
+      end
+    end
+
     context 'load balancer configuration' do
       context 'when asked not to attach to a load balancer' do
         let(:service_name) { 'service-without-lb' }
@@ -228,7 +296,7 @@ describe 'ECS Service' do
           service = service_discovery_client
               .get_service(id: service_summary.id)
               .service
-          
+
           service
         }
 

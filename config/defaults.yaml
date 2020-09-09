@@ -31,6 +31,12 @@ attach_to_load_balancer: 'no'
 service_elb_name: ''
 target_group_arn: ''
 
+associate_default_security_group: "yes"
+default_security_group_ingress_cidrs:
+  - "10.0.0.0/8"
+default_security_group_egress_cidrs:
+  - "0.0.0.0/0"
+
 register_in_service_discovery: 'no'
 service_discovery_namespace_id: ''
 

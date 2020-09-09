@@ -35,4 +35,12 @@ variable "target_group_arn" {}
 variable "register_in_service_discovery" {}
 variable "service_discovery_namespace_id" {}
 
+variable "associate_default_security_group" {}
+variable "default_security_group_ingress_cidrs" {
+  type = list(string)
+}
+variable "default_security_group_egress_cidrs" {
+  type = list(string)
+}
+
 variable "include_log_group" {}
