@@ -32,7 +32,9 @@ vars:
   target_group_arn: "%{hiera('target_group_arn')}"
 
   register_in_service_discovery: "%{hiera('register_in_service_discovery')}"
+  service_discovery_create_registry: "%{hiera('service_discovery_create_registry')}"
   service_discovery_namespace_id: "%{hiera('service_discovery_namespace_id')}"
+  service_discovery_registry_arn: "%{hiera('service_discovery_registry_arn')}"
   service_discovery_record_type: "%{hiera('service_discovery_record_type')}"
 
   associate_default_security_group: "%{hiera('associate_default_security_group')}"

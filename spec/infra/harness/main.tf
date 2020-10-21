@@ -41,7 +41,9 @@ module "ecs_service" {
   target_group_arn = var.target_group_arn
 
   register_in_service_discovery = var.register_in_service_discovery
+  service_discovery_create_registry = var.service_discovery_create_registry
   service_discovery_namespace_id = var.service_discovery_namespace_id
+  service_discovery_registry_arn = var.service_discovery_registry_arn
   service_discovery_record_type = var.service_discovery_record_type
 
   associate_default_security_group = var.associate_default_security_group

@@ -227,7 +227,7 @@ describe 'ECS Service' do
       end
     end
 
-    fcontext 'service discovery configuration' do
+    context 'service discovery configuration' do
       context 'when asked not to register in service discovery' do
         let(:service_name) { 'service-without-sd' }
 
@@ -246,6 +246,42 @@ describe 'ECS Service' do
 
         it 'does not register with service discovery' do
           expect(subject.service_registries).to(be_empty)
+        end
+      end
+
+      context 'when asked to register in service discovery using existing registry' do
+        before(:all) do
+          registry_arn = output_for(:prerequisites,
+              'service_discovery_registry_arn')
+
+          reprovision(
+              service_name: 'service-with-sd',
+              register_in_service_discovery: 'yes',
+              service_discovery_create_registry: 'no',
+              service_discovery_registry_arn: registry_arn,
+              service_discovery_record_type: 'SRV')
+        end
+
+        subject {
+          ecs_client.describe_services(
+              cluster: cluster_id,
+              services: [service_name]).services.first
+        }
+
+        let(:service_name) { 'service-with-sd' }
+
+        let(:service_discovery_registry_arn) {
+          output_for(:prerequisites, 'service_discovery_registry_arn')
+        }
+
+        it 'registers with the provided service registry' do
+          found_registry = subject.service_registries.first
+
+          expect(found_registry.registry_arn)
+              .to(eq(service_discovery_registry_arn))
+          expect(found_registry.port).to(be_nil)
+          expect(found_registry.container_port).to(eq(service_port))
+          expect(found_registry.container_name).to(eq(service_name))
         end
       end
 

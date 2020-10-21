@@ -5,7 +5,7 @@ resource "aws_cloudwatch_log_group" "service" {
 
   tags = {
     Environment = var.deployment_identifier
-    Component = var.component
-    Service = var.service_name
+    Component   = var.component
+    Service     = var.service_name
   }
 }

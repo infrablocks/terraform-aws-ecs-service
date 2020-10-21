@@ -69,3 +69,7 @@ output "service_discovery_namespace_arn" {
 output "service_discovery_namespace_hosted_zone_id" {
   value = aws_service_discovery_private_dns_namespace.component.hosted_zone
 }
+
+output "service_discovery_registry_arn" {
+  value = aws_service_discovery_service.preexisting_service.arn
+}
