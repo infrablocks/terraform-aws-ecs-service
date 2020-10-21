@@ -34,6 +34,7 @@ variable "target_group_arn" {}
 
 variable "register_in_service_discovery" {}
 variable "service_discovery_namespace_id" {}
+variable "service_discovery_record_type" {}
 
 variable "associate_default_security_group" {}
 variable "default_security_group_ingress_cidrs" {

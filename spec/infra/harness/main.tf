@@ -42,6 +42,7 @@ module "ecs_service" {
 
   register_in_service_discovery = var.register_in_service_discovery
   service_discovery_namespace_id = var.service_discovery_namespace_id
+  service_discovery_record_type = var.service_discovery_record_type
 
   associate_default_security_group = var.associate_default_security_group
   default_security_group_ingress_cidrs = var.default_security_group_ingress_cidrs

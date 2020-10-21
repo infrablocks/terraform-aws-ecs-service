@@ -39,6 +39,7 @@ default_security_group_egress_cidrs:
 
 register_in_service_discovery: 'no'
 service_discovery_namespace_id: ''
+service_discovery_record_type: ''
 
 include_log_group: 'yes'
 

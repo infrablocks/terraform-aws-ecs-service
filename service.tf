@@ -35,6 +35,8 @@ resource "aws_ecs_service" "service" {
 
     content {
       registry_arn = service_registries.value
+      container_name = var.service_discovery_record_type == "SRV" ? coalesce(var.service_discovery_container_name, var.service_name) : null
+      container_port = var.service_discovery_record_type == "SRV" ? coalesce(var.service_discovery_container_port, var.service_port) : null
     }
   }
 

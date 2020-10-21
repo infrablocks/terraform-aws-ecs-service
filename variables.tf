@@ -109,6 +109,21 @@ variable "service_discovery_namespace_id" {
   type = string
   default = ""
 }
+variable "service_discovery_record_type" {
+  description = "The type of record to create when registering the service in service discovery."
+  type = string
+  default = "SRV"
+}
+variable "service_discovery_container_name" {
+  description = "The container name to use when registering the service in service discovery. Defaults to the service name."
+  type = string
+  default = ""
+}
+variable "service_discovery_container_port" {
+  description = "The container port to use when registering the service in service discovery. Defaults to the service port."
+  type = string
+  default = ""
+}
 
 variable "associate_default_security_group" {
   description = "Whether or not to create and associate a default security group for the tasks created by this service (\"yes\" or \"no\"). Defaults to \"yes\". Only applicable when service_task_network_mode is \"awsvpc\"."

@@ -110,15 +110,9 @@ describe 'ECS Service' do
 
           security_group = security_groups.first
 
-          require 'pp'
-
-          pp security_group
-
           expect(security_group.inbound_rule_count).to(eq(1))
 
           ingress_rule = security_group.ip_permissions.first
-
-          pp ingress_rule
 
           expect(ingress_rule.from_port).to(be_nil)
           expect(ingress_rule.to_port).to(be_nil)
@@ -233,7 +227,7 @@ describe 'ECS Service' do
       end
     end
 
-    context 'service discovery configuration' do
+    fcontext 'service discovery configuration' do
       context 'when asked not to register in service discovery' do
         let(:service_name) { 'service-without-sd' }
 
@@ -255,16 +249,16 @@ describe 'ECS Service' do
         end
       end
 
-      context 'when asked to register in service discovery' do
+      context 'when asked to register in service discovery as a SRV record' do
         before(:all) do
           namespace_id = output_for(:prerequisites,
               'service_discovery_namespace_id')
 
           reprovision(
               service_name: 'service-with-sd',
-              service_task_network_mode: 'awsvpc',
               register_in_service_discovery: 'yes',
-              service_discovery_namespace_id: namespace_id)
+              service_discovery_namespace_id: namespace_id,
+              service_discovery_record_type: 'SRV')
         end
 
         subject {
@@ -314,7 +308,7 @@ describe 'ECS Service' do
 
           dns_record = dns_records.first
 
-          expect(dns_record.type).to(eq('A'))
+          expect(dns_record.type).to(eq('SRV'))
           expect(dns_record.ttl).to(eq(10))
         end
 
@@ -324,9 +318,84 @@ describe 'ECS Service' do
           expect(found_registry.registry_arn)
               .to(eq(created_registry.arn))
           expect(found_registry.port).to(be_nil)
-          expect(found_registry.container_port).to(be_nil)
-          expect(found_registry.container_name).to(be_nil)
+          expect(found_registry.container_port).to(eq(service_port))
+          expect(found_registry.container_name).to(eq(service_name))
         end
+      end
+    end
+
+    context 'when asked to register in service discovery as an A record' do
+      before(:all) do
+        namespace_id = output_for(:prerequisites,
+            'service_discovery_namespace_id')
+
+        reprovision(
+            service_name: 'service-with-sd',
+            service_task_network_mode: 'awsvpc',
+            register_in_service_discovery: 'yes',
+            service_discovery_namespace_id: namespace_id,
+            service_discovery_record_type: 'A')
+      end
+
+      subject {
+        ecs_client.describe_services(
+            cluster: cluster_id,
+            services: [service_name]).services.first
+      }
+
+      let(:service_name) { 'service-with-sd' }
+
+      let(:service_discovery_namespace_id) {
+        output_for(:prerequisites, 'service_discovery_namespace_id')
+      }
+
+      let(:created_registry) {
+        service_summary = service_discovery_client
+            .list_services(
+                max_results: 1,
+                filters: [
+                    {
+                        name: "NAMESPACE_ID",
+                        values: [service_discovery_namespace_id],
+                        condition: "EQ",
+                    },
+                ])
+            .services
+            .first
+
+        service = service_discovery_client
+            .get_service(id: service_summary.id)
+            .service
+
+        service
+      }
+
+      it 'creates a service registry for the service' do
+        expect(created_registry.name).to(eq(service_name))
+
+        dns_config = created_registry.dns_config
+
+        expect(dns_config.namespace_id)
+            .to(eq(service_discovery_namespace_id))
+
+        dns_records = dns_config.dns_records
+
+        expect(dns_records.length).to(eq(1))
+
+        dns_record = dns_records.first
+
+        expect(dns_record.type).to(eq('A'))
+        expect(dns_record.ttl).to(eq(10))
+      end
+
+      it 'registers with the created service registry' do
+        found_registry = subject.service_registries.first
+
+        expect(found_registry.registry_arn)
+            .to(eq(created_registry.arn))
+        expect(found_registry.port).to(be_nil)
+        expect(found_registry.container_port).to(be_nil)
+        expect(found_registry.container_name).to(be_nil)
       end
     end
   end
