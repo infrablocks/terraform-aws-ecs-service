@@ -255,7 +255,7 @@ describe 'ECS Service' do
               'service_discovery_registry_arn')
 
           reprovision(
-              service_name: 'service-with-sd',
+              service_name: 'service-with-sd-existing-registry',
               register_in_service_discovery: 'yes',
               service_discovery_create_registry: 'no',
               service_discovery_registry_arn: registry_arn,
@@ -268,7 +268,7 @@ describe 'ECS Service' do
               services: [service_name]).services.first
         }
 
-        let(:service_name) { 'service-with-sd' }
+        let(:service_name) { 'service-with-sd-existing-registry' }
 
         let(:service_discovery_registry_arn) {
           output_for(:prerequisites, 'service_discovery_registry_arn')
@@ -291,7 +291,7 @@ describe 'ECS Service' do
               'service_discovery_namespace_id')
 
           reprovision(
-              service_name: 'service-with-sd',
+              service_name: 'service-with-sd-srv',
               register_in_service_discovery: 'yes',
               service_discovery_namespace_id: namespace_id,
               service_discovery_record_type: 'SRV')
@@ -303,7 +303,7 @@ describe 'ECS Service' do
               services: [service_name]).services.first
         }
 
-        let(:service_name) { 'service-with-sd' }
+        let(:service_name) { 'service-with-sd-srv' }
 
         let(:service_discovery_namespace_id) {
           output_for(:prerequisites, 'service_discovery_namespace_id')
@@ -366,7 +366,7 @@ describe 'ECS Service' do
             'service_discovery_namespace_id')
 
         reprovision(
-            service_name: 'service-with-sd',
+            service_name: 'service-with-sd-a',
             service_task_network_mode: 'awsvpc',
             register_in_service_discovery: 'yes',
             service_discovery_namespace_id: namespace_id,
@@ -379,7 +379,7 @@ describe 'ECS Service' do
             services: [service_name]).services.first
       }
 
-      let(:service_name) { 'service-with-sd' }
+      let(:service_name) { 'service-with-sd-a' }
 
       let(:service_discovery_namespace_id) {
         output_for(:prerequisites, 'service_discovery_namespace_id')
