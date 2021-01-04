@@ -47,3 +47,4 @@ variable "default_security_group_egress_cidrs" {
 }
 
 variable "include_log_group" {}
+variable "log_group_retention" {}

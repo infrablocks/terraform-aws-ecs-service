@@ -34,6 +34,30 @@ describe 'CloudWatch' do
     end
   end
 
+  context 'when told to create the log group with retention' do
+    before(:all) do
+      reprovision(
+        include_log_group: 'yes',
+        log_group_retention: 30)
+    end
+
+    it 'creates log group' do
+      expect(log_group).to_not be_nil
+    end
+
+    it 'outputs the log group name' do
+      expect(
+        "/#{component}/#{deployment_identifier}/ecs-service/#{service_name}")
+        .to(eq(log_group.log_group_name))
+    end
+
+    it 'has a retention of 30 days' do
+      expect(
+        log_group.retention_in_days)
+        .to(eq(30))
+    end
+  end
+
   context 'when told not to create the log group' do
     before(:all) do
       reprovision(

@@ -44,6 +44,7 @@ service_discovery_registry_arn: ''
 service_discovery_record_type: ''
 
 include_log_group: 'yes'
+log_group_retention: 0
 
 service_volumes:
   - name: "temporary"

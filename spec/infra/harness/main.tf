@@ -30,7 +30,7 @@ module "ecs_service" {
   service_deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
 
   service_role = var.service_role
-  service_volumes  =var.service_volumes
+  service_volumes = var.service_volumes
 
   scheduling_strategy = var.scheduling_strategy
 
@@ -51,6 +51,7 @@ module "ecs_service" {
   default_security_group_egress_cidrs = var.default_security_group_egress_cidrs
 
   include_log_group = var.include_log_group
+  log_group_retention = var.log_group_retention
 
   ecs_cluster_id = data.terraform_remote_state.prerequisites.outputs.cluster_id
   ecs_cluster_service_role_arn = data.terraform_remote_state.prerequisites.outputs.service_role_arn

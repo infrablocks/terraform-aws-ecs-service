@@ -42,6 +42,7 @@ vars:
   default_security_group_egress_cidrs: "%{hiera('default_security_group_egress_cidrs')}"
 
   include_log_group: "%{hiera('include_log_group')}"
+  log_group_retention: "%{hiera('log_group_retention')}"
 
   service_volumes: "%{hiera('service_volumes')}"
 

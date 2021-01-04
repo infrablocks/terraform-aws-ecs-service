@@ -199,6 +199,12 @@ variable "include_log_group" {
   default     = "yes"
 }
 
+variable "log_group_retention" {
+  description = "The number of days you want to retain log events. See cloudwatch_log_group for possible values. Defaults to 0 (forever)."
+  type        = number
+  default     = 0
+}
+
 variable "force_new_deployment" {
   description = "Whether or not to force a new deployment of the service (\"yes\" or \"no\"). Defaults to \"no\"."
   type        = string
