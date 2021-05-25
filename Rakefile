@@ -135,7 +135,7 @@ namespace :pipeline do
 end
 
 namespace :test do
-  RSpec::Core::RakeTask.new(all: ['terraform:ensure']) do
+  RSpec::Core::RakeTask.new(integration: ['terraform:ensure']) do
     plugin_cache_directory =
       "#{Paths.project_root_directory}/vendor/terraform/plugins"
 
