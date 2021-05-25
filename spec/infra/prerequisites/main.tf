@@ -43,7 +43,7 @@ module "ecs_cluster" {
 
 module "ecs_load_balancer" {
   source  = "infrablocks/ecs-load-balancer/aws"
-  version = "3.3.0-rc.1"
+  version = "2.5.0-rc.2"
 
   component = var.component
   deployment_identifier = var.deployment_identifier
