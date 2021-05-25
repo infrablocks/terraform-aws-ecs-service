@@ -7,7 +7,8 @@ data "terraform_remote_state" "prerequisites" {
 }
 
 module "ecs_service" {
-  source = "../../../../"
+  # This makes absolutely no sense. I think there's a bug in terraform.
+  source = "./../../../../../../../"
 
   component = var.component
   deployment_identifier = var.deployment_identifier

@@ -22,7 +22,7 @@ module "base_network" {
 
 module "ecs_cluster" {
   source  = "infrablocks/ecs-cluster/aws"
-  version = "3.4.0"
+  version = "3.5.0-rc.2"
 
   region = var.region
   vpc_id = module.base_network.vpc_id
@@ -43,7 +43,7 @@ module "ecs_cluster" {
 
 module "ecs_load_balancer" {
   source  = "infrablocks/ecs-load-balancer/aws"
-  version = "2.4.0"
+  version = "3.3.0-rc.1"
 
   component = var.component
   deployment_identifier = var.deployment_identifier
