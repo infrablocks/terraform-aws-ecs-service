@@ -28,7 +28,7 @@ shared_context :terraform do
     TerraformModule.output_for(role, name)
   end
 
-  def reprovision(overrides = nil)
+  def provision(overrides = nil)
     TerraformModule.provision_for(
       :harness,
       TerraformModule.configuration.for(:harness, overrides).vars
@@ -40,5 +40,10 @@ shared_context :terraform do
         :harness,
         TerraformModule.configuration.for(:harness, overrides).vars,
         force: true)
+  end
+
+  def reprovision(overrides = nil)
+    destroy(overrides)
+    provision(overrides)
   end
 end

@@ -83,7 +83,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-with-awsvpc' }
 
         before(:all) do
-          reprovision(
+          provision(
               service_name: 'service-with-awsvpc',
               service_task_network_mode: 'awsvpc',
               associate_default_security_group: "yes",
@@ -145,7 +145,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-without-lb' }
 
         before(:all) do
-          reprovision(
+          provision(
               service_name: 'service-without-lb',
               attach_to_load_balancer: 'no')
         end
@@ -165,7 +165,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-with-elb' }
 
         before(:all) do
-          reprovision(
+          provision(
               service_name: 'service-with-elb',
               attach_to_load_balancer: 'yes',
               service_elb_name:
@@ -198,7 +198,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-with-alb' }
 
         before(:all) do
-          reprovision(
+          provision(
               service_name: 'service-with-alb',
               attach_to_load_balancer: 'yes',
               target_group_arn: output_for(:prerequisites, 'target_group_arn'))
@@ -232,7 +232,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-without-sd' }
 
         before(:all) do
-          reprovision(
+          provision(
               service_name: 'service-without-sd',
               service_task_network_mode: 'bridge',
               register_in_service_discovery: 'no')
@@ -254,7 +254,7 @@ describe 'ECS Service' do
           registry_arn = output_for(:prerequisites,
               'service_discovery_registry_arn')
 
-          reprovision(
+          provision(
               service_name: 'service-with-sd-existing-registry',
               register_in_service_discovery: 'yes',
               service_discovery_create_registry: 'no',
@@ -365,7 +365,7 @@ describe 'ECS Service' do
         namespace_id = output_for(:prerequisites,
             'service_discovery_namespace_id')
 
-        reprovision(
+        provision(
             service_name: 'service-with-sd-a',
             service_task_network_mode: 'awsvpc',
             register_in_service_discovery: 'yes',
@@ -438,7 +438,7 @@ describe 'ECS Service' do
 
   context 'task definition' do
     before(:all) do
-      reprovision
+      provision
     end
 
     subject {
@@ -471,7 +471,7 @@ describe 'ECS Service' do
 
     context 'when no service role is specified' do
       before(:all) do
-        reprovision(service_role: '')
+        provision(service_role: '')
       end
 
       its(:task_role_arn) { should be_nil }
@@ -479,7 +479,7 @@ describe 'ECS Service' do
 
     context 'when a service role is specified' do
       before(:all) do
-        reprovision(service_role: output_for(:prerequisites, 'task_role_arn'))
+        provision(service_role: output_for(:prerequisites, 'task_role_arn'))
       end
 
       its(:task_role_arn) {
