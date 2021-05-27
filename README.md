@@ -72,6 +72,9 @@ mechanism you like, the following modules may be of use:
 * [AWS ECS Cluster](https://github.com/tobyclemson/terraform-aws-ecs-cluster)
 * [AWS ECS Load Balancer](https://github.com/tobyclemson/terraform-aws-ecs-load-balancer)
 
+See the 
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/ecs-service/aws/latest) 
+for more details.
 
 ### Inputs
 
@@ -107,6 +110,10 @@ mechanism you like, the following modules may be of use:
 | task_definition_arn | The ARN of the created ECS task definition          |
 | log_group           | The name of the log group capturing all task output |
 
+### Compatibility
+
+This module is compatible with Terraform versions greater than or equal to 
+Terraform 0.14.
 
 Development
 -----------
@@ -249,7 +256,6 @@ https://github.com/infrablocks/terraform-aws-ecs-service.
 This project is intended to be a safe, welcoming space for collaboration, and 
 contributors are expected to adhere to 
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
 
 License
 -------
