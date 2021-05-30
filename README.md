@@ -68,9 +68,9 @@ definition content using the var `service_task_definition`. In this case,
 As mentioned above, the ECS service deploys into an existing base network and
 ECS cluster using an existing ELB. Whilst these can be created using any 
 mechanism you like, the following modules may be of use: 
-* [AWS Base Networking](https://github.com/tobyclemson/terraform-aws-base-networking)
-* [AWS ECS Cluster](https://github.com/tobyclemson/terraform-aws-ecs-cluster)
-* [AWS ECS Load Balancer](https://github.com/tobyclemson/terraform-aws-ecs-load-balancer)
+* [AWS Base Networking](https://github.com/infrablocks/terraform-aws-base-networking)
+* [AWS ECS Cluster](https://github.com/infrablocks/terraform-aws-ecs-cluster)
+* [AWS ECS Load Balancer](https://github.com/infrablocks/terraform-aws-ecs-load-balancer)
 
 See the 
 [Terraform registry entry](https://registry.terraform.io/modules/infrablocks/ecs-service/aws/latest) 
