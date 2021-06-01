@@ -299,7 +299,7 @@ describe 'ECS Service' do
         end
       end
 
-      context 'when asked to register in service discovery as a SRV record' do
+      xcontext 'when asked to register in service discovery as a SRV record' do
         before(:all) do
           namespace_id = output_for(:prerequisites,
               'service_discovery_namespace_id')
@@ -374,7 +374,7 @@ describe 'ECS Service' do
       end
     end
 
-    context 'when asked to register in service discovery as an A record' do
+    xcontext 'when asked to register in service discovery as an A record' do
       before(:all) do
         namespace_id = output_for(:prerequisites,
             'service_discovery_namespace_id')
