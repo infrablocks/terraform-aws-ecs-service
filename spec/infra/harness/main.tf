@@ -29,6 +29,7 @@ module "ecs_service" {
   service_desired_count = var.service_desired_count
   service_deployment_maximum_percent = var.service_deployment_maximum_percent
   service_deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
+  service_health_check_grace_period_seconds = var.service_health_check_grace_period_seconds
 
   service_role = var.service_role
   service_volumes = var.service_volumes

@@ -11,24 +11,24 @@ describe 'ECS Service' do
 
   let(:service_desired_count) { vars.service_desired_count.to_i }
 
-  let(:service_deployment_maximum_percent) {
-    vars.service_deployment_maximum_percent.to_i
-  }
-  let(:service_deployment_minimum_healthy_percent) {
+  let(:service_deployment_maximum_percent) do
+     vars.service_deployment_maximum_percent.to_i
+  end
+  let(:service_deployment_minimum_healthy_percent) do
     vars.service_deployment_minimum_healthy_percent.to_i
-  }
+  end
 
   let(:service_task_network_mode) { vars.service_task_network_mode }
   let(:service_task_pid_mode) { vars.service_task_pid_mode }
 
   let(:scheduling_strategy) { vars.scheduling_strategy }
 
-  let(:placement_constraint_type) {
+  let(:placement_constraint_type) do
     configuration.for(:harness).placement_constraint_type
-  }
-  let(:placement_constraint_expression) {
+  end
+  let(:placement_constraint_expression) do
     configuration.for(:harness).placement_constraint_expression
-  }
+  end
 
   let(:cluster_id) { output_for(:prerequisites, 'cluster_id') }
   let(:task_definition_arn) { output_for(:harness, 'task_definition_arn') }
@@ -83,7 +83,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-with-awsvpc' }
 
         before(:all) do
-          provision(
+          reprovision(
               service_name: 'service-with-awsvpc',
               service_task_network_mode: 'awsvpc',
               associate_default_security_group: "yes",
@@ -145,7 +145,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-without-lb' }
 
         before(:all) do
-          provision(
+          reprovision(
               service_name: 'service-without-lb',
               attach_to_load_balancer: 'no')
         end
@@ -165,11 +165,13 @@ describe 'ECS Service' do
         let(:service_name) { 'service-with-elb' }
 
         before(:all) do
-          provision(
+          reprovision(
               service_name: 'service-with-elb',
               attach_to_load_balancer: 'yes',
               service_elb_name:
-                  output_for(:prerequisites, 'load_balancer_name'))
+                  output_for(:prerequisites, 'load_balancer_name'),
+              service_health_check_grace_period_seconds: 60
+          )
         end
 
         subject {
@@ -192,16 +194,23 @@ describe 'ECS Service' do
         it 'has the correct role' do
           expect(subject.role_arn).to(eq(service_role_arn))
         end
+
+        it 'defines the health check grace period' do
+          expect(subject.health_check_grace_period_seconds)
+            .to(eq(60))
+        end
       end
 
       context 'when asked to attach to an application load balancer' do
         let(:service_name) { 'service-with-alb' }
 
         before(:all) do
-          provision(
+          reprovision(
               service_name: 'service-with-alb',
               attach_to_load_balancer: 'yes',
-              target_group_arn: output_for(:prerequisites, 'target_group_arn'))
+              target_group_arn: output_for(:prerequisites, 'target_group_arn'),
+              service_health_check_grace_period_seconds: 60
+          )
         end
 
         subject {
@@ -224,6 +233,11 @@ describe 'ECS Service' do
         it 'has the correct role' do
           expect(subject.role_arn).to(eq(service_role_arn))
         end
+
+        it 'defines the health check grace period' do
+          expect(subject.health_check_grace_period_seconds)
+            .to(eq(60))
+        end
       end
     end
 
@@ -232,7 +246,7 @@ describe 'ECS Service' do
         let(:service_name) { 'service-without-sd' }
 
         before(:all) do
-          provision(
+          reprovision(
               service_name: 'service-without-sd',
               service_task_network_mode: 'bridge',
               register_in_service_discovery: 'no')
@@ -254,7 +268,7 @@ describe 'ECS Service' do
           registry_arn = output_for(:prerequisites,
               'service_discovery_registry_arn')
 
-          provision(
+          reprovision(
               service_name: 'service-with-sd-existing-registry',
               register_in_service_discovery: 'yes',
               service_discovery_create_registry: 'no',
@@ -365,7 +379,7 @@ describe 'ECS Service' do
         namespace_id = output_for(:prerequisites,
             'service_discovery_namespace_id')
 
-        provision(
+        reprovision(
             service_name: 'service-with-sd-a',
             service_task_network_mode: 'awsvpc',
             register_in_service_discovery: 'yes',
@@ -438,7 +452,7 @@ describe 'ECS Service' do
 
   context 'task definition' do
     before(:all) do
-      provision
+      reprovision
     end
 
     subject {

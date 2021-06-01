@@ -72,6 +72,11 @@ variable "service_deployment_minimum_healthy_percent" {
   type        = number
   default     = 50
 }
+variable "service_health_check_grace_period_seconds" {
+  description = "The number of seconds to wait for the service to start up before starting load balancer health checks."
+  type        = number
+  default     = 0
+}
 
 variable "attach_to_load_balancer" {
   description = "Whether or not this service should attach to a load balancer (\"yes\" or \"no\")."

@@ -8,6 +8,8 @@ resource "aws_ecs_service" "service" {
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
 
+  health_check_grace_period_seconds = var.attach_to_load_balancer == "yes" ? var.service_health_check_grace_period_seconds : null
+
   scheduling_strategy = var.scheduling_strategy
 
   force_new_deployment = var.force_new_deployment == "yes"

@@ -26,6 +26,7 @@ service_desired_count: 2
 service_deployment_maximum_percent: 150
 service_deployment_minimum_healthy_percent: 25
 service_role: ''
+service_health_check_grace_period_seconds: 0
 
 attach_to_load_balancer: 'no'
 service_elb_name: ''

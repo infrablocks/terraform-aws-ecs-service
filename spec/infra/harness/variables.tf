@@ -16,6 +16,7 @@ variable "service_port" {}
 variable "service_desired_count" {}
 variable "service_deployment_maximum_percent" {}
 variable "service_deployment_minimum_healthy_percent" {}
+variable "service_health_check_grace_period_seconds" {}
 
 variable "service_role" {}
 variable "service_volumes" {
