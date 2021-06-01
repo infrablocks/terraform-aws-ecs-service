@@ -44,6 +44,7 @@ shared_context :terraform do
 
   def reprovision(overrides = nil)
     destroy(overrides)
+    sleep(5)
     provision(overrides)
   end
 end

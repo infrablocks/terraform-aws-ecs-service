@@ -485,7 +485,7 @@ describe 'ECS Service' do
 
     context 'when no service role is specified' do
       before(:all) do
-        provision(service_role: '')
+        reprovision(service_role: '')
       end
 
       its(:task_role_arn) { should be_nil }
@@ -493,7 +493,7 @@ describe 'ECS Service' do
 
     context 'when a service role is specified' do
       before(:all) do
-        provision(service_role: output_for(:prerequisites, 'task_role_arn'))
+        reprovision(service_role: output_for(:prerequisites, 'task_role_arn'))
       end
 
       its(:task_role_arn) {

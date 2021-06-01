@@ -19,7 +19,7 @@ describe 'CloudWatch' do
 
   context 'when told to create the log group' do
     before(:all) do
-      provision(
+      reprovision(
           include_log_group: 'yes')
     end
 
@@ -36,7 +36,7 @@ describe 'CloudWatch' do
 
   context 'when told to create the log group with retention' do
     before(:all) do
-      provision(
+      reprovision(
         include_log_group: 'yes',
         log_group_retention: 30)
     end
@@ -60,7 +60,7 @@ describe 'CloudWatch' do
 
   context 'when told not to create the log group' do
     before(:all) do
-      provision(
+      reprovision(
           include_log_group: 'no',
           service_task_container_definitions:
               File.read('spec/fixtures/no_logs_service.json.tpl'))
