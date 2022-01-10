@@ -16,7 +16,7 @@ The ECS service consists of:
 * An ECS service to maintain a number of instances of the task
 * Log collection via the provided CloudWatch log group
 
-![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-ecs-service/master/docs/architecture.png)
+![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-ecs-service/main/docs/architecture.png)
 
 Usage
 -----
