@@ -31,9 +31,7 @@ workflows:
       - test:
           filters:
             branches:
-              only:
-                - main
-                - /^dependabot.*/
+              only: main
       - prerelease:
           requires:
             - test
