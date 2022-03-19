@@ -47,7 +47,9 @@ workflows:
       - test:
           filters:
             branches:
-              only: main
+              only:
+                - main
+                - /^dependabot.*/
       - merge_pull_request:
           requires:
             - test
