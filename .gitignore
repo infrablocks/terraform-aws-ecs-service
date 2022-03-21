@@ -22,7 +22,6 @@ run/pids/
 run/logs/
 *.log
 .tmp
-.rakeTasks
 
 # RSpec
 .rspec_status
