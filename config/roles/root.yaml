@@ -1,0 +1,7 @@
+---
+configuration_directory: "%{cwd}/spec/unit/infra/root"
+state_file: "%{cwd}/state/root.tfstate"
+vars:
+  region: "%{hiera('region')}"
+
+  deployment_identifier: "%{hiera('deployment_identifier')}"

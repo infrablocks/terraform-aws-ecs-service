@@ -13,6 +13,7 @@ vendor/
 build/
 dist/
 .rakeTasks
+.bundle
 
 # OS
 .DS_Store

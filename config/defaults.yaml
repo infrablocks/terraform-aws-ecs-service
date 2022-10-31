@@ -7,6 +7,7 @@ vpc_cidr: "10.1.0.0/16"
 private_network_cidr: '10.0.0.0/8'
 
 component: 'test'
+deployment_identifier: "%{hiera('seed')}"
 
 work_directory: 'build'
 configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')}"
