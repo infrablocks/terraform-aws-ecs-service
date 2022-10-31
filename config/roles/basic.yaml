@@ -1,6 +1,6 @@
 ---
-configuration_directory: "%{cwd}/spec/unit/infra/prerequisites"
-state_file: "%{cwd}/state/prerequisites.tfstate"
+configuration_directory: "%{cwd}/examples/basic"
+state_file: "%{cwd}/state/basic.tfstate"
 vars:
   region: "%{hiera('region')}"
 
@@ -22,9 +22,3 @@ vars:
   cluster_minimum_size: "%{hiera('cluster_minimum_size')}"
   cluster_maximum_size: "%{hiera('cluster_maximum_size')}"
   cluster_desired_capacity: "%{hiera('cluster_desired_capacity')}"
-
-  service_port: "%{hiera('service_port')}"
-
-  alb_health_check_path: "%{hiera('alb_health_check_path')}"
-  elb_health_check_target: "%{hiera('elb_health_check_target')}"
-  elb_https_allow_cidrs: "%{hiera('elb_https_allow_cidrs')}"

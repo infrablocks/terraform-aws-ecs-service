@@ -1,5 +1,5 @@
 resource "aws_security_group" "task" {
-  count = (var.associate_default_security_group == "yes" && var.service_task_network_mode == "awsvpc") ? 1 : 0
+  count = (local.associate_default_security_group == "yes" && local.service_task_network_mode == "awsvpc") ? 1 : 0
 
   name        = "${var.component}-${var.deployment_identifier}-${var.service_name}"
   description = "Container access for component: ${var.component}, deployment: ${var.deployment_identifier}, service: ${var.service_name}"
@@ -14,7 +14,7 @@ resource "aws_security_group" "task" {
 }
 
 resource "aws_security_group_rule" "cluster_default_ingress" {
-  count = (var.associate_default_security_group == "yes" && var.include_default_ingress_rule == "yes" && var.service_task_network_mode == "awsvpc") ? 1 : 0
+  count = (local.associate_default_security_group == "yes" && local.include_default_ingress_rule == "yes" && local.service_task_network_mode == "awsvpc") ? 1 : 0
 
   type = "ingress"
 
@@ -24,11 +24,11 @@ resource "aws_security_group_rule" "cluster_default_ingress" {
   from_port = 0
   to_port   = 0
 
-  cidr_blocks = var.default_security_group_ingress_cidrs
+  cidr_blocks = local.default_security_group_ingress_cidrs
 }
 
 resource "aws_security_group_rule" "cluster_default_egress" {
-  count = (var.associate_default_security_group == "yes" && var.include_default_egress_rule == "yes" && var.service_task_network_mode == "awsvpc") ? 1 : 0
+  count = (local.associate_default_security_group == "yes" && local.include_default_egress_rule == "yes" && local.service_task_network_mode == "awsvpc") ? 1 : 0
 
   type = "egress"
 
@@ -38,5 +38,5 @@ resource "aws_security_group_rule" "cluster_default_egress" {
   from_port = 0
   to_port   = 0
 
-  cidr_blocks = var.default_security_group_egress_cidrs
+  cidr_blocks = local.default_security_group_egress_cidrs
 }

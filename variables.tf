@@ -5,6 +5,7 @@ variable "region" {
 variable "vpc_id" {
   description = "The ID of the VPC into which to deploy the service."
   type        = string
+  default     = null
 }
 variable "subnet_ids" {
   description = "The IDs of the subnets in which to create ENIs when the service task network mode is \"awsvpc\"."
@@ -54,7 +55,6 @@ variable "service_command" {
 variable "service_port" {
   description = "The port the containers will be listening on."
   type        = string
-  default     = ""
 }
 
 variable "service_desired_count" {

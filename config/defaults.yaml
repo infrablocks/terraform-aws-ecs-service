@@ -7,9 +7,7 @@ vpc_cidr: "10.1.0.0/16"
 private_network_cidr: '10.0.0.0/8'
 
 component: 'test'
-
-work_directory: 'build'
-configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')}"
+deployment_identifier: "%{hiera('seed')}"
 
 service_task_container_definitions: ''
 service_task_network_mode: "host"
@@ -57,22 +55,19 @@ placement_constraints:
   - type: "memberOf"
     expression: "attribute:ecs.availability-zone in [eu-west-2a, eu-west-2b]"
 
-domain_name: 'greasedscone.uk'
-public_zone_id: 'Z4Q2X3ESOZT4N'
-private_zone_id: 'Z2CDAFD23Q10HO'
+domain_name: 'infrablocks.click'
+public_zone_id: "Z08829023L5IPIQBJOX63"
+private_zone_id: 'Z0211739BXR21FNN139O'
 
 cluster_name: 'test-cluster'
-cluster_instance_ssh_public_key_path: "%{hiera('project_directory')}/config/secrets/keys/cluster/ssh.public"
+cluster_instance_ssh_public_key_path: "%{cwd}/config/secrets/keys/cluster/ssh.public"
 cluster_instance_type: 't2.medium'
 
 cluster_minimum_size: 1
 cluster_maximum_size: 3
 cluster_desired_capacity: 2
 
-service_certificate_body: "%{hiera('project_directory')}/config/secrets/certificates/cert.pem"
-service_certificate_private_key: "%{hiera('project_directory')}/config/secrets/certificates/ssl.key"
-
 alb_health_check_path: "/"
 elb_health_check_target: "HTTP:80/"
 elb_https_allow_cidrs:
-  - "%{hiera('public_address')}/32"
+  - '10.1.0.0/16'
