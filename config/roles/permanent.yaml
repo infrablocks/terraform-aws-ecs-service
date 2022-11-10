@@ -1,6 +1,6 @@
 ---
 source_directory: "spec/infra/permanent"
-state_file: "%{hiera('project_directory')}/state/permanent.tfstate"
+state_file: "%{cwd}/state/permanent.tfstate"
 vars:
   region: "%{hiera('region')}"
 
