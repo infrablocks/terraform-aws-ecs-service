@@ -1366,10 +1366,11 @@ GEM
       thor
     colored2 (3.1.2)
     concurrent-ruby (1.1.10)
-    confidante (0.27.0)
+    confidante (0.28.0)
       activesupport (>= 4)
-      hiera (~> 3.3, >= 3.3.1)
+      hiera (~> 3.3)
       shikashi (~> 0.6)
+      vault (~> 0.17)
     diff-lcs (1.5.0)
     dry-inflector (1.0.0)
     evalhook (0.6.0)
@@ -1516,6 +1517,8 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
+    vault (0.17.0)
+      aws-sigv4
 
 PLATFORMS
   ruby
