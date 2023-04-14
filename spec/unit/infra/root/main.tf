@@ -39,6 +39,8 @@ module "ecs_service" {
 
   force_new_deployment = var.force_new_deployment
 
+  wait_for_steady_state = var.wait_for_steady_state
+
   attach_to_load_balancer = var.attach_to_load_balancer
   service_elb_name = var.service_elb_name
   target_group_arn = var.target_group_arn

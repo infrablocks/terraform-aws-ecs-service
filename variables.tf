@@ -215,3 +215,9 @@ variable "force_new_deployment" {
   type        = string
   default     = "no"
 }
+
+variable "wait_for_steady_state" {
+  description = "Whether or not to wait for the service deployment to complete (true or false). Defaults to false."
+  type        = bool
+  default     = false
+}

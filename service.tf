@@ -14,6 +14,8 @@ resource "aws_ecs_service" "service" {
 
   force_new_deployment = local.force_new_deployment == "yes"
 
+  wait_for_steady_state = local.wait_for_steady_state
+
   dynamic "network_configuration" {
     for_each = local.service_task_network_mode == "awsvpc" ? [local.subnet_ids] : []
 

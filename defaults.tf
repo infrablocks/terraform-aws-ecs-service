@@ -16,6 +16,7 @@ locals {
   scheduling_strategy   = var.scheduling_strategy == null ? "REPLICA" : var.scheduling_strategy
   placement_constraints = var.placement_constraints == null ? [] : var.placement_constraints
   force_new_deployment  = var.force_new_deployment == null ? "no" : var.force_new_deployment
+  wait_for_steady_state  = var.wait_for_steady_state == null ? false : var.wait_for_steady_state
 
   attach_to_load_balancer = var.attach_to_load_balancer == null ? "yes" : var.attach_to_load_balancer
   service_elb_name        = var.service_elb_name == null ? "" : var.service_elb_name
