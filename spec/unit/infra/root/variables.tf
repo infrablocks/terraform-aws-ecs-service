@@ -124,3 +124,6 @@ variable "log_group_retention" {
 variable "force_new_deployment" {
   default = null
 }
+variable "wait_for_steady_state" {
+  default = null
+}

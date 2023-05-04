@@ -93,6 +93,12 @@ describe 'service' do
               .with_attribute_value(:force_new_deployment, false))
     end
 
+    it 'does not wait for deployment to complete' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:wait_for_steady_state, false))
+    end
+
     it 'does not configure VPC networking' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
@@ -229,6 +235,38 @@ describe 'service' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
               .with_attribute_value(:force_new_deployment, false))
+    end
+  end
+
+  describe 'when wait_for_steady_state is true' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.wait_for_steady_state = true
+      end
+    end
+
+    it 'waits for the deployment to complete on apply' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:wait_for_steady_state, true))
+    end
+  end
+
+  describe 'when wait_for_steady_state is false' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.force_new_deployment = 'no'
+      end
+    end
+
+    it 'does not wait for the deployment to complete on apply' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:wait_for_steady_state, false))
     end
   end
 
