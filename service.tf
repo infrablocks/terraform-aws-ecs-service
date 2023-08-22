@@ -1,4 +1,6 @@
 resource "aws_ecs_service" "service" {
+  propagate_tags = "TASK_DEFINITION"
+
   name            = var.service_name
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.service.arn
