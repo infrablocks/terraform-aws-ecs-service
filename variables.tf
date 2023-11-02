@@ -27,6 +27,13 @@ variable "service_task_container_definitions" {
   default     = ""
   type        = string
 }
+
+variable "service_use_latest_task_definition" {
+  description = "If true use the latest ACTIVE revision of the task definition (true or false). Defaults to false."
+  type        = bool
+  default     = false
+}
+
 variable "service_task_network_mode" {
   description = "The network mode used for the containers in the task."
   default     = "bridge"

@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "service" {
   name            = var.service_name
   cluster         = var.ecs_cluster_id
-  task_definition = aws_ecs_task_definition.service.arn
+  task_definition = (var.service_use_latest_task_definition) ? aws_ecs_task_definition.service.arn_without_revision : aws_ecs_task_definition.service.arn
   desired_count   = local.service_desired_count
   iam_role        = (local.attach_to_load_balancer == "yes" && local.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
 

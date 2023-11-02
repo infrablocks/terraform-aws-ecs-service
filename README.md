@@ -10,7 +10,7 @@ The ECS service requires:
 * A service role ARN allowing ECS to manage load balancers
 * An ELB for the service
 * A CloudWatch log group
- 
+
 The ECS service consists of:
 * An ECS task definition for the containers making up the service
 * An ECS service to maintain a number of instances of the task
@@ -28,52 +28,52 @@ configuration:
 module "ecs_service" {
   source = "infrablocks/ecs-service/aws"
   version = "2.0.0"
-  
+
   vpc_id = "vpc-fb7dc365"
-  
+
   component = "important-component"
   deployment_identifier = "production"
-  
+
   service_name = "web-app"
   service_image = "images/web-app:0.3.1"
   service_port = "8000"
   service_command = "[\"node\", \"server.js\"]"
-  
+
   service_desired_count = "3"
   service_deployment_maximum_percent = "50"
   service_deployment_minimum_healthy_percent = "200"
-  
+
   service_elb_name = "elb-service-web-app"
-  
+
   service_role = "arn:aws:iam::151388205202:role/service-task-role"
-  
+
   service_volumes = [
     {
       name = "data"
     }
   ]
-  
+
   ecs_cluster_id = "arn:aws:ecs:eu-west-2:151388205202:cluster/web-app"
   ecs_cluster_service_role_arn = "arn:aws:iam::151388205202:role/cluster-service-role-web-app"
 }
 ```
 
-By default, the module will use the provided region, log group, service name, 
-image, port and command to build a suitable task definition.
+By default, the module will use the provided region, log group, service name,
+image, port and command to build a suitable task definition. Set `service_use_latest_task_definition = true` to use the latest active revision.
 
 If further configuration of the task definition is required, provide the task
-definition content using the var `service_task_definition`. In this case, 
+definition content using the var `service_task_definition`. In this case,
 `service_image` and `service_command` need not be provided.
 
 As mentioned above, the ECS service deploys into an existing base network and
-ECS cluster using an existing ELB. Whilst these can be created using any 
-mechanism you like, the following modules may be of use: 
+ECS cluster using an existing ELB. Whilst these can be created using any
+mechanism you like, the following modules may be of use:
 * [AWS Base Networking](https://github.com/infrablocks/terraform-aws-base-networking)
 * [AWS ECS Cluster](https://github.com/infrablocks/terraform-aws-ecs-cluster)
 * [AWS ECS Load Balancer](https://github.com/infrablocks/terraform-aws-ecs-load-balancer)
 
-See the 
-[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/ecs-service/aws/latest) 
+See the
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/ecs-service/aws/latest)
 for more details.
 
 ### Inputs
@@ -85,6 +85,7 @@ for more details.
 | component                                  | The component this service will contain                                      | -                         | yes                                                                     |
 | deployment_identifier                      | An identifier for this instantiation                                         | -                         | yes                                                                     |
 | service_task_container_definitions         | A template for the container definitions in the task                         | see container-definitions | no                                                                      |
+| service_use_latest_task_definition         | if true use the latest ACTIVE revision of the task definition                | false                     | no                                                                      |
 | service_name                               | The name of the service being created                                        | -                         | yes                                                                     |
 | service_image                              | The docker image (including version) to deploy                               | -                         | no                                                                      |
 | service_command                            | The command to run to start the container                                    | []                        | no                                                                      |
@@ -112,7 +113,7 @@ for more details.
 
 ### Compatibility
 
-This module is compatible with Terraform versions greater than or equal to 
+This module is compatible with Terraform versions greater than or equal to
 Terraform 1.0.
 
 Development
@@ -120,7 +121,7 @@ Development
 
 ### Machine Requirements
 
-In order for the build to run correctly, a few tools will need to be installed 
+In order for the build to run correctly, a few tools will need to be installed
 on your development machine:
 
 * Ruby (3.1.1)
@@ -174,13 +175,13 @@ direnv allow <repository-directory>
 
 ### Running the build
 
-Running the build requires an AWS account and AWS credentials. You are free to 
+Running the build requires an AWS account and AWS credentials. You are free to
 configure credentials however you like as long as an access key ID and secret
-access key are available. These instructions utilise 
+access key are available. These instructions utilise
 [aws-vault](https://github.com/99designs/aws-vault) which makes credential
 management easy and secure.
 
-To provision module infrastructure, run tests and then destroy that 
+To provision module infrastructure, run tests and then destroy that
 infrastructure, execute:
 
 ```bash
@@ -267,14 +268,14 @@ openssl aes-256-cbc \
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at 
-https://github.com/infrablocks/terraform-aws-ecs-service. This project is 
-intended to be a safe, welcoming space for collaboration, and contributors are 
-expected to adhere to the 
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/infrablocks/terraform-aws-ecs-service. This project is
+intended to be a safe, welcoming space for collaboration, and contributors are
+expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 License
 -------
 
-The library is available as open source under the terms of the 
+The library is available as open source under the terms of the
 [MIT License](http://opensource.org/licenses/MIT).
