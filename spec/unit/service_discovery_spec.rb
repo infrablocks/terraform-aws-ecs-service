@@ -26,14 +26,14 @@ describe 'service discovery' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
-           'service_discovery_create_registry is "no"' do
+  describe 'when register_in_service_discovery is true and ' \
+           'service_discovery_create_registry is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
-        vars.service_discovery_create_registry = 'no'
+        vars.register_in_service_discovery = true
+        vars.service_discovery_create_registry = false
       end
     end
 
@@ -45,14 +45,14 @@ describe 'service discovery' do
     end
   end
 
-  describe 'when register_in_service_discovery is "no" and ' \
-           'service_discovery_create_registry is "yes"' do
+  describe 'when register_in_service_discovery is false and ' \
+           'service_discovery_create_registry is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'no'
-        vars.service_discovery_create_registry = 'yes'
+        vars.register_in_service_discovery = false
+        vars.service_discovery_create_registry = true
       end
     end
 
@@ -64,13 +64,13 @@ describe 'service discovery' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
+  describe 'when register_in_service_discovery is true and ' \
            'service_discovery_create_registry is not provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
+        vars.register_in_service_discovery = true
         vars.service_discovery_namespace_id =
           output(role: :prerequisites, name: 'service_discovery_namespace_id')
       end
@@ -114,14 +114,14 @@ describe 'service discovery' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
-           'service_discovery_create_registry is "yes"' do
+  describe 'when register_in_service_discovery is true and ' \
+           'service_discovery_create_registry is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
-        vars.service_discovery_create_registry = 'yes'
+        vars.register_in_service_discovery = true
+        vars.service_discovery_create_registry = true
         vars.service_discovery_namespace_id =
           output(role: :prerequisites, name: 'service_discovery_namespace_id')
       end
@@ -165,13 +165,13 @@ describe 'service discovery' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
+  describe 'when register_in_service_discovery is true and ' \
            'service_discovery_record_type is provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
+        vars.register_in_service_discovery = true
         vars.service_discovery_record_type = 'CNAME'
       end
     end

@@ -9,7 +9,6 @@ private_network_cidr: '10.0.0.0/8'
 component: 'test'
 deployment_identifier: "%{hiera('seed')}"
 
-service_task_container_definitions: ''
 service_task_network_mode: "host"
 service_task_pid_mode: "host"
 
@@ -23,26 +22,20 @@ service_port: 80
 service_desired_count: 2
 service_deployment_maximum_percent: 150
 service_deployment_minimum_healthy_percent: 25
-service_role: ''
 service_health_check_grace_period_seconds: 0
 
-attach_to_load_balancer: 'no'
-service_elb_name: ''
-target_group_arn: ''
+attach_to_load_balancer: false
 
-associate_default_security_group: "yes"
+associate_default_security_group: true
 default_security_group_ingress_cidrs:
   - "10.0.0.0/8"
 default_security_group_egress_cidrs:
   - "0.0.0.0/0"
 
-register_in_service_discovery: 'no'
-service_discovery_create_registry: 'yes'
-service_discovery_namespace_id: ''
-service_discovery_registry_arn: ''
-service_discovery_record_type: ''
+register_in_service_discovery: false
+service_discovery_create_registry: true
 
-include_log_group: 'yes'
+include_log_group: true
 log_group_retention: 0
 
 service_volumes:

@@ -206,12 +206,12 @@ describe 'service' do
     end
   end
 
-  describe 'when force_new_deployment is "yes"' do
+  describe 'when force_new_deployment is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.force_new_deployment = 'yes'
+        vars.force_new_deployment = true
       end
     end
 
@@ -222,12 +222,12 @@ describe 'service' do
     end
   end
 
-  describe 'when force_new_deployment is "no"' do
+  describe 'when force_new_deployment is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.force_new_deployment = 'no'
+        vars.force_new_deployment = false
       end
     end
 
@@ -259,7 +259,7 @@ describe 'service' do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.force_new_deployment = 'no'
+        vars.force_new_deployment = false
       end
     end
 
@@ -270,10 +270,10 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "no"' do
+  describe 'when attach_to_load_balancer is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = 'no'
+        vars.attach_to_load_balancer = false
       end
     end
 
@@ -298,12 +298,12 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "yes"' do
+  describe 'when attach_to_load_balancer is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.attach_to_load_balancer = 'yes'
+        vars.attach_to_load_balancer = true
       end
     end
 
@@ -320,11 +320,11 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "yes" and only ' \
+  describe 'when attach_to_load_balancer is true and only ' \
            'service_elb_name is provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = 'yes'
+        vars.attach_to_load_balancer = true
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
       end
@@ -343,7 +343,7 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "yes" and both ' \
+  describe 'when attach_to_load_balancer is true and both ' \
            'service_elb_name and target_group_arn are provided' do
     let(:target_group_arn) do
       output(role: :prerequisites, name: 'target_group_arn')
@@ -351,7 +351,7 @@ describe 'service' do
 
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = 'yes'
+        vars.attach_to_load_balancer = true
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.target_group_arn =
@@ -372,11 +372,11 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "yes" and ' \
+  describe 'when attach_to_load_balancer is true and ' \
            'target_container_name and target_port are not provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = 'yes'
+        vars.attach_to_load_balancer = true
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
       end
@@ -396,11 +396,11 @@ describe 'service' do
     end
   end
 
-  describe 'when attach_to_load_balancer is "yes" and ' \
+  describe 'when attach_to_load_balancer is true and ' \
            'target_container_name and target_port are provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = 'yes'
+        vars.attach_to_load_balancer = true
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.target_container_name = 'some-service-name'
@@ -523,12 +523,12 @@ describe 'service' do
     end
   end
 
-  describe 'when register_in_service_discovery is "no"' do
+  describe 'when register_in_service_discovery is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'no'
+        vars.register_in_service_discovery = false
       end
     end
 
@@ -539,7 +539,7 @@ describe 'service' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
+  describe 'when register_in_service_discovery is true and ' \
            'service_discovery_record_type, ' \
            'service_discovery_container_name and ' \
            'service_discovery_container_port are not provided' do
@@ -547,7 +547,7 @@ describe 'service' do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
+        vars.register_in_service_discovery = true
       end
     end
 
@@ -565,7 +565,7 @@ describe 'service' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
+  describe 'when register_in_service_discovery is true and ' \
            'service_discovery_container_name and ' \
            'service_discovery_container_port are provided and ' \
            'service_discovery_record_type is not provided' do
@@ -573,7 +573,7 @@ describe 'service' do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
+        vars.register_in_service_discovery = true
         vars.service_discovery_container_name = 'some-service-name'
         vars.service_discovery_container_port = 9009
       end
@@ -593,13 +593,13 @@ describe 'service' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
+  describe 'when register_in_service_discovery is true and ' \
            'service_discovery_record_type is not "SRV"' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
+        vars.register_in_service_discovery = true
         vars.service_discovery_record_type = 'CNAME'
       end
     end
@@ -618,8 +618,8 @@ describe 'service' do
     end
   end
 
-  describe 'when register_in_service_discovery is "yes" and ' \
-           'service_discovery_create_registry is "no"' do
+  describe 'when register_in_service_discovery is true and ' \
+           'service_discovery_create_registry is false' do
     let(:service_discovery_registry_arn) do
       output(role: :prerequisites, name: 'service_discovery_registry_arn')
     end
@@ -628,8 +628,8 @@ describe 'service' do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.register_in_service_discovery = 'yes'
-        vars.service_discovery_create_registry = 'no'
+        vars.register_in_service_discovery = true
+        vars.service_discovery_create_registry = false
         vars.service_discovery_registry_arn =
           output(role: :prerequisites, name: 'service_discovery_registry_arn')
       end

@@ -216,13 +216,13 @@ describe 'security groups' do
   end
 
   describe 'when service_task_network_mode is "awsvpc" and ' \
-           'associate_default_security_group is "no"' do
+           'associate_default_security_group is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.service_task_network_mode = 'awsvpc'
-        vars.associate_default_security_group = 'no'
+        vars.associate_default_security_group = false
       end
     end
 
@@ -238,7 +238,7 @@ describe 'security groups' do
   end
 
   describe 'when service_task_network_mode is "awsvpc" and ' \
-           'associate_default_security_group is "yes" and' \
+           'associate_default_security_group is true and' \
            'include_default_ingress_rule is not provided and ' \
            'include_default_egress_rule is not provided' do
     before(:context) do
@@ -246,7 +246,7 @@ describe 'security groups' do
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.service_task_network_mode = 'awsvpc'
-        vars.associate_default_security_group = 'yes'
+        vars.associate_default_security_group = true
       end
     end
 
@@ -272,17 +272,17 @@ describe 'security groups' do
   end
 
   describe 'when service_task_network_mode is "awsvpc" and ' \
-           'associate_default_security_group is "yes" and' \
-           'include_default_ingress_rule is "yes" and ' \
-           'include_default_egress_rule is "yes"' do
+           'associate_default_security_group is true and' \
+           'include_default_ingress_rule is true and ' \
+           'include_default_egress_rule is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.service_task_network_mode = 'awsvpc'
-        vars.associate_default_security_group = 'yes'
-        vars.include_default_ingress_rule = 'yes'
-        vars.include_default_egress_rule = 'yes'
+        vars.associate_default_security_group = true
+        vars.include_default_ingress_rule = true
+        vars.include_default_egress_rule = true
       end
     end
 
@@ -308,17 +308,17 @@ describe 'security groups' do
   end
 
   describe 'when service_task_network_mode is "awsvpc" and ' \
-           'associate_default_security_group is "yes" and' \
-           'include_default_ingress_rule is "no" and ' \
-           'include_default_egress_rule is "no"' do
+           'associate_default_security_group is true and' \
+           'include_default_ingress_rule is false and ' \
+           'include_default_egress_rule is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
         vars.service_task_network_mode = 'awsvpc'
-        vars.associate_default_security_group = 'yes'
-        vars.include_default_ingress_rule = 'no'
-        vars.include_default_egress_rule = 'no'
+        vars.associate_default_security_group = true
+        vars.include_default_ingress_rule = false
+        vars.include_default_egress_rule = false
       end
     end
 

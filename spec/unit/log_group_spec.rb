@@ -49,7 +49,7 @@ describe 'log group' do
                 :tags,
                 a_hash_including(
                   Component: component,
-                  Environment: deployment_identifier
+                  DeploymentIdentifier: deployment_identifier
                 )
               ))
     end
@@ -79,12 +79,12 @@ describe 'log group' do
     end
   end
 
-  describe 'when include_log_group is "no"' do
+  describe 'when include_log_group is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.include_log_group = 'no'
+        vars.include_log_group = false
       end
     end
 
@@ -94,12 +94,12 @@ describe 'log group' do
     end
   end
 
-  describe 'when include_log_group is "yes"' do
+  describe 'when include_log_group is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.service_elb_name =
           output(role: :prerequisites, name: 'load_balancer_name')
-        vars.include_log_group = 'yes'
+        vars.include_log_group = true
       end
     end
 
@@ -131,7 +131,7 @@ describe 'log group' do
                 :tags,
                 a_hash_including(
                   Component: component,
-                  Environment: deployment_identifier
+                  DeploymentIdentifier: deployment_identifier
                 )
               ))
     end

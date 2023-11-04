@@ -50,7 +50,7 @@ describe 'task definition' do
     it 'does not set a task role ARN' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_task_definition')
-              .with_attribute_value(:task_role_arn, ''))
+              .with_attribute_value(:task_role_arn, a_nil_value))
     end
 
     it 'does not configure any volumes' do
