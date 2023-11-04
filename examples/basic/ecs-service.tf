@@ -11,7 +11,7 @@ module "ecs_service" {
   service_command = ["nginx", "-g", "daemon off;"]
   service_port = 80
 
-  attach_to_load_balancer = "yes"
+  attach_to_load_balancer = true
   service_elb_name = module.ecs_load_balancer.name
 
   ecs_cluster_id = module.ecs_cluster.cluster_id
