@@ -113,8 +113,7 @@ for more details.
 
 ### Compatibility
 
-This module is compatible with Terraform versions greater than or equal to
-Terraform 1.0.
+This module is compatible with Terraform 1.1 and higher and requires Terraform AWS provider version 4.59 or higher.
 
 Development
 -----------
