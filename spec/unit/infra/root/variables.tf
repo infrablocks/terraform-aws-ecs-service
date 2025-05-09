@@ -143,17 +143,17 @@ variable "wait_for_steady_state" {
   default = null
 }
 
-variable "fargate" {
+variable "use_fargate" {
   type    = bool
   default = null
 }
 
-variable "cpu" {
+variable "service_task_cpu" {
   type    = string
   default = null
 }
 
-variable "memory" {
+variable "service_task_memory" {
   type    = string
   default = null
 }

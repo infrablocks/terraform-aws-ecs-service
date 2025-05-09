@@ -17,8 +17,8 @@ locals {
             "$${port}", var.service_port),
           "$${region}", var.region),
         "$${log_group}", var.include_log_group ? aws_cloudwatch_log_group.service[0].name : ""),
-      "$${cpu}", var.cpu),
-    "$${memory}", var.memory)
+      "$${cpu}", var.service_task_cpu),
+    "$${memory}", var.service_task_memory)
 }
 
 resource "aws_ecs_task_definition" "service" {
@@ -30,9 +30,9 @@ resource "aws_ecs_task_definition" "service" {
 
   task_role_arn = var.service_role
 
-  requires_compatibilities = var.fargate ? ["FARGATE"] : null
-  cpu = var.fargate ? var.cpu : null
-  memory = var.fargate ? var.memory : null
+  requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
+  cpu = var.use_fargate ? var.service_task_cpu : null
+  memory = var.use_fargate ? var.service_task_memory : null
 
   dynamic "volume" {
     for_each = var.service_volumes

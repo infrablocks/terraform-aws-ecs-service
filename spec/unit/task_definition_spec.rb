@@ -158,13 +158,13 @@ describe 'task definition' do
     end
   end
 
-  describe 'when task_type is fargate' do
+  fdescribe 'when task_type is fargate' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.attach_to_load_balancer = false
-        vars.fargate = true
-        vars.cpu = '256'
-        vars.memory = '512'
+        vars.use_fargate = true
+        vars.service_task_cpu = '256'
+        vars.service_task_memory = '512'
       end
     end
 
@@ -191,8 +191,8 @@ describe 'task definition' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.attach_to_load_balancer = false
-        vars.cpu = '1234'
-        vars.memory = '4567'
+        vars.service_task_cpu = '1234'
+        vars.service_task_memory = '4567'
         vars.service_task_container_definitions =
           '[{"cpu": ${cpu}, "memory": ${memory}}]'
       end

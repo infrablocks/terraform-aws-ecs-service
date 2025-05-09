@@ -256,20 +256,20 @@ variable "always_use_latest_task_definition" {
   nullable    = false
 }
 
-variable "fargate" {
+variable "use_fargate" {
   description = "Whether or not to use Fargate for the service."
   type        = bool
   default     = false
   nullable    = false
 }
 
-variable "cpu" {
+variable "service_task_cpu" {
   description = "The number of CPU units to use for the service task when deployed using Fargate."
   type        = string
   default     = "256"
   nullable    = false
 }
-variable "memory" {
+variable "service_task_memory" {
   description = "The amount of memory (in MiB) to use for the service task when deployed using Fargate."
   type        = string
   default     = "512"
