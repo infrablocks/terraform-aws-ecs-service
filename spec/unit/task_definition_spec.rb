@@ -157,4 +157,52 @@ describe 'task definition' do
               ))
     end
   end
+
+  describe 'when task_type is fargate' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.attach_to_load_balancer = false
+        vars.fargate = true
+        vars.cpu = '256'
+        vars.memory = '512'
+      end
+    end
+
+    it 'uses the provided task type' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:requires_compatibilities, ['FARGATE']))
+    end
+
+    it 'uses the provided cpu value' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:cpu, '256'))
+    end
+
+    it 'uses the provided memory value' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:memory, '512'))
+    end
+  end
+
+  describe 'when cpu and memory is specified' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.attach_to_load_balancer = false
+        vars.cpu = '1234'
+        vars.memory = '4567'
+        vars.service_task_container_definitions =
+          '[{"cpu": ${cpu}, "memory": ${memory}}]'
+      end
+    end
+
+    it 'uses the provided CPU and memory values in the container definition' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:container_definitions,
+                                    '[{"cpu":1234,"memory":4567}]'))
+    end
+  end
 end

@@ -66,4 +66,8 @@ module "ecs_service" {
 
   ecs_cluster_id = data.terraform_remote_state.prerequisites.outputs.cluster_id
   ecs_cluster_service_role_arn = data.terraform_remote_state.prerequisites.outputs.service_role_arn
+
+  fargate = var.fargate
+  cpu = var.cpu
+  memory = var.memory
 }

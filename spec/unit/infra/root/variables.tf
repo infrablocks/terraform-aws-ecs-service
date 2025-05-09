@@ -142,3 +142,18 @@ variable "wait_for_steady_state" {
   type    = bool
   default = null
 }
+
+variable "fargate" {
+  type    = bool
+  default = null
+}
+
+variable "cpu" {
+  type    = string
+  default = null
+}
+
+variable "memory" {
+  type    = string
+  default = null
+}
