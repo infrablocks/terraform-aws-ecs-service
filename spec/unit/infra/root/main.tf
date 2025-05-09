@@ -70,4 +70,6 @@ module "ecs_service" {
   use_fargate = var.use_fargate
   service_task_cpu = var.service_task_cpu
   service_task_memory = var.service_task_memory
+  service_task_operating_system_family = var.service_task_operating_system_family
+  service_task_cpu_architecture = var.service_task_cpu_architecture
 }

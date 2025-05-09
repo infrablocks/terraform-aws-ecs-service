@@ -157,3 +157,13 @@ variable "service_task_memory" {
   type    = string
   default = null
 }
+
+variable "service_task_operating_system_family" {
+  type    = string
+  default = null
+}
+
+variable "service_task_cpu_architecture" {
+  type    = string
+  default = null
+}

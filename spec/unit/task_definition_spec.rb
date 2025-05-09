@@ -158,36 +158,87 @@ describe 'task definition' do
     end
   end
 
-  fdescribe 'when task_type is fargate' do
-    before(:context) do
-      @plan = plan(role: :root) do |vars|
-        vars.attach_to_load_balancer = false
-        vars.use_fargate = true
-        vars.service_task_cpu = '256'
-        vars.service_task_memory = '512'
+  describe 'when task_type is fargate' do
+    describe 'by default' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+        end
+      end
+
+      it 'uses the provided task type' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:requires_compatibilities, ['FARGATE']))
+      end
+
+      it 'uses the default cpu value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:cpu, '256'))
+      end
+
+      it 'uses the default memory value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:memory, '512'))
+      end
+
+      it 'uses the default operating system family value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:runtime_platform, [{
+                                        cpu_architecture: nil,
+                                        operating_system_family: 'LINUX'
+                                      }]))
       end
     end
 
-    it 'uses the provided task type' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_ecs_task_definition')
-              .with_attribute_value(:requires_compatibilities, ['FARGATE']))
-    end
+    describe 'when container config is specified' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+          vars.service_task_cpu = '1234'
+          vars.service_task_memory = '4567'
+          vars.service_task_operating_system_family = 'WINDOWS_SERVER_2019_FULL'
+          vars.service_task_cpu_architecture = 'ARM64'
+        end
+      end
 
-    it 'uses the provided cpu value' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_ecs_task_definition')
-              .with_attribute_value(:cpu, '256'))
-    end
+      it 'uses the provided task type' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:requires_compatibilities, ['FARGATE']))
+      end
 
-    it 'uses the provided memory value' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_ecs_task_definition')
-              .with_attribute_value(:memory, '512'))
+      it 'uses the provided cpu value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:cpu, '1234'))
+      end
+
+      it 'uses the provided memory value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:memory, '4567'))
+      end
+
+      it 'uses the provided cpu and OS values' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:runtime_platform, [{
+                                        cpu_architecture: 'ARM64',
+                                        # rubocop:disable Layout/LineLength
+                                        operating_system_family: 'WINDOWS_SERVER_2019_FULL'
+                                        # rubocop:enable Layout/LineLength
+                                      }]))
+      end
     end
   end
 
-  describe 'when cpu and memory is specified' do
+  describe 'when cpu and memory is specified for non-fargate service' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
         vars.attach_to_load_balancer = false

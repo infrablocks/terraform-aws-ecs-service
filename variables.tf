@@ -275,3 +275,16 @@ variable "service_task_memory" {
   default     = "512"
   nullable    = false
 }
+variable "service_task_operating_system_family" {
+  description = "The operating system family to use for the service task when deployed using Fargate."
+  type        = string
+  default     = "LINUX"
+  nullable    = false
+}
+
+variable "service_task_cpu_architecture" {
+  description = "The cpu architecture to use for the service task"
+  type        = string
+  default     = null
+  nullable    = true
+}

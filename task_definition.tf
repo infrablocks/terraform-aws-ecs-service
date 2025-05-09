@@ -33,6 +33,10 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
   cpu = var.use_fargate ? var.service_task_cpu : null
   memory = var.use_fargate ? var.service_task_memory : null
+  runtime_platform {
+    operating_system_family = var.use_fargate ? var.service_task_operating_system_family : null
+    cpu_architecture        = var.use_fargate ? var.service_task_cpu_architecture : null
+  }
 
   dynamic "volume" {
     for_each = var.service_volumes
