@@ -142,3 +142,28 @@ variable "wait_for_steady_state" {
   type    = bool
   default = null
 }
+
+variable "use_fargate" {
+  type    = bool
+  default = null
+}
+
+variable "service_task_cpu" {
+  type    = string
+  default = null
+}
+
+variable "service_task_memory" {
+  type    = string
+  default = null
+}
+
+variable "service_task_operating_system_family" {
+  type    = string
+  default = null
+}
+
+variable "service_task_cpu_architecture" {
+  type    = string
+  default = null
+}
