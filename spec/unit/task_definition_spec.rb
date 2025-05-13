@@ -58,6 +58,12 @@ describe 'task definition' do
         .to(include_resource_creation(type: 'aws_ecs_task_definition')
               .with_attribute_value(:volume, a_nil_value))
     end
+
+    it "does not set the task's execution role ARN" do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:execution_role_arn, a_nil_value))
+    end
   end
 
   describe 'when service_task_network_mode is provided' do
@@ -155,6 +161,141 @@ describe 'task definition' do
                   )
                 )
               ))
+    end
+  end
+
+  describe 'when task_type is fargate' do
+    describe 'by default' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+        end
+      end
+
+      it 'uses the provided task type' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:requires_compatibilities, ['FARGATE']))
+      end
+
+      it 'uses the default cpu value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:cpu, '256'))
+      end
+
+      it 'uses the default memory value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:memory, '512'))
+      end
+
+      it 'uses the default operating system family value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:runtime_platform, [{
+                                        cpu_architecture: nil,
+                                        operating_system_family: 'LINUX'
+                                      }]))
+      end
+
+      it 'uses awsvpc network mode' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:network_mode, 'awsvpc'))
+      end
+
+      it 'creates a default task execution role' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_iam_role')
+                .with_attribute_value(
+                  :name,
+                  "default-task-execution-role-#{deployment_identifier}"
+                ))
+      end
+    end
+
+    describe 'when container config is specified' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+          vars.service_task_cpu = '1234'
+          vars.service_task_memory = '4567'
+          vars.service_task_operating_system_family = 'WINDOWS_SERVER_2019_FULL'
+          vars.service_task_cpu_architecture = 'ARM64'
+        end
+      end
+
+      it 'uses the provided task type' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:requires_compatibilities, ['FARGATE']))
+      end
+
+      it 'uses the provided cpu value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:cpu, '1234'))
+      end
+
+      it 'uses the provided memory value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:memory, '4567'))
+      end
+
+      it 'uses the provided cpu and OS values' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(
+                  :runtime_platform, [{
+                    cpu_architecture: 'ARM64',
+                    operating_system_family: 'WINDOWS_SERVER_2019_FULL'
+
+                  }]
+                ))
+      end
+    end
+
+    describe 'when task execution role arn is provided' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+          vars.task_execution_role_arn =
+            'arn:aws:iam::123456789012:role/dummy-role'
+        end
+      end
+
+      it "sets the task's execution role ARN" do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(
+                  :execution_role_arn,
+                  'arn:aws:iam::123456789012:role/dummy-role'
+                ))
+      end
+    end
+  end
+
+  describe 'when cpu and memory is specified for non-fargate service' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.attach_to_load_balancer = false
+        vars.service_task_cpu = '1234'
+        vars.service_task_memory = '4567'
+        vars.service_task_container_definitions =
+          '[{"cpu": ${cpu}, "memory": ${memory}}]'
+      end
+    end
+
+    it 'uses the provided CPU and memory values in the container definition' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:container_definitions,
+                                    '[{"cpu":1234,"memory":4567}]'))
     end
   end
 end

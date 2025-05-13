@@ -646,4 +646,42 @@ describe 'service' do
               ))
     end
   end
+
+  describe 'when use_fargate is true' do
+    let(:subnet_ids) do
+      output(role: :prerequisites, name: 'private_subnet_ids')
+    end
+
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.subnet_ids = output(role: :prerequisites,
+                                 name: 'private_subnet_ids')
+        vars.use_fargate = true
+      end
+    end
+
+    it 'uses the provided ECS cluster service role ARN as the IAM role' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value([:network_configuration, 0, :subnets],
+                                    containing_exactly(*subnet_ids)))
+    end
+
+    it 'does not set an iam role' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:iam_role, a_nil_value))
+    end
+
+    # it 'configures VPC networking using the provided subnets' do
+    #   expect(@plan)
+    #     .to(include_resource_creation(type: 'aws_ecs_service')
+    #           .with_attribute_value(
+    #             [:network_configuration, 0, :subnets],
+    #             containing_exactly(*subnet_ids)
+    #           ))
+    # end
+  end
 end

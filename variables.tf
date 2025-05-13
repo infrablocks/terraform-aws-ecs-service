@@ -255,3 +255,45 @@ variable "always_use_latest_task_definition" {
   default     = false
   nullable    = false
 }
+
+variable "use_fargate" {
+  description = "Whether or not to use Fargate for the service."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "service_task_cpu" {
+  description = "The number of CPU units to use for the service task when deployed using Fargate."
+  type        = string
+  default     = "256"
+  nullable    = false
+}
+
+variable "service_task_memory" {
+  description = "The amount of memory (in MiB) to use for the service task when deployed using Fargate."
+  type        = string
+  default     = "512"
+  nullable    = false
+}
+
+variable "service_task_operating_system_family" {
+  description = "The operating system family to use for the service task when deployed using Fargate."
+  type        = string
+  default     = "LINUX"
+  nullable    = false
+}
+
+variable "service_task_cpu_architecture" {
+  description = "The cpu architecture to use for the service task"
+  type        = string
+  default     = null
+  nullable    = true
+}
+
+variable "task_execution_role_arn" {
+  description = "The ARN of the IAM role to used for setting up the task execution."
+  type        = string
+  default     = null
+  nullable    = true
+}

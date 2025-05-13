@@ -3,7 +3,7 @@ resource "aws_ecs_service" "service" {
   cluster         = var.ecs_cluster_id
   task_definition = var.always_use_latest_task_definition ? aws_ecs_task_definition.service.arn_without_revision : aws_ecs_task_definition.service.arn
   desired_count   = var.service_desired_count
-  iam_role        = (var.attach_to_load_balancer && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
+  iam_role        = (!var.use_fargate && var.attach_to_load_balancer && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
 
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
@@ -17,7 +17,7 @@ resource "aws_ecs_service" "service" {
   wait_for_steady_state = var.wait_for_steady_state
 
   dynamic "network_configuration" {
-    for_each = var.service_task_network_mode == "awsvpc" ? [var.subnet_ids] : []
+    for_each = var.use_fargate || var.service_task_network_mode == "awsvpc" ? [var.subnet_ids] : []
 
     content {
       subnets         = network_configuration.value

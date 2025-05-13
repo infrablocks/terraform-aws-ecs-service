@@ -63,8 +63,8 @@ module "ecs_load_balancer" {
   vpc_id = module.base_network.vpc_id
   subnet_ids = module.base_network.public_subnet_ids
 
-  service_name = "service"
-  service_port = var.service_port
+  service_name = "web-proxy"
+  service_port = 80
 
   service_certificate_arn = module.acm_certificate.certificate_arn
 
@@ -72,51 +72,8 @@ module "ecs_load_balancer" {
   public_zone_id = var.public_zone_id
   private_zone_id = var.private_zone_id
 
-  allow_cidrs = var.elb_https_allow_cidrs
-
-  health_check_target = var.elb_health_check_target
+  allow_cidrs = ["0.0.0.0/0"]
 
   expose_to_public_internet = "yes"
   include_public_dns_record = "yes"
-  store_access_logs = "no"
-  access_logs_bucket = "not_used"
-}
-
-data "aws_iam_policy_document" "task_assume_role" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      identifiers = ["ecs-tasks.amazonaws.com"]
-      type = "Service"
-    }
-
-    effect = "Allow"
-  }
-}
-
-resource "aws_iam_role" "task_role" {
-  name = "task-role-${var.deployment_identifier}"
-
-  assume_role_policy = data.aws_iam_policy_document.task_assume_role.json
-}
-
-data "aws_iam_policy_document" "task_role" {
-  statement {
-    sid = "1"
-
-    actions = [
-      "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation",
-    ]
-
-    resources = [
-      "arn:aws:s3:::*",
-    ]
-  }
-}
-
-resource "aws_iam_role_policy" "task_role_policy" {
-  role = aws_iam_role.task_role.id
-  policy = data.aws_iam_policy_document.task_role.json
 }
