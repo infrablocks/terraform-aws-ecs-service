@@ -58,6 +58,12 @@ describe 'task definition' do
         .to(include_resource_creation(type: 'aws_ecs_task_definition')
               .with_attribute_value(:volume, a_nil_value))
     end
+
+    it "does not set the task's execution role ARN" do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_task_definition')
+              .with_attribute_value(:execution_role_arn, a_nil_value))
+    end
   end
 
   describe 'when service_task_network_mode is provided' do
@@ -193,6 +199,21 @@ describe 'task definition' do
                                         operating_system_family: 'LINUX'
                                       }]))
       end
+
+      it 'uses awsvpc network mode' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(:network_mode, 'awsvpc'))
+      end
+
+      it 'creates a default task execution role' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_iam_role')
+                .with_attribute_value(
+                  :name,
+                  "default-task-execution-role-#{deployment_identifier}"
+                ))
+      end
     end
 
     describe 'when container config is specified' do
@@ -228,12 +249,33 @@ describe 'task definition' do
       it 'uses the provided cpu and OS values' do
         expect(@plan)
           .to(include_resource_creation(type: 'aws_ecs_task_definition')
-                .with_attribute_value(:runtime_platform, [{
-                                        cpu_architecture: 'ARM64',
-                                        # rubocop:disable Layout/LineLength
-                                        operating_system_family: 'WINDOWS_SERVER_2019_FULL'
-                                        # rubocop:enable Layout/LineLength
-                                      }]))
+                .with_attribute_value(
+                  :runtime_platform, [{
+                    cpu_architecture: 'ARM64',
+                    operating_system_family: 'WINDOWS_SERVER_2019_FULL'
+
+                  }]
+                ))
+      end
+    end
+
+    describe 'when task execution role arn is provided' do
+      before(:context) do
+        @plan = plan(role: :root) do |vars|
+          vars.attach_to_load_balancer = false
+          vars.use_fargate = true
+          vars.task_execution_role_arn =
+            'arn:aws:iam::123456789012:role/dummy-role'
+        end
+      end
+
+      it "sets the task's execution role ARN" do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(
+                  :execution_role_arn,
+                  'arn:aws:iam::123456789012:role/dummy-role'
+                ))
       end
     end
   end

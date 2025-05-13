@@ -72,4 +72,6 @@ module "ecs_service" {
   service_task_memory = var.service_task_memory
   service_task_operating_system_family = var.service_task_operating_system_family
   service_task_cpu_architecture = var.service_task_cpu_architecture
+
+  task_execution_role_arn = var.task_execution_role_arn
 }

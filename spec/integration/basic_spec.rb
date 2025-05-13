@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'full' do
+describe 'basic' do
   let(:component) do
     var(role: :basic, name: 'component')
   end

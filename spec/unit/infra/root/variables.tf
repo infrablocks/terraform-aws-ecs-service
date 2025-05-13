@@ -167,3 +167,8 @@ variable "service_task_cpu_architecture" {
   type    = string
   default = null
 }
+
+variable "task_execution_role_arn" {
+  type    = string
+  default = null
+}

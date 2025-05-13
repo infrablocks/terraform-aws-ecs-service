@@ -18,10 +18,6 @@ output "load_balancer_name" {
   value = module.ecs_load_balancer.name
 }
 
-output "target_group_arn" {
-  value = aws_lb_target_group.target_group.arn
-}
-
 output "cluster_id" {
   value = module.ecs_cluster.cluster_id
 }
@@ -33,10 +29,6 @@ output "cluster_name" {
 output "autoscaling_group_name" {
   value = module.ecs_cluster.autoscaling_group_name
 }
-
-# output "launch_configuration_name" {
-#   value = module.ecs_cluster.launch_configuration_name
-# }
 
 output "instance_role_arn" {
   value = module.ecs_cluster.instance_role_arn
@@ -54,22 +46,14 @@ output "service_role_id" {
   value = module.ecs_cluster.service_role_id
 }
 
-output "task_role_arn" {
-  value = aws_iam_role.task_role.arn
+output "task_definition_arn" {
+  value = module.ecs_service.task_definition_arn
 }
 
-output "service_discovery_namespace_id" {
-  value = aws_service_discovery_private_dns_namespace.component.id
+output "log_group" {
+  value = module.ecs_service.log_group
 }
 
-output "service_discovery_namespace_arn" {
-  value = aws_service_discovery_private_dns_namespace.component.arn
-}
-
-output "service_discovery_namespace_hosted_zone_id" {
-  value = aws_service_discovery_private_dns_namespace.component.hosted_zone
-}
-
-output "service_discovery_registry_arn" {
-  value = aws_service_discovery_service.preexisting_service.arn
+output "security_group_id" {
+  value = module.ecs_service.security_group_id
 }
