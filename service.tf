@@ -4,6 +4,7 @@ resource "aws_ecs_service" "service" {
   task_definition = var.always_use_latest_task_definition ? aws_ecs_task_definition.service.arn_without_revision : aws_ecs_task_definition.service.arn
   desired_count   = var.service_desired_count
   iam_role        = (!var.use_fargate && var.attach_to_load_balancer && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
+  launch_type = var.use_fargate ? "FARGATE" : null
 
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent

@@ -675,6 +675,12 @@ describe 'service' do
               .with_attribute_value(:iam_role, a_nil_value))
     end
 
+    it 'sets the launch type to "FARGATE"' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:launch_type, 'FARGATE'))
+    end
+
     # it 'configures VPC networking using the provided subnets' do
     #   expect(@plan)
     #     .to(include_resource_creation(type: 'aws_ecs_service')

@@ -76,6 +76,11 @@ describe 'fargate' do
         .to(eq('REPLICA'))
     end
 
+    it 'has a launch type of "FARGATE"' do
+      expect(ecs_service.launch_type)
+        .to(eq('FARGATE'))
+    end
+
     # it 'has the correct load balancer' do
     #   expect(ecs_service.load_balancers.first.load_balancer_name)
     #     .to(eq(load_balancer_name))
