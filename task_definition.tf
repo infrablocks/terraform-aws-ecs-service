@@ -22,7 +22,7 @@ locals {
 }
 
 resource "aws_iam_role" "default_task_execution_role" {
-  name  = "default-task-execution-role-${var.deployment_identifier}"
+  description = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -37,6 +37,9 @@ resource "aws_iam_role" "default_task_execution_role" {
     ]
   })
 
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "aws_iam_policy_document" "default_task_execution_policy" {
@@ -73,10 +76,10 @@ resource "aws_ecs_task_definition" "service" {
   task_role_arn      = var.service_role
   execution_role_arn = var.use_fargate ? (var.task_execution_role_arn == null ? aws_iam_role.default_task_execution_role.arn : var.task_execution_role_arn) : null
 
-
   requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
   cpu                      = var.use_fargate ? var.service_task_cpu : null
   memory                   = var.use_fargate ? var.service_task_memory : null
+
   runtime_platform {
     operating_system_family = var.use_fargate ? var.service_task_operating_system_family : null
     cpu_architecture        = var.use_fargate ? var.service_task_cpu_architecture : null

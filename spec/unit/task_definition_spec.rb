@@ -210,8 +210,9 @@ describe 'task definition' do
         expect(@plan)
           .to(include_resource_creation(type: 'aws_iam_role')
                 .with_attribute_value(
-                  :name,
-                  "default-task-execution-role-#{deployment_identifier}"
+                  :description,
+                  'default-task-execution-role-' \
+                  "#{component}-#{deployment_identifier}-#{service_name}"
                 ))
       end
     end
