@@ -277,6 +277,12 @@ variable "service_task_memory" {
   nullable    = false
 }
 
+variable "service_task_ephemeral_storage" {
+  description = "The total amount of ephemeral storage (in GiB) to set for the service task when deployed using Fargate."
+  type        = number
+  default     = null
+}
+
 variable "service_task_operating_system_family" {
   description = "The operating system family to use for the service task when deployed using Fargate."
   type        = string

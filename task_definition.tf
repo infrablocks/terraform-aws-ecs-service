@@ -85,6 +85,13 @@ resource "aws_ecs_task_definition" "service" {
     cpu_architecture        = var.use_fargate ? var.service_task_cpu_architecture : null
   }
 
+  dynamic "ephemeral_storage" {
+    for_each = var.use_fargate && var.service_task_ephemeral_storage != null ? [var.service_task_ephemeral_storage] : []
+    content {
+      size_in_gib = ephemeral_storage.value
+    }
+  }
+
   dynamic "volume" {
     for_each = var.service_volumes
     content {

@@ -224,6 +224,7 @@ describe 'task definition' do
           vars.use_fargate = true
           vars.service_task_cpu = '1234'
           vars.service_task_memory = '4567'
+          vars.service_task_ephemeral_storage = 100
           vars.service_task_operating_system_family = 'WINDOWS_SERVER_2019_FULL'
           vars.service_task_cpu_architecture = 'ARM64'
         end
@@ -247,6 +248,16 @@ describe 'task definition' do
                 .with_attribute_value(:memory, '4567'))
       end
 
+      it 'uses the provided memory value' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_ecs_task_definition')
+                .with_attribute_value(
+                  :ephemeral_storage, [{
+                    size_in_gib: 100
+                  }]
+                ))
+      end
+
       it 'uses the provided cpu and OS values' do
         expect(@plan)
           .to(include_resource_creation(type: 'aws_ecs_task_definition')
@@ -254,7 +265,6 @@ describe 'task definition' do
                   :runtime_platform, [{
                     cpu_architecture: 'ARM64',
                     operating_system_family: 'WINDOWS_SERVER_2019_FULL'
-
                   }]
                 ))
       end

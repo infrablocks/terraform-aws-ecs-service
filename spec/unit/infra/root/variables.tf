@@ -158,6 +158,11 @@ variable "service_task_memory" {
   default = null
 }
 
+variable "service_task_ephemeral_storage" {
+  type    = number
+  default = null
+}
+
 variable "service_task_operating_system_family" {
   type    = string
   default = null
