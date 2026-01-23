@@ -22,6 +22,7 @@ locals {
 }
 
 resource "aws_iam_role" "default_task_execution_role" {
+  name = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   description = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
