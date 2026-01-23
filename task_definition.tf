@@ -21,8 +21,12 @@ locals {
   "$${memory}", var.service_task_memory)
 }
 
+resource "random_id" "default_task_execution_role" {
+  byte_length = 16
+}
+
 resource "aws_iam_role" "default_task_execution_role" {
-  name = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
+  name = "${var.component}-${random_id.default_task_execution_role.hex}"
   description = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
