@@ -288,6 +288,16 @@ describe 'task definition' do
                   'arn:aws:iam::123456789012:role/dummy-role'
                 ))
       end
+
+      it "does not create default task execution role" do
+        expect(@plan)
+          .not_to(include_resource_creation(type: 'aws_iam_role')
+                .with_attribute_value(
+                  :description,
+                  'default-task-execution-role-' \
+                    "#{component}-#{deployment_identifier}-#{service_name}"
+                ))
+      end
     end
   end
 

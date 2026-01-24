@@ -21,12 +21,8 @@ locals {
   "$${memory}", var.service_task_memory)
 }
 
-resource "random_id" "default_task_execution_role" {
-  byte_length = 16
-}
-
 resource "aws_iam_role" "default_task_execution_role" {
-  name = "${var.component}-${random_id.default_task_execution_role.hex}"
+  count = var.use_fargate && var.task_execution_role_arn == null ? 1 : 0
   description = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -79,7 +75,7 @@ resource "aws_ecs_task_definition" "service" {
   pid_mode     = var.service_task_pid_mode
 
   task_role_arn      = var.service_role
-  execution_role_arn = var.use_fargate ? (var.task_execution_role_arn == null ? aws_iam_role.default_task_execution_role.arn : var.task_execution_role_arn) : null
+  execution_role_arn = var.use_fargate ? coalesce(var.task_execution_role_arn, aws_iam_role.default_task_execution_role[0].arn) : null
 
   requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
   cpu                      = var.use_fargate ? var.service_task_cpu : null
