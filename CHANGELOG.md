@@ -1,3 +1,22 @@
+## 5.1.0 (Unreleased)
+
+IMPROVEMENTS:
+
+* This module now supports deploying services on AWS Fargate. Set the
+  `use_fargate` variable to `true` to enable. When enabled, the task definition
+  uses `awsvpc` network mode, requires the `FARGATE` compatibility, and the
+  service launch type is set to `FARGATE`.
+* The following variables have been added to support Fargate:
+    - `service_task_cpu`
+    - `service_task_memory`
+    - `service_task_ephemeral_storage`
+    - `service_task_operating_system_family`
+    - `service_task_cpu_architecture`
+    - `task_execution_role_arn`
+* When using Fargate without supplying a `task_execution_role_arn`, the module
+  now creates a default task execution role with ECR pull and CloudWatch logs
+  permissions.
+
 ## 5.0.0 (November 4th, 2023)
 
 BACKWARDS INCOMPATIBILITIES / NOTES:
