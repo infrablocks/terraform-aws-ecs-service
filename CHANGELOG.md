@@ -1,4 +1,4 @@
-## 5.1.0 (Unreleased)
+## 5.1.0 (June 4th, 2026)
 
 IMPROVEMENTS:
 
