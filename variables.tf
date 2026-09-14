@@ -80,6 +80,18 @@ variable "service_deployment_minimum_healthy_percent" {
   default     = 50
   nullable    = false
 }
+variable "service_deployment_circuit_breaker_enable" {
+  description = "Whether to enable the ECS deployment circuit breaker."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+variable "service_deployment_circuit_breaker_rollback" {
+  description = "Whether the circuit breaker rolls back to the last healthy deployment on failure."
+  type        = bool
+  default     = false
+  nullable    = false
+}
 variable "service_health_check_grace_period_seconds" {
   description = "The number of seconds to wait for the service to start up before starting load balancer health checks."
   type        = number
