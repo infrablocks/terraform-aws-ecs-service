@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "service" {
   pid_mode     = var.service_task_pid_mode
 
   task_role_arn      = var.service_role
-  execution_role_arn = var.use_fargate ? coalesce(var.task_execution_role_arn, aws_iam_role.default_task_execution_role[0].arn) : null
+  execution_role_arn = var.use_fargate ? (var.task_execution_role_arn == null ? aws_iam_role.default_task_execution_role[0].arn : var.task_execution_role_arn) : null
 
   requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
   cpu                      = var.use_fargate ? var.service_task_cpu : null
