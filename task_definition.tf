@@ -22,6 +22,7 @@ locals {
 }
 
 resource "aws_iam_role" "default_task_execution_role" {
+  count       = var.use_fargate && var.task_execution_role_arn == null ? 1 : 0
   description = "default-task-execution-role-${var.component}-${var.deployment_identifier}-${var.service_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -62,7 +63,8 @@ data "aws_iam_policy_document" "default_task_execution_policy" {
 }
 
 resource "aws_iam_role_policy" "default_task_execution_role_policy" {
-  role   = aws_iam_role.default_task_execution_role.id
+  count  = var.use_fargate && var.task_execution_role_arn == null ? 1 : 0
+  role   = aws_iam_role.default_task_execution_role[0].id
   policy = data.aws_iam_policy_document.default_task_execution_policy.json
 }
 
@@ -74,7 +76,7 @@ resource "aws_ecs_task_definition" "service" {
   pid_mode     = var.service_task_pid_mode
 
   task_role_arn      = var.service_role
-  execution_role_arn = var.use_fargate ? (var.task_execution_role_arn == null ? aws_iam_role.default_task_execution_role.arn : var.task_execution_role_arn) : null
+  execution_role_arn = var.use_fargate ? (var.task_execution_role_arn == null ? aws_iam_role.default_task_execution_role[0].arn : var.task_execution_role_arn) : null
 
   requires_compatibilities = var.use_fargate ? ["FARGATE"] : null
   cpu                      = var.use_fargate ? var.service_task_cpu : null
