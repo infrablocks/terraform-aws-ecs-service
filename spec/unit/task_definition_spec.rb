@@ -215,6 +215,12 @@ describe 'task definition' do
                   "#{component}-#{deployment_identifier}-#{service_name}"
                 ))
       end
+
+      it 'creates a default task execution role policy' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_iam_role_policy')
+                .once)
+      end
     end
 
     describe 'when container config is specified' do
@@ -289,14 +295,19 @@ describe 'task definition' do
                 ))
       end
 
-      it "does not create default task execution role" do
+      it 'does not create default task execution role' do
         expect(@plan)
           .not_to(include_resource_creation(type: 'aws_iam_role')
                 .with_attribute_value(
                   :description,
                   'default-task-execution-role-' \
-                    "#{component}-#{deployment_identifier}-#{service_name}"
+                  "#{component}-#{deployment_identifier}-#{service_name}"
                 ))
+      end
+
+      it 'does not create default task execution role policy' do
+        expect(@plan)
+          .not_to(include_resource_creation(type: 'aws_iam_role_policy'))
       end
     end
   end
