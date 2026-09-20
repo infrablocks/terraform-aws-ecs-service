@@ -1,3 +1,12 @@
+## Unreleased
+
+IMPROVEMENTS:
+
+* The ECS deployment circuit breaker can now be configured via two new
+  variables:
+    - `service_deployment_circuit_breaker_enable`
+    - `service_deployment_circuit_breaker_rollback`
+
 ## 5.1.0 (June 4th, 2026)
 
 IMPROVEMENTS:
