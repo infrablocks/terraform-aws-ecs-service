@@ -6,6 +6,8 @@ resource "aws_ecs_service" "service" {
   iam_role        = (!var.use_fargate && var.attach_to_load_balancer && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
   launch_type     = var.use_fargate ? "FARGATE" : null
 
+  availability_zone_rebalancing = var.availability_zone_rebalancing
+
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
 

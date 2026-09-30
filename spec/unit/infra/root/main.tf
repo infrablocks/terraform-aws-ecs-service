@@ -26,6 +26,7 @@ module "ecs_service" {
   service_port    = var.service_port
 
   service_desired_count                       = var.service_desired_count
+  availability_zone_rebalancing               = var.availability_zone_rebalancing
   service_deployment_maximum_percent          = var.service_deployment_maximum_percent
   service_deployment_minimum_healthy_percent  = var.service_deployment_minimum_healthy_percent
   service_deployment_circuit_breaker_enable   = var.service_deployment_circuit_breaker_enable

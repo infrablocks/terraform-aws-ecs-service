@@ -96,6 +96,7 @@ for more details.
 | service_port                                | The port the containers will be listening on                                     |             -             |                                   yes                                   |
 | service_task_network_mode                   | The network mode used for the containers in the task                             |          bridge           |                                   yes                                   |
 | service_desired_count                       | The desired number of tasks in the service                                       |             3             |                                   yes                                   |
+| availability_zone_rebalancing               | ECS service Availability Zone rebalancing: "ENABLED" actively redistributes tasks across AZs; "DISABLED" keeps the previous behaviour. Leave null to omit the argument entirely (provider/AWS default applies), preserving backward compatibility for existing callers. |           null            |                                   no                                    |
 | service_deployment_maximum_percent          | The maximum percentage of the desired count that can be running                  |            200            |                                   yes                                   |
 | service_deployment_minimum_healthy_percent  | The minimum healthy percentage of the desired count to keep running              |            50             |                                   yes                                   |
 | service_deployment_circuit_breaker_enable   | Whether to enable the ECS deployment circuit breaker                             |           false           |                                   no                                    |
@@ -118,7 +119,7 @@ for more details.
 
 ### Compatibility
 
-This module is compatible with Terraform 1.1 and higher and requires Terraform AWS provider version 4.59 or higher.
+This module is compatible with Terraform 1.1 and higher and requires Terraform AWS provider version 5.77 or higher.
 
 Development
 -----------

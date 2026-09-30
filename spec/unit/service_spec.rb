@@ -123,6 +123,12 @@ describe 'service' do
               .with_attribute_value(:deployment_circuit_breaker, a_nil_value))
     end
 
+    it 'does not configure availability zone rebalancing' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:availability_zone_rebalancing, 'DISABLED'))
+    end
+
     it 'configures a load balancer using the provided load balancer details' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
@@ -743,5 +749,53 @@ describe 'service' do
     #             containing_exactly(*subnet_ids)
     #           ))
     # end
+  end
+
+  describe 'when availability_zone_rebalancing is "ENABLED"' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.availability_zone_rebalancing = 'ENABLED'
+      end
+    end
+
+    it 'sets availability_zone_rebalancing to ENABLED' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(
+                :availability_zone_rebalancing, 'ENABLED'
+              ))
+    end
+  end
+
+  describe 'when availability_zone_rebalancing is "DISABLED"' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.availability_zone_rebalancing = 'DISABLED'
+      end
+    end
+
+    it 'sets availability_zone_rebalancing to DISABLED' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(
+                :availability_zone_rebalancing, 'DISABLED'
+              ))
+    end
+  end
+
+  describe 'when availability_zone_rebalancing is invalid' do
+    it 'fails validation during plan' do
+      expect do
+        plan(role: :root) do |vars|
+          vars.service_elb_name =
+            output(role: :prerequisites, name: 'load_balancer_name')
+          vars.availability_zone_rebalancing = 'INVALID'
+        end
+      end.to raise_error(RubyTerraform::Errors::ExecutionError)
+    end
   end
 end

@@ -1,7 +1,14 @@
 ## Unreleased
 
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* This module now requires at least Terraform AWS provider version 5.77 or later.
+
 IMPROVEMENTS:
 
+* The ECS service Availability Zone rebalancing can now be configured via the
+  `availability_zone_rebalancing` variable ("ENABLED" or "DISABLED", defaults to
+  `null` preserving provider/AWS default behavior).
 * An explicit name is now assigned to the default task execution role to avoid
   randomly generated names and allow IAM policy restrictions.
 * The default task execution role and policy are now only created when
