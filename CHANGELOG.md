@@ -1,7 +1,14 @@
 ## Unreleased
 
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* This module now requires at least Terraform AWS provider version 5.77 or later.
+
 IMPROVEMENTS:
 
+* The ECS service Availability Zone rebalancing can now be configured via the
+  `availability_zone_rebalancing` variable ("ENABLED" or "DISABLED", defaults to
+  `null` preserving provider/AWS default behavior).
 * The ECS deployment circuit breaker can now be configured via two new
   variables:
     - `service_deployment_circuit_breaker_enable`

@@ -68,6 +68,17 @@ variable "service_desired_count" {
   default     = 3
   nullable    = false
 }
+variable "availability_zone_rebalancing" {
+  description = "ECS service Availability Zone rebalancing: \"ENABLED\" actively redistributes tasks across AZs; \"DISABLED\" keeps the previous behaviour. Leave null to omit the argument entirely (provider/AWS default applies), preserving backward compatibility for existing callers."
+  type        = string
+  default     = null
+  nullable    = true
+
+  validation {
+    condition     = var.availability_zone_rebalancing == null ? true : contains(["ENABLED", "DISABLED"], var.availability_zone_rebalancing)
+    error_message = "availability_zone_rebalancing must be \"ENABLED\", \"DISABLED\", or null."
+  }
+}
 variable "service_deployment_maximum_percent" {
   description = "The maximum percentage of the desired count that can be running."
   type        = number

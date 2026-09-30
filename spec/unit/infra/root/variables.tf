@@ -33,6 +33,10 @@ variable "service_desired_count" {
   type    = number
   default = null
 }
+variable "availability_zone_rebalancing" {
+  type    = string
+  default = null
+}
 variable "service_deployment_maximum_percent" {
   type    = number
   default = null
