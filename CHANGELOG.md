@@ -2,6 +2,10 @@
 
 IMPROVEMENTS:
 
+* An explicit name is now assigned to the default task execution role to avoid
+  randomly generated names and allow IAM policy restrictions.
+* The default task execution role and policy are now only created when
+  `use_fargate` is `true` and `task_execution_role_arn` is `null`.
 * The ECS deployment circuit breaker can now be configured via two new
   variables:
     - `service_deployment_circuit_breaker_enable`
