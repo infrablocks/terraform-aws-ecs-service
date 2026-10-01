@@ -41,6 +41,14 @@ variable "service_deployment_minimum_healthy_percent" {
   type    = number
   default = null
 }
+variable "service_deployment_circuit_breaker_enable" {
+  type    = bool
+  default = null
+}
+variable "service_deployment_circuit_breaker_rollback" {
+  type    = bool
+  default = null
+}
 variable "service_health_check_grace_period_seconds" {
   type    = number
   default = null

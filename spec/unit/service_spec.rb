@@ -117,6 +117,12 @@ describe 'service' do
               .with_attribute_value(:service_registries, a_nil_value))
     end
 
+    it 'does not configure a deployment circuit breaker' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(:deployment_circuit_breaker, a_nil_value))
+    end
+
     it 'configures a load balancer using the provided load balancer details' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
@@ -171,6 +177,54 @@ describe 'service' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
               .with_attribute_value(:deployment_minimum_healthy_percent, 100))
+    end
+  end
+
+  describe 'when service_deployment_circuit_breaker_enable is true and ' \
+           'service_deployment_circuit_breaker_rollback is false' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.service_deployment_circuit_breaker_enable = true
+        vars.service_deployment_circuit_breaker_rollback = false
+      end
+    end
+
+    it 'configures a deployment circuit breaker with rollback disabled' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(
+                [:deployment_circuit_breaker, 0],
+                a_hash_including(
+                  enable: true,
+                  rollback: false
+                )
+              ))
+    end
+  end
+
+  describe 'when service_deployment_circuit_breaker_enable is true and ' \
+           'service_deployment_circuit_breaker_rollback is true' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.service_deployment_circuit_breaker_enable = true
+        vars.service_deployment_circuit_breaker_rollback = true
+      end
+    end
+
+    it 'configures a deployment circuit breaker with rollback enabled' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .with_attribute_value(
+                [:deployment_circuit_breaker, 0],
+                a_hash_including(
+                  enable: true,
+                  rollback: true
+                )
+              ))
     end
   end
 

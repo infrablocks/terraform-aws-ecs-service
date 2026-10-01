@@ -4,10 +4,18 @@ resource "aws_ecs_service" "service" {
   task_definition = var.always_use_latest_task_definition ? aws_ecs_task_definition.service.arn_without_revision : aws_ecs_task_definition.service.arn
   desired_count   = var.service_desired_count
   iam_role        = (!var.use_fargate && var.attach_to_load_balancer && var.service_task_network_mode != "awsvpc") ? var.ecs_cluster_service_role_arn : null
-  launch_type = var.use_fargate ? "FARGATE" : null
+  launch_type     = var.use_fargate ? "FARGATE" : null
 
   deployment_maximum_percent         = var.service_deployment_maximum_percent
   deployment_minimum_healthy_percent = var.service_deployment_minimum_healthy_percent
+
+  dynamic "deployment_circuit_breaker" {
+    for_each = var.service_deployment_circuit_breaker_enable ? [true] : []
+    content {
+      enable   = true
+      rollback = var.service_deployment_circuit_breaker_rollback
+    }
+  }
 
   health_check_grace_period_seconds = var.attach_to_load_balancer ? var.service_health_check_grace_period_seconds : null
 
