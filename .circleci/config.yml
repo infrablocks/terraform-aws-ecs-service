@@ -57,7 +57,7 @@ commands:
           steps:
             - slack/notify:
                 event: fail
-                channel: dev
+                channel: team-dev
                 template: SLACK_FAILURE_NOTIFICATION
             - slack/notify:
                 event: pass
