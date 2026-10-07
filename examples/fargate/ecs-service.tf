@@ -16,6 +16,7 @@ module "ecs_service" {
   service_port = 80
 
   use_fargate = true
+  availability_zone_rebalancing = "ENABLED"
   service_task_cpu = "256"
   service_task_memory = "512"
   service_task_operating_system_family = "LINUX"
