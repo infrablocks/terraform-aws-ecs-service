@@ -2,18 +2,17 @@
 
 require 'confidante'
 require 'git'
-require 'rake_circle_ci'
 require 'rake_git'
 require 'rake_git_crypt'
 require 'rake_github'
 require 'rake_gpg'
+require 'rake_slack'
 require 'rake_ssh'
 require 'rake_terraform'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'securerandom'
 require 'semantic'
-require 'yaml'
 
 require_relative 'lib/paths'
 require_relative 'lib/version'
@@ -84,13 +83,6 @@ namespace :encryption do
 end
 
 namespace :keys do
-  namespace :deploy do
-    RakeSSH.define_key_tasks(
-      path: 'config/secrets/ci/',
-      comment: 'maintainers@infrablocks.io'
-    )
-  end
-
   namespace :cluster do
     RakeSSH.define_key_tasks(
       path: 'config/secrets/keys/cluster',
@@ -128,7 +120,6 @@ namespace :secrets do
   task generate: %w[
     directory:ensure
     encryption:passphrase:generate
-    keys:deploy:generate
     keys:cluster:generate
     keys:secrets:generate
   ]
@@ -145,55 +136,91 @@ namespace :secrets do
   task rotate: [:'git_crypt:reinstall']
 end
 
-RakeCircleCI.define_project_tasks(
-  namespace: :circle_ci,
-  project_slug: 'github/infrablocks/terraform-aws-ecs-service'
-) do |t|
-  circle_ci_config =
-    YAML.load_file('config/secrets/circle_ci/config.yaml')
-
-  t.api_token = circle_ci_config['circle_ci_api_token']
-  t.environment_variables = {
-    ENCRYPTION_PASSPHRASE:
-      File.read('config/secrets/ci/encryption.passphrase')
-          .chomp,
-    CIRCLECI_API_KEY:
-      YAML.load_file(
-        'config/secrets/circle_ci/config.yaml'
-      )['circle_ci_api_token']
-  }
-  t.checkout_keys = []
-  t.ssh_keys = [
-    {
-      hostname: 'github.com',
-      private_key: File.read('config/secrets/ci/ssh.private')
-    }
-  ]
-end
-
 RakeGithub.define_repository_tasks(
   namespace: :github,
   repository: 'infrablocks/terraform-aws-ecs-service'
 ) do |t|
-  github_config =
-    YAML.load_file('config/secrets/github/config.yaml')
+  # Operator's ambient auth. Resolve once and fail fast: a missing, empty,
+  # unauthenticated, or absent gh yields an empty string, which would
+  # otherwise surface later as an opaque Octokit 401. Treat an empty or
+  # whitespace-only GITHUB_TOKEN as absent — fall back to gh, not the raise,
+  # so an already-authenticated operator is not told to log in.
+  github_token = ENV['GITHUB_TOKEN'].to_s.strip
+  if github_token.empty?
+    github_token = begin
+      `gh auth token`
+    rescue Errno::ENOENT
+      ''
+    end.strip
+  end
+  if github_token.empty?
+    raise 'No GitHub token available: set GITHUB_TOKEN or run `gh auth login`'
+  end
 
-  t.access_token = github_config['github_personal_access_token']
-  t.deploy_keys = [
-    {
-      title: 'CircleCI',
-      public_key: File.read('config/secrets/ci/ssh.public')
-    }
+  t.access_token = github_token
+
+  # Guard against a locked clone: without it, File.read returns git-crypt
+  # ciphertext and github:secrets:ensure silently uploads garbage that only
+  # surfaces much later as an opaque GPG unlock failure.
+  passphrase_path = 'config/secrets/ci/encryption.passphrase'
+  unless File.exist?(passphrase_path)
+    raise "#{passphrase_path} not found — provisioning needs the " \
+          'git-crypted CI passphrase; run from the repo root in an ' \
+          'unlocked clone'
+  end
+  passphrase = File.binread(passphrase_path)
+  if passphrase.start_with?("\x00GITCRYPT")
+    raise 'encryption.passphrase is git-crypt ciphertext — unlock the ' \
+          'clone before provisioning'
+  end
+  t.secrets = [
+    # dependabot: true also writes it to the Dependabot secret store.
+    # Dependabot-triggered runs can read only that store, and this family's
+    # test job unlocks git-crypt for AWS credentials — without it every
+    # dependabot PR fails its tests and auto-merge never fires.
+    { name: 'ENCRYPTION_PASSPHRASE',
+      value: passphrase.chomp,
+      dependabot: true }
+  ]
+  t.environments = [
+    { name: 'release',
+      reviewers: [{ team: 'maintainers' }] }
   ]
 end
 
+namespace :slack do
+  RakeSlack.define_notification_tasks do |t|
+    t.bot_token = ENV.fetch('SLACK_BOT_TOKEN', nil)
+    t.routing_rules = [
+      { when: { type: 'on_hold' },
+        channel: 'C038EDCRSQJ', format: :on_hold },  # release
+      { when: { actor: 'dependabot[bot]', outcome: 'success' },
+        channel: 'C03N711HVDG', format: :success },  # builds-dependabot
+      { when: { actor: 'dependabot[bot]' },
+        channel: 'C03N711HVDG', format: :failure },  # builds-dependabot
+      { when: { outcome: 'success' },
+        channel: 'C023XUE76GH', format: :success },  # builds
+      # Failures go to builds, not team-dev (org default), to keep noise
+      # out of a popular channel while this pipeline beds in.
+      { when: {},
+        channel: 'C023XUE76GH', format: :failure } # builds
+    ]
+  end
+end
+
+namespace :repository do
+  desc 'Set the git author for CI'
+  task :set_ci_author do
+    sh 'git config --global user.name "InfraBlocks CI"'
+    sh 'git config --global user.email "ci@infrablocks.io"'
+  end
+end
+
 namespace :pipeline do
-  desc 'Prepare CircleCI Pipeline'
+  desc 'Prepare GitHub Actions pipeline'
   task prepare: %i[
-    circle_ci:env_vars:ensure
-    circle_ci:checkout_keys:ensure
-    circle_ci:ssh_keys:ensure
-    github:deploy_keys:ensure
+    github:secrets:ensure
+    github:environments:ensure
   ]
 end
 
@@ -283,15 +310,23 @@ namespace :version do
   task :bump, [:type] do |_, args|
     next_tag = latest_tag.send("#{args.type}!")
     repo.add_tag(next_tag.to_s)
-    repo.push('origin', 'main', tags: true)
+    repo.push('origin', "refs/tags/#{next_tag}")
     puts "Bumped version to #{next_tag}."
   end
 
   desc 'Release module'
   task :release do
+    # Only release the newest candidate, and only from the commit it tags:
+    # approving an older run would otherwise give its commit a newer version.
+    tagged = repo.object("#{latest_tag}^{commit}").sha
+    unless tagged == repo.object('HEAD').sha
+      raise "Latest tag #{latest_tag} is not on HEAD: approve the release " \
+            'of the run that created it instead'
+    end
+
     next_tag = latest_tag.release!
     repo.add_tag(next_tag.to_s)
-    repo.push('origin', 'main', tags: true)
+    repo.push('origin', "refs/tags/#{next_tag}")
     puts "Released version #{next_tag}."
   end
 end
