@@ -9,6 +9,11 @@ require 'rspec/terraform'
 require 'logger'
 require 'stringio'
 
+# lino 4's default childprocess executor requires real IO objects for
+# stdout/stderr; the open4 executor accepts the log-device writables
+# rspec-terraform provides.
+Lino.configuration.executor = Lino::Executors::Open4.new
+
 Dir[File.join(__dir__, 'support', '**', '*.rb')]
   .each { |f| require f }
 
