@@ -43,7 +43,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     apply(
-      role: :prerequisites
+      role: :prerequisites,
+      only_if: -> { ENV['SEED'].nil? }
     )
   end
   config.after(:suite) do

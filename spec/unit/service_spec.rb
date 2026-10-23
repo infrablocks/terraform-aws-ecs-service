@@ -123,6 +123,11 @@ describe 'service' do
               .with_attribute_value(:deployment_circuit_breaker, a_nil_value))
     end
 
+    it 'does not create an AppAutoScaling target' do
+      expect(@plan)
+        .not_to(include_resource_creation(type: 'aws_appautoscaling_target'))
+    end
+
     it 'configures a load balancer using the provided load balancer details' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_ecs_service')
@@ -743,5 +748,111 @@ describe 'service' do
     #             containing_exactly(*subnet_ids)
     #           ))
     # end
+  end
+
+  describe 'when service_autoscaling_enabled is false' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.service_autoscaling_enabled = false
+      end
+    end
+
+    it 'creates an ECS service' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .once)
+    end
+
+    it 'does not create an AppAutoScaling target' do
+      expect(@plan)
+        .not_to(include_resource_creation(type: 'aws_appautoscaling_target'))
+    end
+  end
+
+  describe 'when service_autoscaling_enabled is true' do
+    let(:cluster_name) do
+      output(role: :prerequisites, name: 'cluster_name')
+    end
+
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.service_autoscaling_enabled = true
+        vars.service_autoscaling_min_capacity = 2
+        vars.service_autoscaling_max_capacity = 10
+      end
+    end
+
+    it 'creates an ECS service' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_ecs_service')
+              .once)
+    end
+
+    it 'creates an AppAutoScaling target' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .once)
+    end
+
+    it 'uses the "ecs" service namespace' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(:service_namespace, 'ecs'))
+    end
+
+    it 'uses the "ecs:service:DesiredCount" scalable dimension' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(:scalable_dimension, 'ecs:service:DesiredCount'))
+    end
+
+    it 'uses the provided min capacity' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(:min_capacity, 2))
+    end
+
+    it 'uses the provided max capacity' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(:max_capacity, 10))
+    end
+
+    it 'uses a resource ID derived from cluster name and service name' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(
+                :resource_id,
+                "service/#{cluster_name}/#{service_name}"
+              ))
+    end
+  end
+
+  describe 'when service_autoscaling_enabled is true and ecs_cluster_id is a name' do
+    let(:cluster_name) { 'test-cluster-name' }
+
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.service_elb_name =
+          output(role: :prerequisites, name: 'load_balancer_name')
+        vars.ecs_cluster_id = 'test-cluster-name'
+        vars.service_autoscaling_enabled = true
+        vars.service_autoscaling_min_capacity = 1
+        vars.service_autoscaling_max_capacity = 5
+      end
+    end
+
+    it 'uses a resource ID derived from cluster name and service name' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_appautoscaling_target')
+              .with_attribute_value(
+                :resource_id,
+                "service/#{cluster_name}/#{service_name}"
+              ))
+    end
   end
 end

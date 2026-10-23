@@ -61,3 +61,11 @@ output "log_group" {
 output "security_group_id" {
   value = module.ecs_service.security_group_id
 }
+
+output "service_name" {
+  value = module.ecs_service.service_name
+}
+
+output "autoscaling_target_resource_id" {
+  value = module.ecs_service.autoscaling_target_resource_id
+}

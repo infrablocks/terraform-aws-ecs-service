@@ -26,6 +26,9 @@ module "ecs_service" {
   service_port    = var.service_port
 
   service_desired_count                       = var.service_desired_count
+  service_autoscaling_enabled                 = var.service_autoscaling_enabled
+  service_autoscaling_min_capacity            = var.service_autoscaling_min_capacity
+  service_autoscaling_max_capacity            = var.service_autoscaling_max_capacity
   service_deployment_maximum_percent          = var.service_deployment_maximum_percent
   service_deployment_minimum_healthy_percent  = var.service_deployment_minimum_healthy_percent
   service_deployment_circuit_breaker_enable   = var.service_deployment_circuit_breaker_enable
@@ -66,8 +69,8 @@ module "ecs_service" {
   include_log_group   = var.include_log_group
   log_group_retention = var.log_group_retention
 
-  ecs_cluster_id               = data.terraform_remote_state.prerequisites.outputs.cluster_id
-  ecs_cluster_service_role_arn = data.terraform_remote_state.prerequisites.outputs.service_role_arn
+  ecs_cluster_id               = var.ecs_cluster_id != null ? var.ecs_cluster_id : data.terraform_remote_state.prerequisites.outputs.cluster_id
+  ecs_cluster_service_role_arn = var.ecs_cluster_service_role_arn != null ? var.ecs_cluster_service_role_arn : data.terraform_remote_state.prerequisites.outputs.service_role_arn
 
   use_fargate                          = var.use_fargate
   service_task_cpu                     = var.service_task_cpu
