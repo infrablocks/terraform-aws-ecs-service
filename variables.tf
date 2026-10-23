@@ -68,6 +68,32 @@ variable "service_desired_count" {
   default     = 3
   nullable    = false
 }
+variable "service_autoscaling_enabled" {
+  description = "Whether or not to enable auto scaling for the service."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+variable "service_autoscaling_min_capacity" {
+  description = "The minimum number of tasks for auto scaling."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.service_autoscaling_min_capacity == null ? true : var.service_autoscaling_min_capacity >= 1
+    error_message = "The service_autoscaling_min_capacity value must be at least 1."
+  }
+}
+variable "service_autoscaling_max_capacity" {
+  description = "The maximum number of tasks for auto scaling."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.service_autoscaling_max_capacity == null ? true : var.service_autoscaling_max_capacity >= 1
+    error_message = "The service_autoscaling_max_capacity value must be at least 1."
+  }
+}
 variable "service_deployment_maximum_percent" {
   description = "The maximum percentage of the desired count that can be running."
   type        = number
