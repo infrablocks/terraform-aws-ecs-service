@@ -33,6 +33,18 @@ variable "service_desired_count" {
   type    = number
   default = null
 }
+variable "service_autoscaling_enabled" {
+  type    = bool
+  default = null
+}
+variable "service_autoscaling_min_capacity" {
+  type    = number
+  default = null
+}
+variable "service_autoscaling_max_capacity" {
+  type    = number
+  default = null
+}
 variable "service_deployment_maximum_percent" {
   type    = number
   default = null
@@ -139,6 +151,13 @@ variable "include_log_group" {
 }
 variable "log_group_retention" {
   type    = number
+  default = null
+}
+
+variable "ecs_cluster_id" {
+  default = null
+}
+variable "ecs_cluster_service_role_arn" {
   default = null
 }
 
