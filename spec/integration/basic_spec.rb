@@ -143,4 +143,16 @@ describe 'basic' do
         .to(eq(expected_log_group_name))
     end
   end
+
+  describe 'outputs' do
+    it 'outputs the service name' do
+      expect(output(role: :basic, name: 'service_name'))
+        .to(eq(service_name))
+    end
+
+    it 'outputs nil for autoscaling_target_resource_id when autoscaling is disabled' do
+      expect(output(role: :basic, name: 'autoscaling_target_resource_id'))
+        .to(be_nil)
+    end
+  end
 end
