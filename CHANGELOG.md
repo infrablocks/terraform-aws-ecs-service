@@ -10,6 +10,11 @@ IMPROVEMENTS:
   variables:
     - `service_deployment_circuit_breaker_enable`
     - `service_deployment_circuit_breaker_rollback`
+* ECS Service Auto Scaling is now supported via `service_autoscaling_enabled`,
+  `service_autoscaling_min_capacity`, and `service_autoscaling_max_capacity`.
+  When enabled, an Application Auto Scaling target is registered for the service
+  and changes to `desired_count` are ignored in lifecycle configuration.
+* Added `service_name` and `autoscaling_target_resource_id` outputs.
 
 ## 5.1.0 (June 4th, 2026)
 
