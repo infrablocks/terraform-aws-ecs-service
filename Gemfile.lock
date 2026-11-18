@@ -1710,10 +1710,10 @@ GEM
       connection_pool (>= 2.2.4, < 4)
     net-protocol (0.4.0)
       timeout
-    nokogiri (1.19.4)
+    nokogiri (1.19.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.19.4-x86_64-linux-gnu)
+    nokogiri (1.19.5-x86_64-linux-gnu)
       racc (~> 1.4)
     octokit (10.0.0)
       faraday (>= 1, < 3)
